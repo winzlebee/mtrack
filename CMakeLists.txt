@@ -1,4 +1,4 @@
-# Set the minimum version of cmake required to build this project
+# Set the minimum version of cmake required to build this project	
 cmake_minimum_required(VERSION 2.6)
 project(mtrack)
 
@@ -17,11 +17,13 @@ link_directories(${GTK3_LIBRARY_DIRS})
 
 # Add other flags to the compiler
 add_definitions(${GTK3_CFLAGS_OTHER})
-# Add an executable compiled from hello.c
-add_executable(mtrack main.cpp)
+
+# Add the executables
+add_executable(mtrack src/main.cpp src/ui.cpp)
+
 # Link the target to the GTK+ libraries
 target_link_libraries(mtrack ${OPENGL_LIBRARIES})
 target_link_libraries(mtrack ${GTK3_LIBRARIES})
 
-# TODO: Link specific openCV libraries we want to use
-# target_link_libraries(mtrack ${OpenCV_LIBS})
+# Only include VideoIO and core at the moment
+target_link_libraries(mtrack opencv_core opencv_videoio)

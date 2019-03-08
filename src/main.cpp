@@ -1,23 +1,15 @@
 #include <GL/gl.h>
 #include <gtk/gtk.h>
+#include <opencv2/opencv.hpp>
 
 #include <iostream>
 
+// Own implementations
+#include "ui.h"
+
 // New data structure to store widget to prevent memory leaks
 // Automatically handles deletion of widget on program completion as per RAII
-class Widget {
-    public:
-        Widget(GtkWidget *w) {
-            this->widget = w;
-        }
-        
-        GtkWidget* get() {
-            return this->widget;
-        }
-        
-    private:
-        GtkWidget *widget;
-};
+
 
 // Called when the OpenGL instance is created
 static void on_realize(GtkGLArea *area) {
@@ -36,17 +28,19 @@ static gboolean render(GtkGLArea *area, GdkGLContext *context) {
     return TRUE;
 }
 
-static void open_video(GtkWindow *parent) {
+static void import_media(GtkWidget *wid) {
     GtkWidget *chooserDialog;
+    
     GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
     gint res;
     
     chooserDialog = gtk_file_chooser_dialog_new("Open Media File",
-                                         parent,
+                                         GTK_WINDOW(wid),
                                          action,
                                          "_Cancel", GTK_RESPONSE_CANCEL,
-                                         "_Import", GTK_RESPONSE_ACCEPT,
+                                         "_Open", GTK_RESPONSE_ACCEPT,
                                          NULL);
+                       
     res = gtk_dialog_run(GTK_DIALOG(chooserDialog));
     
     if (res == GTK_RESPONSE_ACCEPT) {
@@ -56,11 +50,13 @@ static void open_video(GtkWindow *parent) {
         
         // We've retrieved the filename, so we're good. Use it here.
         std::cout << "Importing media file: " << filename << std::endl;
+        std::string location(filename);
         
         g_free(filename);
+        //return location;
     }
-    
     gtk_widget_destroy(chooserDialog);
+    //return "";  
 }
 
 int main(int argc, char **argv) {
@@ -101,12 +97,13 @@ int main(int argc, char **argv) {
     
     // Setup the signals
     g_signal_connect(G_OBJECT(quitItem.get()), "activate", G_CALLBACK(gtk_main_quit), NULL);
-    g_signal_connect(G_OBJECT(importVideoItem.get()), "activate", G_CALLBACK(open_video), window.get());
+    g_signal_connect(G_OBJECT(importVideoItem.get()), "activate", G_CALLBACK(import_media), window.get());
     g_signal_connect(G_OBJECT(window.get()), "destroy", G_CALLBACK(gtk_main_quit), NULL);
     
     gtk_widget_show_all(window.get());
     
     // Run the main window
     gtk_main();
+    
     return 0;
 }

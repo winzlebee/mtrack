@@ -4,7 +4,8 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/win/Documents/Development/Personal/mtrack/main.cpp" "/home/win/Documents/Development/Personal/mtrack/CMakeFiles/mtrack.dir/main.cpp.o"
+  "/home/win/Documents/Development/Personal/mtrack/src/main.cpp" "/home/win/Documents/Development/Personal/mtrack/CMakeFiles/mtrack.dir/src/main.cpp.o"
+  "/home/win/Documents/Development/Personal/mtrack/src/ui.cpp" "/home/win/Documents/Development/Personal/mtrack/CMakeFiles/mtrack.dir/src/ui.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -31,6 +32,7 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "/usr/include/uuid"
   "/usr/include/glib-2.0"
   "/usr/lib/x86_64-linux-gnu/glib-2.0/include"
+  "/usr/local/include/opencv4"
   )
 
 # Targets to which this target links.
