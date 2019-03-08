@@ -1,0 +1,12 @@
+TODO:
+- Dialog to change perspective
+- Obj import
+- Video import & trackbar
+V1.0
+- Compositing video tracks
+- Allow custom shaders for objects
+- Custom GPU shader processing for video output
+V2.0
+- Camera solving for focal length/sensor size/etc
+- Match camera movement for static scene placement
+V3.0 and done
