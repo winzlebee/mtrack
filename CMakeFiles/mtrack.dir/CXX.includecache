@@ -11,6 +11,8 @@ GL/gl.h
 -
 gtk/gtk.h
 -
+iostream
+-
 
 /usr/include/atk-1.0/atk/atk-enum-types.h
 atk/atkversion.h
