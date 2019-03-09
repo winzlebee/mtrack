@@ -1,11 +1,37 @@
 #include <gtkmm.h>
 #include <iostream>
+#include <string>
 
 #define GL_GLEXT_PROTOTYPES
 #include <GL/gl.h>
 #include <GL/glext.h>
 
 #include "cmanager.h"
+
+// For now, this draws a simple triangle
+static const GLfloat vertex_data[] = {
+  0.f,   0.5f,   0.f, 1.f,
+  0.5f, -0.366f, 0.f, 1.f,
+ -0.5f, -0.366f, 0.f, 1.f,
+};
+
+// Explicitly define shader prefix and suffixes
+const GLchar *vert_src ="\n" \
+"#version 330                                  \n" \
+"#extension GL_ARB_explicit_attrib_location: enable  \n" \
+"                                              \n" \
+"layout(location = 0) in vec2 in_position;     \n" \
+"                                              \n" \
+"void main()                                   \n" \
+"{                                             \n" \
+"  gl_Position = vec4(in_position, 0.0, 1.0);  \n" \
+"}                                             \n";
+
+const GLchar *frag_src ="\n" \
+"void main (void)                              \n" \
+"{                                             \n" \
+"  gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);    \n" \
+"}                                             \n";
 
 ContextManager::ContextManager(Gtk::GLArea *glArea) {
     gla = glArea;
@@ -16,6 +42,35 @@ ContextManager::ContextManager(Gtk::GLArea *glArea) {
     gla->signal_unrealize().connect(sigc::mem_fun(*this, &ContextManager::gl_destroy));
 }
 
+void ContextManager::init_buffers() {
+    glGenVertexArrays(1, &vaoId);
+    glBindVertexArray(vaoId);
+
+    glGenBuffers(1, &vboId);
+    glBindBuffer(GL_ARRAY_BUFFER, vboId);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertex_data), vertex_data, GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void ContextManager::init_shaders() {
+    // At the moment, we don't do any error checking. This will definitely be necessary when we start
+    // Accepting user input for the shaders.
+    GLuint frag_shader, vert_shader;
+    frag_shader = glCreateShader(GL_FRAGMENT_SHADER);
+    vert_shader = glCreateShader(GL_VERTEX_SHADER);
+
+    glShaderSource(frag_shader, 1, &frag_src, NULL);
+    glShaderSource(vert_shader, 1, &vert_src, NULL);
+
+    glCompileShader(frag_shader);
+    glCompileShader(vert_shader);
+
+    programId = glCreateProgram();
+    glAttachShader(gl_program, frag_shader);
+    glAttachShader(gl_program, vert_shader);
+    glLinkProgram(gl_program)
+}
+
 void ContextManager::gl_init() {
 	std::cout << "OpenGL window is being initialized..." << std::endl;
 	gla->make_current();
@@ -23,12 +78,29 @@ void ContextManager::gl_init() {
 	  {
 		gla->throw_if_error();
 		// TODO: Initialize shaders, etc
+		init_buffers();
+		init_shaders();
 	  }
 	  catch(const Gdk::GLError& gle)
 	  {
 		std::cerr << "An error occured making the context current during realize:" << std::endl;
 		std::cerr << gle.domain() << "-" << gle.code() << "-" << gle.what() << std::endl;
 	}
+}
+
+void ContextManager::draw_video() {
+
+    glUseProgram(programId);
+
+    glBindBuffer(GL_ARRAY_BUFFER, vaoId);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, nullptr);
+
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+
+    glDisableVertexAttribArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glUseProgram(0);
 }
 
 bool ContextManager::gl_render(const Glib::RefPtr<Gdk::GLContext>& /* context */) {
@@ -38,6 +110,7 @@ bool ContextManager::gl_render(const Glib::RefPtr<Gdk::GLContext>& /* context */
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
 		// Draw here
+		draw_video();
 
 		glFlush();
 
@@ -57,6 +130,8 @@ void ContextManager::gl_destroy() {
 	  {
 		gla->throw_if_error();
 		// TODO: Remove all created stuff during OpenGL realize
+	    glDeleteBuffers(1, &vaoId);
+        glDeleteProgram(programId);
 	  }
 	  catch(const Gdk::GLError& gle)
 	  {
