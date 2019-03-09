@@ -6,6 +6,22 @@
 
 #IncludeRegexTransform: 
 
+/home/win/Documents/Development/Personal/mtrack/src/cmanager.cpp
+gtkmm.h
+-
+iostream
+-
+GL/gl.h
+-
+GL/glext.h
+-
+cmanager.h
+/home/win/Documents/Development/Personal/mtrack/src/cmanager.h
+
+/home/win/Documents/Development/Personal/mtrack/src/cmanager.h
+gtkmm.h
+-
+
 /home/win/Documents/Development/Personal/mtrack/src/main.cpp
 gtkmm.h
 -
@@ -15,6 +31,8 @@ GL/gl.h
 -
 GL/glext.h
 -
+cmanager.h
+/home/win/Documents/Development/Personal/mtrack/src/cmanager.h
 
 /usr/include/atk-1.0/atk/atk-enum-types.h
 atk/atkversion.h
