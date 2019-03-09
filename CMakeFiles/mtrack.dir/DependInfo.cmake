@@ -5,7 +5,9 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
   "/home/win/Documents/Development/Personal/mtrack/src/main.cpp" "/home/win/Documents/Development/Personal/mtrack/CMakeFiles/mtrack.dir/src/main.cpp.o"
+  "/home/win/Documents/Development/Personal/mtrack/src/project.cpp" "/home/win/Documents/Development/Personal/mtrack/CMakeFiles/mtrack.dir/src/project.cpp.o"
   "/home/win/Documents/Development/Personal/mtrack/src/ui.cpp" "/home/win/Documents/Development/Personal/mtrack/CMakeFiles/mtrack.dir/src/ui.cpp.o"
+  "/home/win/Documents/Development/Personal/mtrack/src/video.cpp" "/home/win/Documents/Development/Personal/mtrack/CMakeFiles/mtrack.dir/src/video.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

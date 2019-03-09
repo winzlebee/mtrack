@@ -3,32 +3,69 @@
 #include <opencv2/opencv.hpp>
 
 #include <iostream>
+#include <memory>
 
 // Own implementations
 #include "ui.h"
+#include "video.h"
+#include "project.h"
 
-// New data structure to store widget to prevent memory leaks
-// Automatically handles deletion of widget on program completion as per RAII
+#define IGNORE_VAR(type, identifier) \
+{ \
+  type IGNORED_VARIABLE_abcd = identifier; \
+  identifier = IGNORED_VARIABLE_abcd; \
+}
 
+// The bulk of this software uses basic C language for the UI portion. OO Design patterns are used
+// For parts that would benefit from a modular architecture.
+
+// Singleton project declares
+Project ui_project;
+bool ui_context_initialized;
 
 // Called when the OpenGL instance is created
-static void on_realize(GtkGLArea *area) {
+static gboolean on_realize(GtkGLArea *area, GdkGLContext *context) {
+    IGNORE_VAR(GdkGLContext*, context);
+
     // TODO: Error check the GtkGLArea
+    gtk_gl_area_make_current(GTK_GL_AREA(area));
+    if (gtk_gl_area_get_error (GTK_GL_AREA(area)) != NULL)
+    {
+        printf("Failed to initialiize buffers\n");
+        return false;
+    }
     
+    ui_context_initialized = true;
     // Initialize the camera with a focal length
+    return true;
 }
 
 static gboolean render(GtkGLArea *area, GdkGLContext *context) {
+
+    IGNORE_VAR(GdkGLContext*, context);
+    IGNORE_VAR(GtkGLArea*, area);
     
     glClearColor(0.2, 0.2, 0.2, 0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     // Render the scene here
+    if (ui_project.hasMedia()) ui_project.getLoadedMedia()->render();   
+    
+    glFlush();
     
     return TRUE;
 }
 
+static bool load_video(const char *path) {
+    std::unique_ptr<MediaDisplay> video = std::make_unique<VideoDisplay>(path);
+    ui_project.importMedia(std::move(video));
+    return ui_project.getLoadedMedia()->isLoaded();
+}
+
 static void import_media(GtkWidget *wid) {
+    
+    if (!ui_context_initialized) return;
+
     GtkWidget *chooserDialog;
     
     GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
@@ -50,13 +87,14 @@ static void import_media(GtkWidget *wid) {
         
         // We've retrieved the filename, so we're good. Use it here.
         std::cout << "Importing media file: " << filename << std::endl;
-        std::string location(filename);
         
+        if (!load_video(filename)) {
+            std::cout << "Loading video file failed!" << std::endl;
+        }
+
         g_free(filename);
-        //return location;
     }
     gtk_widget_destroy(chooserDialog);
-    //return "";  
 }
 
 int main(int argc, char **argv) {

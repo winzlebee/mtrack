@@ -150,6 +150,33 @@ src/main.cpp.s:
 	$(MAKE) -f CMakeFiles/mtrack.dir/build.make CMakeFiles/mtrack.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
+src/project.o: src/project.cpp.o
+
+.PHONY : src/project.o
+
+# target to build an object file
+src/project.cpp.o:
+	$(MAKE) -f CMakeFiles/mtrack.dir/build.make CMakeFiles/mtrack.dir/src/project.cpp.o
+.PHONY : src/project.cpp.o
+
+src/project.i: src/project.cpp.i
+
+.PHONY : src/project.i
+
+# target to preprocess a source file
+src/project.cpp.i:
+	$(MAKE) -f CMakeFiles/mtrack.dir/build.make CMakeFiles/mtrack.dir/src/project.cpp.i
+.PHONY : src/project.cpp.i
+
+src/project.s: src/project.cpp.s
+
+.PHONY : src/project.s
+
+# target to generate assembly for a file
+src/project.cpp.s:
+	$(MAKE) -f CMakeFiles/mtrack.dir/build.make CMakeFiles/mtrack.dir/src/project.cpp.s
+.PHONY : src/project.cpp.s
+
 src/ui.o: src/ui.cpp.o
 
 .PHONY : src/ui.o
@@ -177,6 +204,33 @@ src/ui.cpp.s:
 	$(MAKE) -f CMakeFiles/mtrack.dir/build.make CMakeFiles/mtrack.dir/src/ui.cpp.s
 .PHONY : src/ui.cpp.s
 
+src/video.o: src/video.cpp.o
+
+.PHONY : src/video.o
+
+# target to build an object file
+src/video.cpp.o:
+	$(MAKE) -f CMakeFiles/mtrack.dir/build.make CMakeFiles/mtrack.dir/src/video.cpp.o
+.PHONY : src/video.cpp.o
+
+src/video.i: src/video.cpp.i
+
+.PHONY : src/video.i
+
+# target to preprocess a source file
+src/video.cpp.i:
+	$(MAKE) -f CMakeFiles/mtrack.dir/build.make CMakeFiles/mtrack.dir/src/video.cpp.i
+.PHONY : src/video.cpp.i
+
+src/video.s: src/video.cpp.s
+
+.PHONY : src/video.s
+
+# target to generate assembly for a file
+src/video.cpp.s:
+	$(MAKE) -f CMakeFiles/mtrack.dir/build.make CMakeFiles/mtrack.dir/src/video.cpp.s
+.PHONY : src/video.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -189,9 +243,15 @@ help:
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/project.o"
+	@echo "... src/project.i"
+	@echo "... src/project.s"
 	@echo "... src/ui.o"
 	@echo "... src/ui.i"
 	@echo "... src/ui.s"
+	@echo "... src/video.o"
+	@echo "... src/video.i"
+	@echo "... src/video.s"
 .PHONY : help
 
 

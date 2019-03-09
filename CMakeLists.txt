@@ -19,7 +19,7 @@ link_directories(${GTK3_LIBRARY_DIRS})
 add_definitions(${GTK3_CFLAGS_OTHER})
 
 # Add the executables
-add_executable(mtrack src/main.cpp src/ui.cpp)
+add_executable(mtrack src/main.cpp src/ui.cpp src/video.cpp src/project.cpp)
 
 # Link the target to the GTK+ libraries
 target_link_libraries(mtrack ${OPENGL_LIBRARIES})
