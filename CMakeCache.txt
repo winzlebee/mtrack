@@ -272,6 +272,63 @@ pkgcfg_lib_GTK3_pango-1.0:FILEPATH=/usr/lib/x86_64-linux-gnu/libpango-1.0.so
 //Path to a library.
 pkgcfg_lib_GTK3_pangocairo-1.0:FILEPATH=/usr/lib/x86_64-linux-gnu/libpangocairo-1.0.so
 
+//Path to a library.
+pkgcfg_lib_GTKMM_atk-1.0:FILEPATH=/usr/lib/x86_64-linux-gnu/libatk-1.0.so
+
+//Path to a library.
+pkgcfg_lib_GTKMM_atkmm-1.6:FILEPATH=/usr/lib/x86_64-linux-gnu/libatkmm-1.6.so
+
+//Path to a library.
+pkgcfg_lib_GTKMM_cairo:FILEPATH=/usr/lib/x86_64-linux-gnu/libcairo.so
+
+//Path to a library.
+pkgcfg_lib_GTKMM_cairo-gobject:FILEPATH=/usr/lib/x86_64-linux-gnu/libcairo-gobject.so
+
+//Path to a library.
+pkgcfg_lib_GTKMM_cairomm-1.0:FILEPATH=/usr/lib/x86_64-linux-gnu/libcairomm-1.0.so
+
+//Path to a library.
+pkgcfg_lib_GTKMM_gdk-3:FILEPATH=/usr/lib/x86_64-linux-gnu/libgdk-3.so
+
+//Path to a library.
+pkgcfg_lib_GTKMM_gdk_pixbuf-2.0:FILEPATH=/usr/lib/x86_64-linux-gnu/libgdk_pixbuf-2.0.so
+
+//Path to a library.
+pkgcfg_lib_GTKMM_gdkmm-3.0:FILEPATH=/usr/lib/x86_64-linux-gnu/libgdkmm-3.0.so
+
+//Path to a library.
+pkgcfg_lib_GTKMM_gio-2.0:FILEPATH=/usr/lib/x86_64-linux-gnu/libgio-2.0.so
+
+//Path to a library.
+pkgcfg_lib_GTKMM_giomm-2.4:FILEPATH=/usr/lib/x86_64-linux-gnu/libgiomm-2.4.so
+
+//Path to a library.
+pkgcfg_lib_GTKMM_glib-2.0:FILEPATH=/usr/lib/x86_64-linux-gnu/libglib-2.0.so
+
+//Path to a library.
+pkgcfg_lib_GTKMM_glibmm-2.4:FILEPATH=/usr/lib/x86_64-linux-gnu/libglibmm-2.4.so
+
+//Path to a library.
+pkgcfg_lib_GTKMM_gobject-2.0:FILEPATH=/usr/lib/x86_64-linux-gnu/libgobject-2.0.so
+
+//Path to a library.
+pkgcfg_lib_GTKMM_gtk-3:FILEPATH=/usr/lib/x86_64-linux-gnu/libgtk-3.so
+
+//Path to a library.
+pkgcfg_lib_GTKMM_gtkmm-3.0:FILEPATH=/usr/lib/x86_64-linux-gnu/libgtkmm-3.0.so
+
+//Path to a library.
+pkgcfg_lib_GTKMM_pango-1.0:FILEPATH=/usr/lib/x86_64-linux-gnu/libpango-1.0.so
+
+//Path to a library.
+pkgcfg_lib_GTKMM_pangocairo-1.0:FILEPATH=/usr/lib/x86_64-linux-gnu/libpangocairo-1.0.so
+
+//Path to a library.
+pkgcfg_lib_GTKMM_pangomm-1.4:FILEPATH=/usr/lib/x86_64-linux-gnu/libpangomm-1.4.so
+
+//Path to a library.
+pkgcfg_lib_GTKMM_sigc-2.0:FILEPATH=/usr/lib/x86_64-linux-gnu/libsigc-2.0.so
+
 
 ########################
 # INTERNAL cache entries
@@ -456,6 +513,40 @@ GTK3_gtk+-3.0_INCLUDEDIR:INTERNAL=
 GTK3_gtk+-3.0_LIBDIR:INTERNAL=
 GTK3_gtk+-3.0_PREFIX:INTERNAL=
 GTK3_gtk+-3.0_VERSION:INTERNAL=
+GTKMM_CFLAGS:INTERNAL=-pthread;-I/usr/include/gtkmm-3.0;-I/usr/lib/x86_64-linux-gnu/gtkmm-3.0/include;-I/usr/include/atkmm-1.6;-I/usr/include/gtk-3.0/unix-print;-I/usr/include/gdkmm-3.0;-I/usr/lib/x86_64-linux-gnu/gdkmm-3.0/include;-I/usr/include/giomm-2.4;-I/usr/lib/x86_64-linux-gnu/giomm-2.4/include;-I/usr/include/pangomm-1.4;-I/usr/lib/x86_64-linux-gnu/pangomm-1.4/include;-I/usr/include/glibmm-2.4;-I/usr/lib/x86_64-linux-gnu/glibmm-2.4/include;-I/usr/include/gtk-3.0;-I/usr/include/at-spi2-atk/2.0;-I/usr/include/at-spi-2.0;-I/usr/include/dbus-1.0;-I/usr/lib/x86_64-linux-gnu/dbus-1.0/include;-I/usr/include/gtk-3.0;-I/usr/include/gio-unix-2.0;-I/usr/include/cairo;-I/usr/include/libdrm;-I/usr/include/pango-1.0;-I/usr/include/harfbuzz;-I/usr/include/pango-1.0;-I/usr/include/fribidi;-I/usr/include/atk-1.0;-I/usr/include/cairo;-I/usr/include/cairomm-1.0;-I/usr/lib/x86_64-linux-gnu/cairomm-1.0/include;-I/usr/include/cairo;-I/usr/include/pixman-1;-I/usr/include/freetype2;-I/usr/include/libpng16;-I/usr/include/sigc++-2.0;-I/usr/lib/x86_64-linux-gnu/sigc++-2.0/include;-I/usr/include/gdk-pixbuf-2.0;-I/usr/include/libmount;-I/usr/include/blkid;-I/usr/include/uuid;-I/usr/include/glib-2.0;-I/usr/lib/x86_64-linux-gnu/glib-2.0/include
+GTKMM_CFLAGS_I:INTERNAL=
+GTKMM_CFLAGS_OTHER:INTERNAL=-pthread
+GTKMM_FOUND:INTERNAL=1
+GTKMM_INCLUDEDIR:INTERNAL=/usr/include
+GTKMM_INCLUDE_DIRS:INTERNAL=/usr/include/gtkmm-3.0;/usr/lib/x86_64-linux-gnu/gtkmm-3.0/include;/usr/include/atkmm-1.6;/usr/include/gtk-3.0/unix-print;/usr/include/gdkmm-3.0;/usr/lib/x86_64-linux-gnu/gdkmm-3.0/include;/usr/include/giomm-2.4;/usr/lib/x86_64-linux-gnu/giomm-2.4/include;/usr/include/pangomm-1.4;/usr/lib/x86_64-linux-gnu/pangomm-1.4/include;/usr/include/glibmm-2.4;/usr/lib/x86_64-linux-gnu/glibmm-2.4/include;/usr/include/gtk-3.0;/usr/include/at-spi2-atk/2.0;/usr/include/at-spi-2.0;/usr/include/dbus-1.0;/usr/lib/x86_64-linux-gnu/dbus-1.0/include;/usr/include/gtk-3.0;/usr/include/gio-unix-2.0;/usr/include/cairo;/usr/include/libdrm;/usr/include/pango-1.0;/usr/include/harfbuzz;/usr/include/pango-1.0;/usr/include/fribidi;/usr/include/atk-1.0;/usr/include/cairo;/usr/include/cairomm-1.0;/usr/lib/x86_64-linux-gnu/cairomm-1.0/include;/usr/include/cairo;/usr/include/pixman-1;/usr/include/freetype2;/usr/include/libpng16;/usr/include/sigc++-2.0;/usr/lib/x86_64-linux-gnu/sigc++-2.0/include;/usr/include/gdk-pixbuf-2.0;/usr/include/libmount;/usr/include/blkid;/usr/include/uuid;/usr/include/glib-2.0;/usr/lib/x86_64-linux-gnu/glib-2.0/include
+GTKMM_LDFLAGS:INTERNAL=-lgtkmm-3.0;-latkmm-1.6;-lgdkmm-3.0;-lgiomm-2.4;-lpangomm-1.4;-lglibmm-2.4;-lgtk-3;-lgdk-3;-lpangocairo-1.0;-lpango-1.0;-latk-1.0;-lcairo-gobject;-lgio-2.0;-lcairomm-1.0;-lcairo;-lsigc-2.0;-lgdk_pixbuf-2.0;-lgobject-2.0;-lglib-2.0
+GTKMM_LDFLAGS_OTHER:INTERNAL=
+GTKMM_LIBDIR:INTERNAL=/usr/lib/x86_64-linux-gnu
+GTKMM_LIBRARIES:INTERNAL=gtkmm-3.0;atkmm-1.6;gdkmm-3.0;giomm-2.4;pangomm-1.4;glibmm-2.4;gtk-3;gdk-3;pangocairo-1.0;pango-1.0;atk-1.0;cairo-gobject;gio-2.0;cairomm-1.0;cairo;sigc-2.0;gdk_pixbuf-2.0;gobject-2.0;glib-2.0
+GTKMM_LIBRARY_DIRS:INTERNAL=
+GTKMM_LIBS:INTERNAL=
+GTKMM_LIBS_L:INTERNAL=
+GTKMM_LIBS_OTHER:INTERNAL=
+GTKMM_LIBS_PATHS:INTERNAL=
+GTKMM_PREFIX:INTERNAL=/usr
+GTKMM_STATIC_CFLAGS:INTERNAL=-pthread;-I/usr/include/gtkmm-3.0;-I/usr/lib/x86_64-linux-gnu/gtkmm-3.0/include;-I/usr/include/atkmm-1.6;-I/usr/include/gtk-3.0/unix-print;-I/usr/include/gdkmm-3.0;-I/usr/lib/x86_64-linux-gnu/gdkmm-3.0/include;-I/usr/include/giomm-2.4;-I/usr/lib/x86_64-linux-gnu/giomm-2.4/include;-I/usr/include/pangomm-1.4;-I/usr/lib/x86_64-linux-gnu/pangomm-1.4/include;-I/usr/include/glibmm-2.4;-I/usr/lib/x86_64-linux-gnu/glibmm-2.4/include;-I/usr/include/gtk-3.0;-I/usr/include/at-spi2-atk/2.0;-I/usr/include/at-spi-2.0;-I/usr/include/dbus-1.0;-I/usr/lib/x86_64-linux-gnu/dbus-1.0/include;-I/usr/include/gtk-3.0;-I/usr/include/gio-unix-2.0;-I/usr/include/cairo;-I/usr/include/libdrm;-I/usr/include/pango-1.0;-I/usr/include/harfbuzz;-I/usr/include/pango-1.0;-I/usr/include/fribidi;-I/usr/include/atk-1.0;-I/usr/include/cairo;-I/usr/include/cairomm-1.0;-I/usr/lib/x86_64-linux-gnu/cairomm-1.0/include;-I/usr/include/cairo;-I/usr/include/pixman-1;-I/usr/include/freetype2;-I/usr/include/libpng16;-I/usr/include/sigc++-2.0;-I/usr/lib/x86_64-linux-gnu/sigc++-2.0/include;-I/usr/include/gdk-pixbuf-2.0;-I/usr/include/libmount;-I/usr/include/blkid;-I/usr/include/uuid;-I/usr/include/glib-2.0;-I/usr/lib/x86_64-linux-gnu/glib-2.0/include
+GTKMM_STATIC_CFLAGS_I:INTERNAL=
+GTKMM_STATIC_CFLAGS_OTHER:INTERNAL=-pthread
+GTKMM_STATIC_INCLUDE_DIRS:INTERNAL=/usr/include/gtkmm-3.0;/usr/lib/x86_64-linux-gnu/gtkmm-3.0/include;/usr/include/atkmm-1.6;/usr/include/gtk-3.0/unix-print;/usr/include/gdkmm-3.0;/usr/lib/x86_64-linux-gnu/gdkmm-3.0/include;/usr/include/giomm-2.4;/usr/lib/x86_64-linux-gnu/giomm-2.4/include;/usr/include/pangomm-1.4;/usr/lib/x86_64-linux-gnu/pangomm-1.4/include;/usr/include/glibmm-2.4;/usr/lib/x86_64-linux-gnu/glibmm-2.4/include;/usr/include/gtk-3.0;/usr/include/at-spi2-atk/2.0;/usr/include/at-spi-2.0;/usr/include/dbus-1.0;/usr/lib/x86_64-linux-gnu/dbus-1.0/include;/usr/include/gtk-3.0;/usr/include/gio-unix-2.0;/usr/include/cairo;/usr/include/libdrm;/usr/include/pango-1.0;/usr/include/harfbuzz;/usr/include/pango-1.0;/usr/include/fribidi;/usr/include/atk-1.0;/usr/include/cairo;/usr/include/cairomm-1.0;/usr/lib/x86_64-linux-gnu/cairomm-1.0/include;/usr/include/cairo;/usr/include/pixman-1;/usr/include/freetype2;/usr/include/libpng16;/usr/include/sigc++-2.0;/usr/lib/x86_64-linux-gnu/sigc++-2.0/include;/usr/include/gdk-pixbuf-2.0;/usr/include/libmount;/usr/include/blkid;/usr/include/uuid;/usr/include/glib-2.0;/usr/lib/x86_64-linux-gnu/glib-2.0/include
+GTKMM_STATIC_LDFLAGS:INTERNAL=-lgtkmm-3.0;-latkmm-1.6;-lgdkmm-3.0;-lgiomm-2.4;-lpangomm-1.4;-lglibmm-2.4;-lgtk-3;-latk-bridge-2.0;-latspi;-ldbus-1;-lpthread;-lsystemd;-lgdk-3;-lXinerama;-lXi;-lXrandr;-lXcursor;-lXcomposite;-lxkbcommon;-lwayland-cursor;-lwayland-egl;-lwayland-client;-lepoxy;-ldl;-lGL;-lpthread;-pthread;-lm;-ldl;-lEGL;-lpthread;-pthread;-lm;-ldl;-lXdamage;-lXfixes;-lX11-xcb;-lxcb-glx;-lxcb-dri2;-lXxf86vm;-ldrm;-lpangocairo-1.0;-lpangoft2-1.0;-lharfbuzz;-lm;-lgraphite2;-lpango-1.0;-lm;-lfribidi;-latk-1.0;-lcairo-gobject;-lcairomm-1.0;-lcairo;-lz;-lpixman-1;-lfontconfig;-lexpat;-lfreetype;-lpng16;-lm;-lz;-lm;-lxcb-shm;-lxcb-render;-lXrender;-lXext;-lX11;-lpthread;-lxcb;-lXau;-lXdmcp;-lsigc-2.0;-lgdk_pixbuf-2.0;-lm;-lgio-2.0;-ldl;-pthread;-lresolv;-lgmodule-2.0;-pthread;-ldl;-lz;-lmount;-lblkid;-luuid;-lselinux;-lsepol;-lgobject-2.0;-pthread;-lffi;-lglib-2.0;-pthread;-lpcre;-pthread
+GTKMM_STATIC_LDFLAGS_OTHER:INTERNAL=-pthread
+GTKMM_STATIC_LIBDIR:INTERNAL=
+GTKMM_STATIC_LIBRARIES:INTERNAL=gtkmm-3.0;atkmm-1.6;gdkmm-3.0;giomm-2.4;pangomm-1.4;glibmm-2.4;gtk-3;atk-bridge-2.0;atspi;dbus-1;pthread;systemd;gdk-3;Xinerama;Xi;Xrandr;Xcursor;Xcomposite;xkbcommon;wayland-cursor;wayland-egl;wayland-client;epoxy;dl;GL;pthread;m;dl;EGL;pthread;m;dl;Xdamage;Xfixes;X11-xcb;xcb-glx;xcb-dri2;Xxf86vm;drm;pangocairo-1.0;pangoft2-1.0;harfbuzz;m;graphite2;pango-1.0;m;fribidi;atk-1.0;cairo-gobject;cairomm-1.0;cairo;z;pixman-1;fontconfig;expat;freetype;png16;m;z;m;xcb-shm;xcb-render;Xrender;Xext;X11;pthread;xcb;Xau;Xdmcp;sigc-2.0;gdk_pixbuf-2.0;m;gio-2.0;dl;resolv;gmodule-2.0;dl;z;mount;blkid;uuid;selinux;sepol;gobject-2.0;ffi;glib-2.0;pcre
+GTKMM_STATIC_LIBRARY_DIRS:INTERNAL=
+GTKMM_STATIC_LIBS:INTERNAL=
+GTKMM_STATIC_LIBS_L:INTERNAL=
+GTKMM_STATIC_LIBS_OTHER:INTERNAL=
+GTKMM_STATIC_LIBS_PATHS:INTERNAL=
+GTKMM_VERSION:INTERNAL=3.24.0
+GTKMM_gtkmm-3.0_INCLUDEDIR:INTERNAL=
+GTKMM_gtkmm-3.0_LIBDIR:INTERNAL=
+GTKMM_gtkmm-3.0_PREFIX:INTERNAL=
+GTKMM_gtkmm-3.0_VERSION:INTERNAL=
 //ADVANCED property for variable: OPENGL_EGL_INCLUDE_DIR
 OPENGL_EGL_INCLUDE_DIR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: OPENGL_GLX_INCLUDE_DIR
@@ -477,6 +568,8 @@ OPENGL_xmesa_INCLUDE_DIR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: PKG_CONFIG_EXECUTABLE
 PKG_CONFIG_EXECUTABLE-ADVANCED:INTERNAL=1
 __pkg_config_arguments_GTK3:INTERNAL=REQUIRED;gtk+-3.0
+__pkg_config_arguments_GTKMM:INTERNAL=gtkmm-3.0
 __pkg_config_checked_GTK3:INTERNAL=1
+__pkg_config_checked_GTKMM:INTERNAL=1
 prefix_result:INTERNAL=/usr/lib/x86_64-linux-gnu
 

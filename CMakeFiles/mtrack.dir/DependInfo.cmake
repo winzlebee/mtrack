@@ -5,14 +5,23 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
   "/home/win/Documents/Development/Personal/mtrack/src/main.cpp" "/home/win/Documents/Development/Personal/mtrack/CMakeFiles/mtrack.dir/src/main.cpp.o"
-  "/home/win/Documents/Development/Personal/mtrack/src/project.cpp" "/home/win/Documents/Development/Personal/mtrack/CMakeFiles/mtrack.dir/src/project.cpp.o"
-  "/home/win/Documents/Development/Personal/mtrack/src/ui.cpp" "/home/win/Documents/Development/Personal/mtrack/CMakeFiles/mtrack.dir/src/ui.cpp.o"
-  "/home/win/Documents/Development/Personal/mtrack/src/video.cpp" "/home/win/Documents/Development/Personal/mtrack/CMakeFiles/mtrack.dir/src/video.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
+  "/usr/include/gtkmm-3.0"
+  "/usr/lib/x86_64-linux-gnu/gtkmm-3.0/include"
+  "/usr/include/atkmm-1.6"
+  "/usr/include/gtk-3.0/unix-print"
+  "/usr/include/gdkmm-3.0"
+  "/usr/lib/x86_64-linux-gnu/gdkmm-3.0/include"
+  "/usr/include/giomm-2.4"
+  "/usr/lib/x86_64-linux-gnu/giomm-2.4/include"
+  "/usr/include/pangomm-1.4"
+  "/usr/lib/x86_64-linux-gnu/pangomm-1.4/include"
+  "/usr/include/glibmm-2.4"
+  "/usr/lib/x86_64-linux-gnu/glibmm-2.4/include"
   "/usr/include/gtk-3.0"
   "/usr/include/at-spi2-atk/2.0"
   "/usr/include/at-spi-2.0"
@@ -25,9 +34,13 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "/usr/include/harfbuzz"
   "/usr/include/fribidi"
   "/usr/include/atk-1.0"
+  "/usr/include/cairomm-1.0"
+  "/usr/lib/x86_64-linux-gnu/cairomm-1.0/include"
   "/usr/include/pixman-1"
   "/usr/include/freetype2"
   "/usr/include/libpng16"
+  "/usr/include/sigc++-2.0"
+  "/usr/lib/x86_64-linux-gnu/sigc++-2.0/include"
   "/usr/include/gdk-pixbuf-2.0"
   "/usr/include/libmount"
   "/usr/include/blkid"

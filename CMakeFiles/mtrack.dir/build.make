@@ -70,59 +70,14 @@ CMakeFiles/mtrack.dir/src/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/mtrack.dir/src/main.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/win/Documents/Development/Personal/mtrack/src/main.cpp -o CMakeFiles/mtrack.dir/src/main.cpp.s
 
-CMakeFiles/mtrack.dir/src/ui.cpp.o: CMakeFiles/mtrack.dir/flags.make
-CMakeFiles/mtrack.dir/src/ui.cpp.o: src/ui.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/win/Documents/Development/Personal/mtrack/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/mtrack.dir/src/ui.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/mtrack.dir/src/ui.cpp.o -c /home/win/Documents/Development/Personal/mtrack/src/ui.cpp
-
-CMakeFiles/mtrack.dir/src/ui.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/mtrack.dir/src/ui.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/win/Documents/Development/Personal/mtrack/src/ui.cpp > CMakeFiles/mtrack.dir/src/ui.cpp.i
-
-CMakeFiles/mtrack.dir/src/ui.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/mtrack.dir/src/ui.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/win/Documents/Development/Personal/mtrack/src/ui.cpp -o CMakeFiles/mtrack.dir/src/ui.cpp.s
-
-CMakeFiles/mtrack.dir/src/video.cpp.o: CMakeFiles/mtrack.dir/flags.make
-CMakeFiles/mtrack.dir/src/video.cpp.o: src/video.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/win/Documents/Development/Personal/mtrack/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/mtrack.dir/src/video.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/mtrack.dir/src/video.cpp.o -c /home/win/Documents/Development/Personal/mtrack/src/video.cpp
-
-CMakeFiles/mtrack.dir/src/video.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/mtrack.dir/src/video.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/win/Documents/Development/Personal/mtrack/src/video.cpp > CMakeFiles/mtrack.dir/src/video.cpp.i
-
-CMakeFiles/mtrack.dir/src/video.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/mtrack.dir/src/video.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/win/Documents/Development/Personal/mtrack/src/video.cpp -o CMakeFiles/mtrack.dir/src/video.cpp.s
-
-CMakeFiles/mtrack.dir/src/project.cpp.o: CMakeFiles/mtrack.dir/flags.make
-CMakeFiles/mtrack.dir/src/project.cpp.o: src/project.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/win/Documents/Development/Personal/mtrack/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/mtrack.dir/src/project.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/mtrack.dir/src/project.cpp.o -c /home/win/Documents/Development/Personal/mtrack/src/project.cpp
-
-CMakeFiles/mtrack.dir/src/project.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/mtrack.dir/src/project.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/win/Documents/Development/Personal/mtrack/src/project.cpp > CMakeFiles/mtrack.dir/src/project.cpp.i
-
-CMakeFiles/mtrack.dir/src/project.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/mtrack.dir/src/project.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/win/Documents/Development/Personal/mtrack/src/project.cpp -o CMakeFiles/mtrack.dir/src/project.cpp.s
-
 # Object files for target mtrack
 mtrack_OBJECTS = \
-"CMakeFiles/mtrack.dir/src/main.cpp.o" \
-"CMakeFiles/mtrack.dir/src/ui.cpp.o" \
-"CMakeFiles/mtrack.dir/src/video.cpp.o" \
-"CMakeFiles/mtrack.dir/src/project.cpp.o"
+"CMakeFiles/mtrack.dir/src/main.cpp.o"
 
 # External object files for target mtrack
 mtrack_EXTERNAL_OBJECTS =
 
 mtrack: CMakeFiles/mtrack.dir/src/main.cpp.o
-mtrack: CMakeFiles/mtrack.dir/src/ui.cpp.o
-mtrack: CMakeFiles/mtrack.dir/src/video.cpp.o
-mtrack: CMakeFiles/mtrack.dir/src/project.cpp.o
 mtrack: CMakeFiles/mtrack.dir/build.make
 mtrack: /usr/lib/x86_64-linux-gnu/libGL.so
 mtrack: /usr/lib/x86_64-linux-gnu/libGLU.so
@@ -131,7 +86,7 @@ mtrack: /usr/local/lib/libopencv_imgcodecs.so.4.0.1
 mtrack: /usr/local/lib/libopencv_imgproc.so.4.0.1
 mtrack: /usr/local/lib/libopencv_core.so.4.0.1
 mtrack: CMakeFiles/mtrack.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/win/Documents/Development/Personal/mtrack/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable mtrack"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/win/Documents/Development/Personal/mtrack/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable mtrack"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/mtrack.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
