@@ -5,9 +5,9 @@
 #include <GL/gl.h>
 #include <GL/glext.h>
 
-#include "cmanager.h"
+#include "render/cmanager.h"
+#include "ui/main_window.h"
 
-Gtk::Window* window;
 Gtk::GLArea* glArea;
 
 int main(int argc, char *argv[])
@@ -23,15 +23,22 @@ int main(int argc, char *argv[])
 	catch(const Glib::FileError& ex) {
 		std::cerr << "FileError: " << ex.what() << std::endl;
 		return 1;
+    }
+	catch(const Gtk::BuilderError& ex) {
+		std::cerr << "BuilderError: " << ex.what() << std::endl;
+		return 1;
 	}
 
-	builder->get_widget("main_window", window);
+    MainWindow* window;
+    
+	builder->get_widget_derived("main_window", window);
 	builder->get_widget("display_area", glArea);
 	
 	// ContextManager manages everything to do with the context. It hooks the signals and makes sure the OpenGL stuff is handled well.
 	ContextManager context(glArea);
 
 	int result = app->run(*window);
+	
 	delete window;
 	return result;
 }

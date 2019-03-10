@@ -123,33 +123,6 @@ mtrack/fast:
 	$(MAKE) -f CMakeFiles/mtrack.dir/build.make CMakeFiles/mtrack.dir/build
 .PHONY : mtrack/fast
 
-src/cmanager.o: src/cmanager.cpp.o
-
-.PHONY : src/cmanager.o
-
-# target to build an object file
-src/cmanager.cpp.o:
-	$(MAKE) -f CMakeFiles/mtrack.dir/build.make CMakeFiles/mtrack.dir/src/cmanager.cpp.o
-.PHONY : src/cmanager.cpp.o
-
-src/cmanager.i: src/cmanager.cpp.i
-
-.PHONY : src/cmanager.i
-
-# target to preprocess a source file
-src/cmanager.cpp.i:
-	$(MAKE) -f CMakeFiles/mtrack.dir/build.make CMakeFiles/mtrack.dir/src/cmanager.cpp.i
-.PHONY : src/cmanager.cpp.i
-
-src/cmanager.s: src/cmanager.cpp.s
-
-.PHONY : src/cmanager.s
-
-# target to generate assembly for a file
-src/cmanager.cpp.s:
-	$(MAKE) -f CMakeFiles/mtrack.dir/build.make CMakeFiles/mtrack.dir/src/cmanager.cpp.s
-.PHONY : src/cmanager.cpp.s
-
 src/main.o: src/main.cpp.o
 
 .PHONY : src/main.o
@@ -177,6 +150,60 @@ src/main.cpp.s:
 	$(MAKE) -f CMakeFiles/mtrack.dir/build.make CMakeFiles/mtrack.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
+src/render/cmanager.o: src/render/cmanager.cpp.o
+
+.PHONY : src/render/cmanager.o
+
+# target to build an object file
+src/render/cmanager.cpp.o:
+	$(MAKE) -f CMakeFiles/mtrack.dir/build.make CMakeFiles/mtrack.dir/src/render/cmanager.cpp.o
+.PHONY : src/render/cmanager.cpp.o
+
+src/render/cmanager.i: src/render/cmanager.cpp.i
+
+.PHONY : src/render/cmanager.i
+
+# target to preprocess a source file
+src/render/cmanager.cpp.i:
+	$(MAKE) -f CMakeFiles/mtrack.dir/build.make CMakeFiles/mtrack.dir/src/render/cmanager.cpp.i
+.PHONY : src/render/cmanager.cpp.i
+
+src/render/cmanager.s: src/render/cmanager.cpp.s
+
+.PHONY : src/render/cmanager.s
+
+# target to generate assembly for a file
+src/render/cmanager.cpp.s:
+	$(MAKE) -f CMakeFiles/mtrack.dir/build.make CMakeFiles/mtrack.dir/src/render/cmanager.cpp.s
+.PHONY : src/render/cmanager.cpp.s
+
+src/ui/main_window.o: src/ui/main_window.cpp.o
+
+.PHONY : src/ui/main_window.o
+
+# target to build an object file
+src/ui/main_window.cpp.o:
+	$(MAKE) -f CMakeFiles/mtrack.dir/build.make CMakeFiles/mtrack.dir/src/ui/main_window.cpp.o
+.PHONY : src/ui/main_window.cpp.o
+
+src/ui/main_window.i: src/ui/main_window.cpp.i
+
+.PHONY : src/ui/main_window.i
+
+# target to preprocess a source file
+src/ui/main_window.cpp.i:
+	$(MAKE) -f CMakeFiles/mtrack.dir/build.make CMakeFiles/mtrack.dir/src/ui/main_window.cpp.i
+.PHONY : src/ui/main_window.cpp.i
+
+src/ui/main_window.s: src/ui/main_window.cpp.s
+
+.PHONY : src/ui/main_window.s
+
+# target to generate assembly for a file
+src/ui/main_window.cpp.s:
+	$(MAKE) -f CMakeFiles/mtrack.dir/build.make CMakeFiles/mtrack.dir/src/ui/main_window.cpp.s
+.PHONY : src/ui/main_window.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -186,12 +213,15 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... mtrack"
 	@echo "... edit_cache"
-	@echo "... src/cmanager.o"
-	@echo "... src/cmanager.i"
-	@echo "... src/cmanager.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/render/cmanager.o"
+	@echo "... src/render/cmanager.i"
+	@echo "... src/render/cmanager.s"
+	@echo "... src/ui/main_window.o"
+	@echo "... src/ui/main_window.i"
+	@echo "... src/ui/main_window.s"
 .PHONY : help
 
 

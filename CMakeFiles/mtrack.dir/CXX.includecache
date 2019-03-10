@@ -6,21 +6,11 @@
 
 #IncludeRegexTransform: 
 
-/home/win/Documents/Development/Personal/mtrack/src/cmanager.cpp
-gtkmm.h
--
-iostream
--
-string
--
-GL/gl.h
--
-GL/glext.h
--
-cmanager.h
-/home/win/Documents/Development/Personal/mtrack/src/cmanager.h
+/home/win/Documents/Development/Personal/mtrack/src/ui/main_window.cpp
+main_window.h
+/home/win/Documents/Development/Personal/mtrack/src/ui/main_window.h
 
-/home/win/Documents/Development/Personal/mtrack/src/cmanager.h
+/home/win/Documents/Development/Personal/mtrack/src/ui/main_window.h
 gtkmm.h
 -
 
