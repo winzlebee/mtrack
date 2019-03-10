@@ -1,3 +1,0 @@
-/home/win/Documents/Development/Personal/mtrack/CMakeFiles/rebuild_cache.dir
-/home/win/Documents/Development/Personal/mtrack/CMakeFiles/mtrack.dir
-/home/win/Documents/Development/Personal/mtrack/CMakeFiles/edit_cache.dir
