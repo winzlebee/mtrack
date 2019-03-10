@@ -7,3 +7,28 @@ Mtrack is a really simple video compositor. It also allows you to easily input 3
 - 3D Object animation
 - Spatial reconstruction and camera tracking
 - Custom shader construction for programmers, plus preset video and object shaders
+
+## Build Information ##
+
+### Linux ###
+The build process on linux is quite simple (Debian-based distros)
+1. Install the dependencies
+    - sudo apt install build-essential cmake libopencv-dev libgl1-mesa-dev libgtkmm-3.0-dev
+2. Run cmake in the root directory
+    - cd <main directory>
+    - cmake .
+3. Build mtrack and run it
+    - make && ./mtrack
+    
+### Windows ###
+How to build on windows using Visual Studio and msys2
+1. Install [msys2](http://www.msys2.org/)
+    - Run the msys2 bash
+    - Install the 64-bit version of mingw64
+    pacman -S mingw-w64-x86_64-gcc
+    - Install required dependencies
+    pacman -S mingw-w64-x86_64-gtkmm3
+    pacman -S pkg-config
+    pacman -S mingw-w64-x86_64-opencv
+    
+2. Open the CMakeLists.txt file in Visual Studio, then hit the build button.
