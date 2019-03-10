@@ -10,9 +10,12 @@
 
 // For now, this draws a simple triangle
 static const GLfloat vertex_data[] = {
-    -1.0f, -1.0f,
-    0.0f, 1.0f,
-    1.0f, -1.0f
+    -0.8f, -0.8f,
+    -0.8f, 0.8f,
+     0.8f, -0.8f,
+     0.8f, 0.8f,
+     0.8f, -0.8f,
+     -0.8f, 0.8f
 };
 
 // Explicitly define shader prefix and suffixes
@@ -92,7 +95,7 @@ void ContextManager::gl_init() {
 	  }
 	  catch(const Gdk::GLError& gle)
 	  {
-		std::cerr << "An error occured making the context current during realize:" << std::endl;
+		std::cerr << "An error occurzed making the context current during realize:" << std::endl;
 		std::cerr << gle.domain() << "-" << gle.code() << "-" << gle.what() << std::endl;
 	}
 }
@@ -103,7 +106,7 @@ void ContextManager::draw_video() {
     glBindVertexArray(vaoId);
     glEnableVertexAttribArray(0);
 
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
 
     glDisableVertexAttribArray(0);
     glBindVertexArray(0);
@@ -113,8 +116,6 @@ void ContextManager::draw_video() {
 bool ContextManager::gl_render(const Glib::RefPtr<Gdk::GLContext>& /* context */) {
     //gla->make_current();
 	try {
-	    
-	    std::cout << "GL Variables: \nProgram Id: " << programId << "\nVAO Id: " << vaoId << std::endl;
 	
 		gla->throw_if_error();
 		glClearColor(0.5, 0.5, 0.5, 1.0);
