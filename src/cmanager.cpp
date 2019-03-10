@@ -10,12 +10,13 @@
 
 // For now, this draws a simple triangle
 static const GLfloat vertex_data[] = {
-  0.f,   0.5f,   0.f, 1.f,
-  0.5f, -0.366f, 0.f, 1.f,
- -0.5f, -0.366f, 0.f, 1.f,
+    -1.0f, -1.0f,
+    0.0f, 1.0f,
+    1.0f, -1.0f
 };
 
 // Explicitly define shader prefix and suffixes
+
 const GLchar *vert_src ="\n" \
 "#version 330                                  \n" \
 "#extension GL_ARB_explicit_attrib_location: enable  \n" \
@@ -37,7 +38,7 @@ ContextManager::ContextManager(Gtk::GLArea *glArea) {
     gla = glArea;
     
     // Setup the basic signals for a context manager's management
-    gla->signal_realize().connect(sigc::mem_fun(*this, &ContextManager::gl_init));
+    gl_init();
     gla->signal_render().connect(sigc::mem_fun(*this, &ContextManager::gl_render));
     gla->signal_unrealize().connect(sigc::mem_fun(*this, &ContextManager::gl_destroy));
 }
@@ -49,12 +50,20 @@ void ContextManager::init_buffers() {
     glGenBuffers(1, &vboId);
     glBindBuffer(GL_ARRAY_BUFFER, vboId);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertex_data), vertex_data, GL_STATIC_DRAW);
+    
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
+    glDisableVertexAttribArray(0);
+    
     glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+    glDeleteBuffers(1, &vboId);
 }
 
 void ContextManager::init_shaders() {
     // At the moment, we don't do any error checking. This will definitely be necessary when we start
     // Accepting user input for the shaders.
+    
     GLuint frag_shader, vert_shader;
     frag_shader = glCreateShader(GL_FRAGMENT_SHADER);
     vert_shader = glCreateShader(GL_VERTEX_SHADER);
@@ -66,9 +75,9 @@ void ContextManager::init_shaders() {
     glCompileShader(vert_shader);
 
     programId = glCreateProgram();
-    glAttachShader(gl_program, frag_shader);
-    glAttachShader(gl_program, vert_shader);
-    glLinkProgram(gl_program)
+    glAttachShader(programId, frag_shader);
+    glAttachShader(programId, vert_shader);
+    glLinkProgram(programId);
 }
 
 void ContextManager::gl_init() {
@@ -78,8 +87,8 @@ void ContextManager::gl_init() {
 	  {
 		gla->throw_if_error();
 		// TODO: Initialize shaders, etc
-		init_buffers();
 		init_shaders();
+		init_buffers();
 	  }
 	  catch(const Gdk::GLError& gle)
 	  {
@@ -89,22 +98,24 @@ void ContextManager::gl_init() {
 }
 
 void ContextManager::draw_video() {
-
     glUseProgram(programId);
 
-    glBindBuffer(GL_ARRAY_BUFFER, vaoId);
+    glBindVertexArray(vaoId);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, nullptr);
 
     glDrawArrays(GL_TRIANGLES, 0, 3);
 
     glDisableVertexAttribArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
     glUseProgram(0);
 }
 
 bool ContextManager::gl_render(const Glib::RefPtr<Gdk::GLContext>& /* context */) {
+    //gla->make_current();
 	try {
+	    
+	    std::cout << "GL Variables: \nProgram Id: " << programId << "\nVAO Id: " << vaoId << std::endl;
+	
 		gla->throw_if_error();
 		glClearColor(0.5, 0.5, 0.5, 1.0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
