@@ -1,8 +1,15 @@
 #include "main_window.h"
 
 MainWindow::MainWindow(BaseObjectType* window, const Glib::RefPtr<Gtk::Builder> &gladeRef) : Gtk::ApplicationWindow(window), m_builder(gladeRef) {
+    Gtk::GLArea *glArea;
+
     // Set callback handlers
     m_builder->get_widget("importMediaBtn", m_importMediaBtn);
+    m_builder->get_widget("display_area", glArea);
+
+    // Capture the GLArea into a ContextManager
+    m_contextManager = std::make_unique<ContextManager>(glArea);
+
     m_importMediaBtn->signal_activate().connect(sigc::mem_fun(*this, &MainWindow::on_import_media));
 }
 

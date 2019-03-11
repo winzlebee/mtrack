@@ -2,6 +2,9 @@
 #define MAIN_WINDOW_H
 
 #include <gtkmm.h>
+#include <memory>
+
+#include "../render/cmanager.h"
 
 class MainWindow : public Gtk::ApplicationWindow {
     public:
@@ -14,6 +17,7 @@ class MainWindow : public Gtk::ApplicationWindow {
         Glib::RefPtr<Gtk::Builder> m_builder;
         
         // Memory for these pointers is handled by the builder class
+        std::unique_ptr<ContextManager> m_contextManager;
         Gtk::MenuItem *m_importMediaBtn;
 };
 

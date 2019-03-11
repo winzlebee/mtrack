@@ -1,5 +1,8 @@
 #include <gtkmm.h>
 
+#ifndef CMANAGER_H
+#define CMANAGER_H
+
 class ContextManager {
     public:
         ContextManager(Gtk::GLArea*);
@@ -23,3 +26,5 @@ class ContextManager {
         
         unsigned int programId;
 };
+
+#endif

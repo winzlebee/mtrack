@@ -5,10 +5,7 @@
 #include <GL/gl.h>
 #include <GL/glext.h>
 
-#include "render/cmanager.h"
 #include "ui/main_window.h"
-
-Gtk::GLArea* glArea;
 
 int main(int argc, char *argv[])
 {
@@ -32,10 +29,6 @@ int main(int argc, char *argv[])
     MainWindow* window;
     
 	builder->get_widget_derived("main_window", window);
-	builder->get_widget("display_area", glArea);
-	
-	// ContextManager manages everything to do with the context. It hooks the signals and makes sure the OpenGL stuff is handled well.
-	ContextManager context(glArea);
 
 	int result = app->run(*window);
 	
