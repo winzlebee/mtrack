@@ -1,5 +1,6 @@
 # Set the minimum version of cmake required to build this project	
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 2.8)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 project(mtrack)
 
 # Use the package PkgConfig to detect GTK+ headers/library files
@@ -8,7 +9,7 @@ find_package(PkgConfig REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(OpenCV REQUIRED)
 
-pkg_check_modules(GTKMM gtkmm-3.0)
+pkg_check_modules(GTKMM REQUIRED gtkmm-3.0)
 # Setup CMake to use GTK+, tell the compiler where to look for headers
 # and to the linker where to look for libraries
 include_directories(${OPENGL_INCLUDE_DIRS})
@@ -24,3 +25,8 @@ target_link_libraries(mtrack ${GTKMM_LIBRARIES})
 
 # Only include VideoIO and core at the moment
 target_link_libraries(mtrack opencv_core opencv_videoio)
+
+# Copy the resources to a resource folder in the build directory
+add_custom_command(TARGET mtrack POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E copy_directory
+                       ${CMAKE_SOURCE_DIR}/res $<TARGET_FILE_DIR:mtrack>)

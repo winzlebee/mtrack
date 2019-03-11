@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
 	auto builder = Gtk::Builder::create();
 
 	try {
-		builder->add_from_file("res/main_window.glade");
+		builder->add_from_file("main_window.glade");
 	}
 	catch(const Glib::FileError& ex) {
 		std::cerr << "FileError: " << ex.what() << std::endl;
