@@ -37,14 +37,15 @@ const GLchar *frag_src ="\n" \
 "  gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);    \n" \
 "}                                             \n";
 
-ContextManager::ContextManager(Gtk::GLArea *glArea) {
-    gla = glArea;
+ContextManager::ContextManager(BaseObjectType *glArea, Glib::RefPtr<Gtk::Builder> &gladeRef) : Gtk::GLArea(glArea) {
     
     // Setup the basic signals for a context manager's management
     gl_init();
-    gla->signal_render().connect(sigc::mem_fun(*this, &ContextManager::gl_render));
-    gla->signal_unrealize().connect(sigc::mem_fun(*this, &ContextManager::gl_destroy));
+    this->signal_render().connect(sigc::mem_fun(*this, &ContextManager::gl_render));
+    this->signal_unrealize().connect(sigc::mem_fun(*this, &ContextManager::gl_destroy));
 }
+
+ContextManager::~ContextManager() {}
 
 void ContextManager::init_buffers() {
     glGenVertexArrays(1, &vaoId);
@@ -85,10 +86,10 @@ void ContextManager::init_shaders() {
 
 void ContextManager::gl_init() {
 	std::cout << "OpenGL window is being initialized..." << std::endl;
-	gla->make_current();
+	this->make_current();
 	  try
 	  {
-		gla->throw_if_error();
+		this->throw_if_error();
 		// TODO: Initialize shaders, etc
 		init_shaders();
 		init_buffers();
@@ -117,7 +118,7 @@ bool ContextManager::gl_render(const Glib::RefPtr<Gdk::GLContext>& /* context */
     //gla->make_current();
 	try {
 	
-		gla->throw_if_error();
+		this->throw_if_error();
 		glClearColor(0.5, 0.5, 0.5, 1.0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
@@ -137,10 +138,10 @@ bool ContextManager::gl_render(const Glib::RefPtr<Gdk::GLContext>& /* context */
 
 void ContextManager::gl_destroy() {
 	std::cout << "Destroying OpenGL window..." << std::endl;
-	gla->make_current();
+	this->make_current();
 	  try
 	  {
-		gla->throw_if_error();
+		this->throw_if_error();
 		// TODO: Remove all created stuff during OpenGL realize
 	    glDeleteBuffers(1, &vaoId);
         glDeleteProgram(programId);

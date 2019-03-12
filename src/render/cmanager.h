@@ -3,9 +3,10 @@
 #ifndef CMANAGER_H
 #define CMANAGER_H
 
-class ContextManager {
+class ContextManager : public Gtk::GLArea {
     public:
-        ContextManager(Gtk::GLArea*);
+        ContextManager(BaseObjectType*, Glib::RefPtr<Gtk::Builder> &gladeRef);
+        virtual ~ContextManager();
     private:
         void gl_init();
         void gl_destroy();
@@ -17,8 +18,6 @@ class ContextManager {
         void init_shaders();
         
         unsigned int create_shader();
-        
-        Gtk::GLArea* gla;
         
         // Variables related to rendering. Later, these should be separated out.
         unsigned int vaoId;

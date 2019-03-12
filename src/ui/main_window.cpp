@@ -5,12 +5,13 @@ MainWindow::MainWindow(BaseObjectType* window, const Glib::RefPtr<Gtk::Builder> 
 
     // Set callback handlers
     m_builder->get_widget("importMediaBtn", m_importMediaBtn);
-    m_builder->get_widget("display_area", glArea);
+    m_builder->get_widget_derived("display_area", m_contextManager);
 
-    // Capture the GLArea into a ContextManager
-    m_contextManager = std::make_unique<ContextManager>(glArea);
-
+    Gtk::MenuItem *m_quitBtn;
+    m_builder->get_widget("quitBtn", m_quitBtn);
+    m_quitBtn->signal_activate().connect(sigc::ptr_fun(Gtk::Main::quit));
     m_importMediaBtn->signal_activate().connect(sigc::mem_fun(*this, &MainWindow::on_import_media));
+    
 }
 
 void MainWindow::on_import_media() {

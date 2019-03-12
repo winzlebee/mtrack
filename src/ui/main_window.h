@@ -16,8 +16,11 @@ class MainWindow : public Gtk::ApplicationWindow {
         
         Glib::RefPtr<Gtk::Builder> m_builder;
         
-        // Memory for these pointers is handled by the builder class
-        std::unique_ptr<ContextManager> m_contextManager;
+        // ContextManager handles the link between the UI and drawing to the screen
+        // ContextManager class will be destructed automatically when the UI is destroyed
+        ContextManager* m_contextManager;
+
+        // Memory for these is handled by the builder class
         Gtk::MenuItem *m_importMediaBtn;
 };
 
