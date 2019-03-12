@@ -28,11 +28,11 @@ const GLchar *vert_src ="\n" \
 "}                                             \n";
 
 const GLchar *frag_src ="\n" \
+"uniform sampler2D video1; \n" \
 "varying vec2 texCoord;                     \n" \
-
 "void main (void)                              \n" \
 "{                                             \n" \
-"  gl_FragColor = vec4(texCoord.x, texCoord.y, 1.0, 1.0);    \n" \
+"  gl_FragColor = texture2D(video1, texCoord);    \n" \
 "}                                             \n";
 
 ContextManager::ContextManager(BaseObjectType *glArea, Glib::RefPtr<Gtk::Builder> &gladeRef, Project *project) : Gtk::GLArea(glArea), m_project(project) {

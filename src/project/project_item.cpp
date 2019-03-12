@@ -47,7 +47,7 @@ void VideoItem::load_media(std::string file_name, ContextManager *context) {
     glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
     
     // Note that OpenCV uses BGR internally, so we use this in our call to glTexImage2D
-    glTexImage2D(GL_TEXTURE_2D, 0, 3, imageFrame.cols, imageFrame.rows, 0, GL_BGR, GL_UNSIGNED_BYTE, imageFrame.data);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, imageFrame.cols, imageFrame.rows, 0, GL_BGR, GL_UNSIGNED_BYTE, imageFrame.data);
     
     // Unbind buffer to reset state
     glBindTexture( GL_TEXTURE_2D, 0 );
