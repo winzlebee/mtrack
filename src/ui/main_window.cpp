@@ -11,7 +11,7 @@ MainWindow::MainWindow(BaseObjectType* window, const Glib::RefPtr<Gtk::Builder> 
   m_builder->get_widget("importMediaBtn", m_importMediaBtn);
   m_builder->get_widget("projectPropertiesBtn", m_projectPropertiesBtn);
   m_builder->get_widget("aboutBtn", m_aboutBtn);
-  m_builder->get_widget_derived("display_area", m_contextManager);
+  m_builder->get_widget_derived("display_area", m_contextManager, m_project.get());
 
   Gtk::MenuItem *m_quitBtn;
   m_builder->get_widget("quitBtn", m_quitBtn);
@@ -41,8 +41,8 @@ void MainWindow::on_project_properties() {
   Gtk::SpinButton *vres;
   Gtk::SpinButton *fps;
   // Load all of the fields from the dialog
-  m_builder->get_widget("projectHRes", hres);
-  m_builder->get_widget("projectVRes", vres);
+  m_builder->get_widget("projectHResolution", hres);
+  m_builder->get_widget("projectVResolution", vres);
   m_builder->get_widget("projectFPS", fps);
   
   hres->set_value(m_project->getSettings().hResolution);

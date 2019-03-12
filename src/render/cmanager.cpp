@@ -37,7 +37,7 @@ const GLchar *frag_src ="\n" \
 "  gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);    \n" \
 "}                                             \n";
 
-ContextManager::ContextManager(BaseObjectType *glArea, Glib::RefPtr<Gtk::Builder> &gladeRef) : Gtk::GLArea(glArea) {
+ContextManager::ContextManager(BaseObjectType *glArea, Glib::RefPtr<Gtk::Builder> &gladeRef, Project *project) : Gtk::GLArea(glArea), m_project(project) {
     
     // Setup the basic signals for a context manager's management
     gl_init();

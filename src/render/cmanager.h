@@ -3,11 +3,17 @@
 #ifndef CMANAGER_H
 #define CMANAGER_H
 
+class Project;
+
 class ContextManager : public Gtk::GLArea {
     public:
-        ContextManager(BaseObjectType*, Glib::RefPtr<Gtk::Builder> &gladeRef);
+        ContextManager(BaseObjectType*, Glib::RefPtr<Gtk::Builder> &gladeRef, Project *project);
         virtual ~ContextManager();
     private:
+
+        // Class variables
+        Project *m_project;
+
         void gl_init();
         void gl_destroy();
         bool gl_render(const Glib::RefPtr<Gdk::GLContext>&);
