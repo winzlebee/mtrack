@@ -5,6 +5,7 @@
 #include <memory>
 
 #include "../render/cmanager.h"
+#include "../models/projectitem_model.h"
 
 class Project;
 
@@ -30,6 +31,12 @@ class MainWindow : public Gtk::ApplicationWindow {
         Gtk::MenuItem *m_importMediaBtn;
         Gtk::MenuItem *m_projectPropertiesBtn;
         Gtk::MenuItem *m_aboutBtn;
+
+        Gtk::IconView *m_mediaItems;
+
+        // Model that the media item browser uses
+        ProjectItemModel m_mediaModel;
+        Glib::RefPtr<Gtk::ListStore> m_mediaListStore; 
 };
 
 #endif

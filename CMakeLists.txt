@@ -23,7 +23,8 @@ add_executable(mtrack
     src/render/cmanager.cpp
     src/ui/main_window.cpp
     src/project/project.cpp
-    src/project/project_item.cpp)
+    src/project/project_item.cpp
+    src/models/projectitem_model.cpp)
 
 # Link the target to the GTK+ libraries
 target_link_libraries(mtrack ${OPENGL_LIBRARIES})

@@ -1,5 +1,6 @@
 #include "main_window.h"
 #include "../project/project.h"
+#include "../models/projectitem_model.h"
 
 MainWindow::MainWindow(BaseObjectType* window, const Glib::RefPtr<Gtk::Builder> &gladeRef) : Gtk::ApplicationWindow(window), m_builder(gladeRef) {
   Gtk::GLArea *glArea;
@@ -12,6 +13,12 @@ MainWindow::MainWindow(BaseObjectType* window, const Glib::RefPtr<Gtk::Builder> 
   m_builder->get_widget("projectPropertiesBtn", m_projectPropertiesBtn);
   m_builder->get_widget("aboutBtn", m_aboutBtn);
   m_builder->get_widget_derived("display_area", m_contextManager, m_project.get());
+  m_builder->get_widget("mediaIconView", m_mediaItems);
+
+  // Set up models
+  m_mediaListStore = Gtk::ListStore::create(m_mediaModel);
+  m_mediaItems->set_model(m_mediaListStore);
+  m_mediaItems->set_text_column(0);
 
   Gtk::MenuItem *m_quitBtn;
   m_builder->get_widget("quitBtn", m_quitBtn);
@@ -88,6 +95,10 @@ void MainWindow::on_import_media() {
 
     // Render the first frame of the item using the contextmanager. TODO: Create custom playback widget and set there
     if (item->isLoaded()) {
+      Gtk::TreeModel::iterator modelit = m_mediaListStore->append();
+      Gtk::TreeModel::Row newRow = *modelit;
+      newRow[m_mediaModel.m_col_name] = item->getName();
+
       m_contextManager->render_media(item.get(), 1);
       m_project->importMedia(std::move(item));                 
     } else {
