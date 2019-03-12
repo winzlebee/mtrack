@@ -48,8 +48,10 @@ void ContextManager::generate_coords() {
 
   float c_vaspect = (c_height/c_width);
   float c_haspect = (c_width/c_height);
-  float vaspect = (m_project->getSettings().vResolution/m_project->getSettings().hResolution)/c_vaspect;
-  float haspect = (m_project->getSettings().hResolution/m_project->getSettings().vResolution)/c_haspect;
+  float vaspect = std::min((m_project->getSettings().vResolution/m_project->getSettings().hResolution)/c_vaspect, 1.0);
+  float haspect = std::min((m_project->getSettings().hResolution/m_project->getSettings().vResolution)/c_haspect, 1.0);
+
+  std::cout << vaspect << std::endl;
 
   m_coords = {
       -haspect, -vaspect,
@@ -148,7 +150,10 @@ bool ContextManager::gl_render(const Glib::RefPtr<Gdk::GLContext>& /* context */
 	try {
 	
 		this->throw_if_error();
-		glClearColor(0.0, 0.0, 0.0, 1.0);
+		glClearColor(m_project->getSettings().color.get_red(),
+                 m_project->getSettings().color.get_green(),
+                 m_project->getSettings().color.get_blue(),
+                 m_project->getSettings().color.get_alpha());
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
 		// Draw here

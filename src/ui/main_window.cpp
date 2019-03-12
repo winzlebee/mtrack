@@ -40,15 +40,18 @@ void MainWindow::on_project_properties() {
   Gtk::SpinButton *hres;
   Gtk::SpinButton *vres;
   Gtk::SpinButton *fps;
+  Gtk::ColorButton *color;
+
   // Load all of the fields from the dialog
   m_builder->get_widget("projectHResolution", hres);
   m_builder->get_widget("projectVResolution", vres);
   m_builder->get_widget("projectFPS", fps);
+  m_builder->get_widget("projectBgColor", color);
   
   hres->set_value(m_project->getSettings().hResolution);
   vres->set_value(m_project->getSettings().vResolution);
   fps->set_value(m_project->getSettings().fRate);
-
+  color->set_rgba(m_project->getSettings().color);
 
   int result = propDialog->run();
   if (result == Gtk::RESPONSE_APPLY) {
@@ -56,6 +59,7 @@ void MainWindow::on_project_properties() {
     m_project->getSettings().hResolution = hres->get_value();
     m_project->getSettings().vResolution = vres->get_value();
     m_project->getSettings().fRate = fps->get_value();
+    m_project->getSettings().color = color->get_rgba();
 
     // Update the resolution in view
     m_contextManager->redisplay();
