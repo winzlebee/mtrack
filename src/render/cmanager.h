@@ -4,9 +4,8 @@
 #ifndef CMANAGER_H
 #define CMANAGER_H
 
-#include "../project/project_item.h"
-
 class Project;
+class ProjectItem;
 
 class ContextManager : public Gtk::GLArea {
     public:

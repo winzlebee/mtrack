@@ -78,7 +78,24 @@ void MainWindow::on_import_media() {
 
   int result = dialog.run();
   
-  //TODO: Handle media file import
+  if (result == Gtk::RESPONSE_OK) {
+    // Create a new ProjectItem and load the media assosciated with it
+    std::unique_ptr<ProjectItem> item = std::make_unique<VideoItem>(dialog.get_file()->get_basename());
+    std::cout << "Loading file: " << dialog.get_file()->get_basename() << std::endl;
+
+    // Load the texture assosciated with the media file into the context manager
+    item->load_media(dialog.get_filename(), m_contextManager);
+
+    // Render the first frame of the item using the contextmanager. TODO: Create custom playback widget and set there
+    if (item->isLoaded()) {
+      m_contextManager->render_media(item.get(), 1);
+      m_project->importMedia(std::move(item));                 
+    } else {
+      Gtk::MessageDialog unableToOpenMsg(*this, "Invalid media file");
+      unableToOpenMsg.set_secondary_text(dialog.get_file()->get_basename() + " is not a valid media file.");
+      unableToOpenMsg.run();
+    }
+  }
 }
 
 MainWindow::~MainWindow() {}

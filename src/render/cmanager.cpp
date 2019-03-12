@@ -8,6 +8,7 @@
 
 #include "cmanager.h"
 #include "../project/project.h"
+#include "../project/project_item.h"
 
 // Explicitly define shader prefix and suffixes
 
@@ -43,7 +44,7 @@ ContextManager::~ContextManager() {}
 
 bool ContextManager::render_media(const ProjectItem* item, int frame) {
   // Responsible for rendering the particular ProjectItem at the frame specified
-
+  
 
   // Update the openGL widget for rendering
   //this->queue_render();

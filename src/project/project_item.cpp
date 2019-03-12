@@ -1,17 +1,21 @@
-#include <opencv2/opencv.hpp>
 #define GL_GLEXT_PROTOTYPES
 #include <GL/gl.h>
 #include <GL/glext.h>
 
 #include "project_item.h"
 
-VideoItem::VideoItem(const char* fname) {
-    load_video(fname);
+ProjectItem::ProjectItem(std::string name) {
+    this->m_name = name;
 }
 
-void VideoItem::load_video(const char* name) {
+std::string ProjectItem::getName() {
+    return m_name;
+}
+
+void VideoItem::load_media(std::string file_name, ContextManager *context) {
+
     // Load a video, uses C-style conventions
-    video = std::make_unique<cv::VideoCapture>(name);
+    video = std::make_unique<cv::VideoCapture>(file_name.c_str());
     if (!video->isOpened()) {
         return;
     }
@@ -22,6 +26,9 @@ void VideoItem::load_video(const char* name) {
     cv::Mat imageFrame;
     (*video) >> imageFrame;
     if (imageFrame.empty()) return;
+
+    // Make sure we're using the correct drawing context before allocating textures
+    context->make_current();
     
     // Flip the image, as OpenGL coordinates start at the bottom
     cv::flip(imageFrame, imageFrame, 0);

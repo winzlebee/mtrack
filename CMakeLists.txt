@@ -14,6 +14,7 @@ pkg_check_modules(GTKMM REQUIRED gtkmm-3.0)
 # and to the linker where to look for libraries
 include_directories(${OPENGL_INCLUDE_DIRS})
 include_directories(${GTKMM_INCLUDE_DIRS})
+include_directories(${CMAKE_SOURCE_DIR}/src)
 link_directories(${GTKMM_LIBRARY_DIRS})
 
 # Add the executables
