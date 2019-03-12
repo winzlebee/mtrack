@@ -3,60 +3,10 @@
 #include <GL/gl.h>
 #include <GL/glext.h>
 
-#include "video.h"
-#include "primitives.h"
-
-// Shaders are necessary because we are using the flexible OpenGL 3.0 pipeline
-const GLchar *vert_src ="\n" \
-"#version 330                                  \n" \
-"#extension GL_ARB_explicit_attrib_location: enable  \n" \
-"                                              \n" \
-"layout(location = 0) in vec2 in_position;     \n" \
-"                                              \n" \
-"void main()                                   \n" \
-"{                                             \n" \
-"  gl_Position = vec4(in_position, 0.0, 1.0);  \n" \
-"}                                             \n";
-
-const GLchar *frag_src ="\n" \
-"void main (void)                              \n" \
-"{                                             \n" \
-"  gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);    \n" \
-"}                                             \n";
+#include "project_item.h"
 
 VideoItem::VideoItem(const char* fname) {
     load_video(fname);
-}
-
-void VideoItem::generate3DView() {
-    // First we generate shaders TODO: Error checking on shader creation (definitely needed for user created shaders)
-    GLuint frag_shader, vert_shader;
-    frag_shader = glCreateShader(GL_FRAGMENT_SHADER);
-    vert_shader = glCreateShader(GL_VERTEX_SHADER);
-    
-    glShaderSource(frag_shader, 1, &frag_src, NULL);
-    glShaderSource(vert_shader, 1, &vert_src, NULL);
-    
-    glCompileShader(frag_shader);
-    glCompileShader(vert_shader);
-    
-    program_id = glCreateProgram();
-    glAttachShader(program_id, frag_shader);
-    glAttachShader(program_id, vert_shader);
-    glLinkProgram(program_id); // Final link program step. No error checking at the moment, as video is simply sampled
-
-    glGenVertexArrays(1, &vao_id);
-    glBindVertexArray(vao_id);
-    
-    glGenBuffers(1, &vbo_id);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo_id);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(primitives::plane::vertices), primitives::plane::vertices, GL_STATIC_DRAW);
-    
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
-    glBindVertexArray(0);
-    
-    glDeleteBuffers(1, &vbo_id); // Delete buffer id as it's now stored in the vao
 }
 
 void VideoItem::load_video(const char* name) {
@@ -95,24 +45,10 @@ void VideoItem::load_video(const char* name) {
     // Unbind buffer to reset state
     glBindTexture( GL_TEXTURE_2D, 0 );
     
-    generate3DView();
-    
     this->loaded = true;
 }
 
-void VideoItem::render() {
-    // Render the VideoItem. Simply, we will use a quad
-    glUseProgram(program_id);
-
-    glBindVertexArray(vao_id);
-
-    glDrawArrays(GL_TRIANGLES, 0, 6);
-    
-    glBindVertexArray(0);
-    glUseProgram(0);
-}
-
-int VideoItem::getTexId() {
+unsigned int VideoItem::getTexId() {
     return this->texture_id;
 }
 

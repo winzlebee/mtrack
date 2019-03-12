@@ -1,7 +1,7 @@
 #include <memory>
 
-#ifndef video_h
-#define video_h
+#ifndef project_item_h
+#define project_item_h
 
 namespace cv {
     class VideoCapture;
@@ -10,8 +10,7 @@ namespace cv {
 class ProjectItem {
     public:
         virtual bool isLoaded() = 0;
-        virtual int getTexId() = 0;
-        virtual void render() = 0; // Render to the current context. By default, fills the context.
+        virtual unsigned int getTexId() = 0;
 };
 
 class VideoItem : public ProjectItem {
@@ -21,17 +20,12 @@ class VideoItem : public ProjectItem {
         double getLengthFrames();
         double getLengthSeconds();
         bool isLoaded();
-        int getTexId();
-        void render();
+        unsigned int getTexId();
     private:
         void load_video(const char* name);
-        void generate3DView();
         std::unique_ptr<cv::VideoCapture> video;
         bool loaded = false;
         unsigned int texture_id = 0;
-        unsigned int vao_id = 0;
-        unsigned int vbo_id = 0;
-        unsigned int program_id = 0;
 };
 
 #endif

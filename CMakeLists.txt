@@ -17,7 +17,12 @@ include_directories(${GTKMM_INCLUDE_DIRS})
 link_directories(${GTKMM_LIBRARY_DIRS})
 
 # Add the executables
-add_executable(mtrack src/main.cpp src/render/cmanager.cpp src/ui/main_window.cpp)
+add_executable(mtrack 
+    src/main.cpp
+    src/render/cmanager.cpp
+    src/ui/main_window.cpp
+    src/project/project.cpp
+    src/project/project_item.cpp)
 
 # Link the target to the GTK+ libraries
 target_link_libraries(mtrack ${OPENGL_LIBRARIES})

@@ -4,6 +4,8 @@
 #ifndef CMANAGER_H
 #define CMANAGER_H
 
+#include "../project/project_item.h"
+
 class Project;
 
 class ContextManager : public Gtk::GLArea {
@@ -13,6 +15,7 @@ class ContextManager : public Gtk::GLArea {
 
         // Force a redisplay when something about the context display changes
         void redisplay();
+        bool render_media(const ProjectItem *item, int frame);
     private:
 
         // Class variables

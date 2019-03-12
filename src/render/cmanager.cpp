@@ -41,6 +41,15 @@ ContextManager::ContextManager(BaseObjectType *glArea, Glib::RefPtr<Gtk::Builder
 
 ContextManager::~ContextManager() {}
 
+bool ContextManager::render_media(const ProjectItem* item, int frame) {
+  // Responsible for rendering the particular ProjectItem at the frame specified
+
+
+  // Update the openGL widget for rendering
+  //this->queue_render();
+  return true;
+}
+
 void ContextManager::generate_coords() {
   // For now, this draws a simple triangle. Always push the x straight to the edges
   float c_width = this->get_width();
@@ -50,8 +59,6 @@ void ContextManager::generate_coords() {
   float c_haspect = (c_width/c_height);
   float vaspect = std::min((m_project->getSettings().vResolution/m_project->getSettings().hResolution)/c_vaspect, 1.0);
   float haspect = std::min((m_project->getSettings().hResolution/m_project->getSettings().vResolution)/c_haspect, 1.0);
-
-  std::cout << vaspect << std::endl;
 
   m_coords = {
       -haspect, -vaspect,
