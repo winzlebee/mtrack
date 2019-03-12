@@ -24,6 +24,7 @@ const GLchar *vert_src ="\n" \
 "}                                             \n";
 
 const GLchar *frag_src ="\n" \
+"uniform sampler2D video1;                     \n" \
 "void main (void)                              \n" \
 "{                                             \n" \
 "  gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);    \n" \
@@ -42,9 +43,14 @@ ContextManager::ContextManager(BaseObjectType *glArea, Glib::RefPtr<Gtk::Builder
 
 ContextManager::~ContextManager() {}
 
-bool ContextManager::render_media(const ProjectItem* item, int frame) {
+bool ContextManager::render_media(ProjectItem* item, int frame) {
   // Responsible for rendering the particular ProjectItem at the frame specified
-  
+  GLuint textureUnit = 0;
+
+  // Set the current active texture to the one defined in the ProjectItem
+  glActiveTexture(GL_TEXTURE0 + textureUnit);
+  glBindTexture(GL_TEXTURE_2D, item->getTexId());
+  glUniform1i(glGetUniformLocation(this->programId, "video1"), textureUnit);
 
   // Update the openGL widget for rendering
   //this->queue_render();
@@ -69,6 +75,15 @@ void ContextManager::generate_coords() {
       haspect, -vaspect,
       -haspect, -vaspect
   };
+
+  m_texCoords = {
+    0.0, 0.0,
+    0.0, 1.0,
+    1.0, 1.0,
+    1.0, 1.0,
+    1.0, 0.0,
+    0.0, 0.0
+  }
 }
 
 void ContextManager::redisplay() {
@@ -94,10 +109,19 @@ void ContextManager::init_buffers() {
     glGenBuffers(1, &vboId);
     glBindBuffer(GL_ARRAY_BUFFER, vboId);
     glBufferData(GL_ARRAY_BUFFER, m_coords.size() * sizeof(GLfloat), &m_coords.front(), GL_STATIC_DRAW);
+
+    GLuint tboId;
+    glGenBuffers(1, &tboId);
+    glBindBuffer(GL_ARRAY_BUFFER, tboId);
+    glBufferData(GL_ARRAY_BUFFER, m_texCoords.size() * sizeof(GLfloat), &m_texCoords.front(), GL_STATIC_DRAW);
     
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
     glDisableVertexAttribArray(0);
+
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
+    glDisableVertexAttribArray(1);
     
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);

@@ -55,7 +55,7 @@ void VideoItem::load_media(std::string file_name, ContextManager *context) {
     this->loaded = true;
 }
 
-unsigned int VideoItem::getTexId() {
+const unsigned int VideoItem::getTexId() {
     return this->texture_id;
 }
 

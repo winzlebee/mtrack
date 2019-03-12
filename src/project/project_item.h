@@ -11,7 +11,7 @@ class ProjectItem {
     public:
         ProjectItem(std::string name);
         virtual bool isLoaded() = 0;
-        virtual unsigned int getTexId() = 0;
+        virtual const unsigned int getTexId() = 0;
         virtual void load_media(std::string file_name, ContextManager *context) {};
         std::string getName();
     private:
@@ -25,7 +25,7 @@ class VideoItem : public ProjectItem {
         double getLengthFrames();
         double getLengthSeconds();
         bool isLoaded();
-        unsigned int getTexId();    
+        const unsigned int getTexId();    
         void load_media(std::string file_name, ContextManager *context);
     private:
         std::unique_ptr<cv::VideoCapture> video;

@@ -14,12 +14,13 @@ class ContextManager : public Gtk::GLArea {
 
         // Force a redisplay when something about the context display changes
         void redisplay();
-        bool render_media(const ProjectItem *item, int frame);
+        bool render_media(ProjectItem *item, int frame);
     private:
 
         // Class variables
         Project *m_project;
         std::vector<float> m_coords;
+        std::vector<float> m_texCoords;
 
         void generate_coords();
 
