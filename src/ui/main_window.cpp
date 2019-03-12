@@ -1,7 +1,11 @@
 #include "main_window.h"
+#include "../project/project.h"
 
 MainWindow::MainWindow(BaseObjectType* window, const Glib::RefPtr<Gtk::Builder> &gladeRef) : Gtk::ApplicationWindow(window), m_builder(gladeRef) {
   Gtk::GLArea *glArea;
+
+  // We've started the main window - create some new project properties
+  m_project = std::make_unique<Project>();
 
   // Set callback handlers
   m_builder->get_widget("importMediaBtn", m_importMediaBtn);
@@ -32,9 +36,26 @@ void MainWindow::on_project_properties() {
 
   // Run the project properties dialog
   m_builder->get_widget("projectPropertiesDialog", propDialog);
+
+  Gtk::SpinButton *hres;
+  Gtk::SpinButton *vres;
+  Gtk::SpinButton *fps;
+  // Load all of the fields from the dialog
+  m_builder->get_widget("projectHRes", hres);
+  m_builder->get_widget("projectVRes", vres);
+  m_builder->get_widget("projectFPS", fps);
+  
+  hres->set_value(m_project->getSettings().hResolution);
+  vres->set_value(m_project->getSettings().vResolution);
+  fps->set_value(m_project->getSettings().fRate);
+
+
   int result = propDialog->run();
   if (result == Gtk::RESPONSE_APPLY) {
     // Apply the changed project settings
+    m_project->getSettings().hResolution = hres->get_value();
+    m_project->getSettings().vResolution = vres->get_value();
+    m_project->getSettings().fRate = fps->get_value();
   }
   propDialog->hide();
 }

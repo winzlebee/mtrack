@@ -6,6 +6,8 @@
 
 #include "../render/cmanager.h"
 
+class Project;
+
 class MainWindow : public Gtk::ApplicationWindow {
     public:
         MainWindow(BaseObjectType* window, const Glib::RefPtr<Gtk::Builder> &gladeRef);
@@ -17,6 +19,8 @@ class MainWindow : public Gtk::ApplicationWindow {
         void on_about();
         
         Glib::RefPtr<Gtk::Builder> m_builder;
+
+        std::unique_ptr<Project> m_project;
         
         // ContextManager handles the link between the UI and drawing to the screen
         // ContextManager class will be destructed automatically when the UI is destroyed
