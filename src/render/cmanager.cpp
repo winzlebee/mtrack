@@ -15,19 +15,24 @@
 const GLchar *vert_src ="\n" \
 "#version 330                                  \n" \
 "#extension GL_ARB_explicit_attrib_location: enable  \n" \
+"#extension GL_ARB_explicit_uniform_location: enable  \n" \
 "                                              \n" \
 "layout(location = 0) in vec2 in_position;     \n" \
-"                                              \n" \
+"layout(location = 1) in vec2 in_texcoord;     \n" \
+"layout(location = 2) uniform sampler2D video1;\n" \
+"varying vec2 texCoord;     \n" \
 "void main()                                   \n" \
 "{                                             \n" \
+"  texCoord = in_texcoord;                     \n" \
 "  gl_Position = vec4(in_position, 0.0, 1.0);  \n" \
 "}                                             \n";
 
 const GLchar *frag_src ="\n" \
-"uniform sampler2D video1;                     \n" \
+"varying vec2 texCoord;                     \n" \
+
 "void main (void)                              \n" \
 "{                                             \n" \
-"  gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);    \n" \
+"  gl_FragColor = vec4(texCoord.x, texCoord.y, 1.0, 1.0);    \n" \
 "}                                             \n";
 
 ContextManager::ContextManager(BaseObjectType *glArea, Glib::RefPtr<Gtk::Builder> &gladeRef, Project *project) : Gtk::GLArea(glArea), m_project(project) {
@@ -41,19 +46,38 @@ ContextManager::ContextManager(BaseObjectType *glArea, Glib::RefPtr<Gtk::Builder
     this->signal_unrealize().connect(sigc::mem_fun(*this, &ContextManager::gl_destroy));
 }
 
+void GLAPIENTRY
+MessageCallback( GLenum source,
+                 GLenum type,
+                 GLuint id,
+                 GLenum severity,
+                 GLsizei length,
+                 const GLchar* message,
+                 const void* userParam )
+{
+  fprintf( stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
+           ( type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : "" ),
+            type, severity, message );
+}
+
 ContextManager::~ContextManager() {}
 
 bool ContextManager::render_media(ProjectItem* item, int frame) {
   // Responsible for rendering the particular ProjectItem at the frame specified
+  this->make_current();
   GLuint textureUnit = 0;
 
+  glUseProgram(this->programId);
   // Set the current active texture to the one defined in the ProjectItem
   glActiveTexture(GL_TEXTURE0 + textureUnit);
   glBindTexture(GL_TEXTURE_2D, item->getTexId());
-  glUniform1i(glGetUniformLocation(this->programId, "video1"), textureUnit);
+  int samplerLoc = glGetUniformLocation(this->programId, "video1");
+  glUniform1i(samplerLoc, textureUnit);
+
+  glUseProgram(0);
 
   // Update the openGL widget for rendering
-  //this->queue_render();
+  this->queue_render();
   return true;
 }
 
@@ -83,7 +107,7 @@ void ContextManager::generate_coords() {
     1.0, 1.0,
     1.0, 0.0,
     0.0, 0.0
-  }
+  };
 }
 
 void ContextManager::redisplay() {
@@ -108,16 +132,16 @@ void ContextManager::init_buffers() {
 
     glGenBuffers(1, &vboId);
     glBindBuffer(GL_ARRAY_BUFFER, vboId);
-    glBufferData(GL_ARRAY_BUFFER, m_coords.size() * sizeof(GLfloat), &m_coords.front(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, m_coords.size() * sizeof(GLfloat), &m_coords.front(), GL_DYNAMIC_DRAW);
+    
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
+    glDisableVertexAttribArray(0);
 
     GLuint tboId;
     glGenBuffers(1, &tboId);
     glBindBuffer(GL_ARRAY_BUFFER, tboId);
     glBufferData(GL_ARRAY_BUFFER, m_texCoords.size() * sizeof(GLfloat), &m_texCoords.front(), GL_STATIC_DRAW);
-    
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
-    glDisableVertexAttribArray(0);
 
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
@@ -153,6 +177,11 @@ void ContextManager::gl_init() {
 	  try
 	  {
 		this->throw_if_error();
+
+    // During init, enable debug output
+    glEnable              ( GL_DEBUG_OUTPUT );
+    glDebugMessageCallback( MessageCallback, 0 );
+
 		// TODO: Initialize shaders, etc
 		init_shaders();
 		init_buffers();
@@ -169,10 +198,12 @@ void ContextManager::draw_video() {
 
     glBindVertexArray(vaoId);
     glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
 
     glDrawArrays(GL_TRIANGLES, 0, 6);
 
     glDisableVertexAttribArray(0);
+    glDisableVertexAttribArray(1);
     glBindVertexArray(0);
     glUseProgram(0);
 }
