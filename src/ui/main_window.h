@@ -14,6 +14,7 @@ class MainWindow : public Gtk::ApplicationWindow {
         // Signal Handlers for the main window
         void on_import_media();
         void on_project_properties();
+        void on_about();
         
         Glib::RefPtr<Gtk::Builder> m_builder;
         
@@ -24,6 +25,7 @@ class MainWindow : public Gtk::ApplicationWindow {
         // Memory for these is handled by the builder class
         Gtk::MenuItem *m_importMediaBtn;
         Gtk::MenuItem *m_projectPropertiesBtn;
+        Gtk::MenuItem *m_aboutBtn;
 };
 
 #endif
