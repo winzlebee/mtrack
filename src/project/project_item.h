@@ -7,16 +7,16 @@ namespace cv {
     class VideoCapture;
 }
 
-class MediaDisplay {
+class ProjectItem {
     public:
         virtual bool isLoaded() = 0;
         virtual int getTexId() = 0;
         virtual void render() = 0; // Render to the current context. By default, fills the context.
 };
 
-class VideoDisplay : public MediaDisplay {
+class VideoItem : public ProjectItem {
     public:
-        VideoDisplay(const char* fname);
+        VideoItem(const char* fname);
         double getFps();
         double getLengthFrames();
         double getLengthSeconds();

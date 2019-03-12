@@ -1,12 +1,14 @@
 #include <memory>
 #include <vector>
 
-#include "video.h"
+#include "project_item.h"
 
-typedef std::vector<std::unique_ptr<MediaDisplay>> MediaArray;
+typedef std::vector<std::unique_ptr<ProjectItem>> MediaArray;
 
 struct ProjectSettings {
-    double fRate = 24.0;
+    double hResolution = 1280.0;
+    double vResolution = 720.0;
+    double fRate = 25.0;
 };
 
 class Project {
@@ -15,9 +17,9 @@ class Project {
         Project(ProjectSettings sett) : settings(sett) {}
         
         ProjectSettings getSettings() { return settings; }
-        bool importMedia(std::unique_ptr<MediaDisplay> media);
+        bool importMedia(std::unique_ptr<ProjectItem> media);
         bool hasMedia();
-        MediaDisplay* getLoadedMedia();
+        ProjectItem* getLoadedMedia();
     private:
         ProjectSettings settings;
         MediaArray projectMedia;

@@ -24,11 +24,11 @@ const GLchar *frag_src ="\n" \
 "  gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);    \n" \
 "}                                             \n";
 
-VideoDisplay::VideoDisplay(const char* fname) {
+VideoItem::VideoItem(const char* fname) {
     load_video(fname);
 }
 
-void VideoDisplay::generate3DView() {
+void VideoItem::generate3DView() {
     // First we generate shaders TODO: Error checking on shader creation (definitely needed for user created shaders)
     GLuint frag_shader, vert_shader;
     frag_shader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -59,7 +59,7 @@ void VideoDisplay::generate3DView() {
     glDeleteBuffers(1, &vbo_id); // Delete buffer id as it's now stored in the vao
 }
 
-void VideoDisplay::load_video(const char* name) {
+void VideoItem::load_video(const char* name) {
     // Load a video, uses C-style conventions
     video = std::make_unique<cv::VideoCapture>(name);
     if (!video->isOpened()) {
@@ -80,7 +80,7 @@ void VideoDisplay::load_video(const char* name) {
     glPixelStorei(GL_UNPACK_ALIGNMENT, (imageFrame.step & 3) ? 1 : 4);
     glPixelStorei(GL_UNPACK_ROW_LENGTH, imageFrame.step/imageFrame.elemSize());
     
-    // Store the VideoDisplay texture ID
+    // Store the VideoItem texture ID
     glGenTextures( 1, &texture_id);
     glBindTexture( GL_TEXTURE_2D, texture_id );
     
@@ -100,8 +100,8 @@ void VideoDisplay::load_video(const char* name) {
     this->loaded = true;
 }
 
-void VideoDisplay::render() {
-    // Render the VideoDisplay. Simply, we will use a quad
+void VideoItem::render() {
+    // Render the VideoItem. Simply, we will use a quad
     glUseProgram(program_id);
 
     glBindVertexArray(vao_id);
@@ -112,10 +112,10 @@ void VideoDisplay::render() {
     glUseProgram(0);
 }
 
-int VideoDisplay::getTexId() {
+int VideoItem::getTexId() {
     return this->texture_id;
 }
 
-bool VideoDisplay::isLoaded() {
+bool VideoItem::isLoaded() {
     return this->loaded;
 }
