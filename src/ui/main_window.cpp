@@ -56,6 +56,9 @@ void MainWindow::on_project_properties() {
     m_project->getSettings().hResolution = hres->get_value();
     m_project->getSettings().vResolution = vres->get_value();
     m_project->getSettings().fRate = fps->get_value();
+
+    // Update the resolution in view
+    m_contextManager->redisplay();
   }
   propDialog->hide();
 }

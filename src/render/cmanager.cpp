@@ -7,16 +7,7 @@
 #include <GL/glext.h>
 
 #include "cmanager.h"
-
-// For now, this draws a simple triangle
-static const GLfloat vertex_data[] = {
-    -0.8f, -0.8f,
-    -0.8f, 0.8f,
-     0.8f, -0.8f,
-     0.8f, 0.8f,
-     0.8f, -0.8f,
-     -0.8f, 0.8f
-};
+#include "../project/project.h"
 
 // Explicitly define shader prefix and suffixes
 
@@ -39,6 +30,9 @@ const GLchar *frag_src ="\n" \
 
 ContextManager::ContextManager(BaseObjectType *glArea, Glib::RefPtr<Gtk::Builder> &gladeRef, Project *project) : Gtk::GLArea(glArea), m_project(project) {
     
+    // Generate coords based on the project settings and the width and heightof the window.
+    generate_coords();
+
     // Setup the basic signals for a context manager's management
     gl_init();
     this->signal_render().connect(sigc::mem_fun(*this, &ContextManager::gl_render));
@@ -47,13 +41,49 @@ ContextManager::ContextManager(BaseObjectType *glArea, Glib::RefPtr<Gtk::Builder
 
 ContextManager::~ContextManager() {}
 
+void ContextManager::generate_coords() {
+  // For now, this draws a simple triangle. Always push the x straight to the edges
+  float c_width = this->get_width();
+  float c_height = this->get_height();
+
+  float c_vaspect = (c_height/c_width);
+  float c_haspect = (c_width/c_height);
+  float vaspect = (m_project->getSettings().vResolution/m_project->getSettings().hResolution)/c_vaspect;
+  float haspect = (m_project->getSettings().hResolution/m_project->getSettings().vResolution)/c_haspect;
+
+  m_coords = {
+      -haspect, -vaspect,
+      -haspect, vaspect,
+      haspect, vaspect,
+      haspect, vaspect,
+      haspect, -vaspect,
+      -haspect, -vaspect
+  };
+}
+
+void ContextManager::redisplay() {
+  this->make_current();
+  // Avoid reallocating the buffer store by using glBufferSubData
+  generate_coords();
+  glBindVertexArray(vaoId);
+  glBindBuffer(GL_ARRAY_BUFFER, vboId);
+  glBufferSubData(GL_ARRAY_BUFFER, 0, m_coords.size()*sizeof(GLfloat), &m_coords.front());
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+  glBindVertexArray(0);
+}
+
+void ContextManager::on_resize(int width, int height) {
+  glViewport(0, 0, width, height);
+  redisplay();
+}
+
 void ContextManager::init_buffers() {
     glGenVertexArrays(1, &vaoId);
     glBindVertexArray(vaoId);
 
     glGenBuffers(1, &vboId);
     glBindBuffer(GL_ARRAY_BUFFER, vboId);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertex_data), vertex_data, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, m_coords.size() * sizeof(GLfloat), &m_coords.front(), GL_STATIC_DRAW);
     
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
@@ -61,7 +91,6 @@ void ContextManager::init_buffers() {
     
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
-    glDeleteBuffers(1, &vboId);
 }
 
 void ContextManager::init_shaders() {
@@ -119,7 +148,7 @@ bool ContextManager::gl_render(const Glib::RefPtr<Gdk::GLContext>& /* context */
 	try {
 	
 		this->throw_if_error();
-		glClearColor(0.5, 0.5, 0.5, 1.0);
+		glClearColor(0.0, 0.0, 0.0, 1.0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
 		// Draw here
