@@ -16,6 +16,9 @@ class ContextManager : public Gtk::GLArea {
         void redisplay();
         bool render_media(ProjectItem *item, int frame);
     private:
+        
+        // Flags
+        bool m_initialized = false;
 
         // Class variables
         Project *m_project;

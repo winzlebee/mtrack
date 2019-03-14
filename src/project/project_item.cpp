@@ -1,3 +1,7 @@
+#if defined(_WIN32)
+#include <GL/glew.h>
+#endif
+
 #define GL_GLEXT_PROTOTYPES
 #include <GL/gl.h>
 #include <GL/glext.h>

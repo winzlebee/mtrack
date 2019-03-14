@@ -45,12 +45,12 @@ ContextManager::ContextManager(BaseObjectType *glArea, Glib::RefPtr<Gtk::Builder
     generate_coords();
 
     // Setup the basic signals for a context manager's management
-    gl_init();
+    this->signal_realize().connect(sigc::mem_fun(*this, &ContextManager::gl_init));
     this->signal_render().connect(sigc::mem_fun(*this, &ContextManager::gl_render));
     this->signal_unrealize().connect(sigc::mem_fun(*this, &ContextManager::gl_destroy));
 }
 
-void GLAPIENTRY
+/*void GLAPIENTRY
 MessageCallback( GLenum source,
                  GLenum type,
                  GLuint id,
@@ -62,7 +62,7 @@ MessageCallback( GLenum source,
   fprintf( stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
            ( type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : "" ),
             type, severity, message );
-}
+}*/
 
 ContextManager::~ContextManager() {}
 
@@ -126,6 +126,7 @@ void ContextManager::redisplay() {
 }
 
 void ContextManager::on_resize(int width, int height) {
+  if (!m_initialized) return;
   glViewport(0, 0, width, height);
   redisplay();
 }
@@ -183,12 +184,13 @@ void ContextManager::gl_init() {
 		this->throw_if_error();
 
         // During init, enable debug output
-        glEnable              ( GL_DEBUG_OUTPUT );
-        glDebugMessageCallback( MessageCallback, 0 );
+        /*glEnable              ( GL_DEBUG_OUTPUT );
+        glDebugMessageCallback( MessageCallback, 0 );*/
 
 		// TODO: Initialize shaders, etc
 		init_shaders();
 		init_buffers();
+        m_initialized = true;
 	  }
 	  catch(const Gdk::GLError& gle)
 	  {
@@ -214,6 +216,7 @@ void ContextManager::draw_video() {
 
 bool ContextManager::gl_render(const Glib::RefPtr<Gdk::GLContext>& /* context */) {
     //gla->make_current();
+    if (!m_initialized) return false;
 	try {
 	
 		this->throw_if_error();
@@ -239,6 +242,7 @@ bool ContextManager::gl_render(const Glib::RefPtr<Gdk::GLContext>& /* context */
 
 void ContextManager::gl_destroy() {
 	std::cout << "Destroying OpenGL window..." << std::endl;
+    if (!m_initialized) return;
 	this->make_current();
 	  try
 	  {
