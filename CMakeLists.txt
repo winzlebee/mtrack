@@ -8,11 +8,15 @@ project(mtrack)
 find_package(PkgConfig REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(OpenCV REQUIRED)
+if (WIN32)
+    find_package(GLEW 2.0 REQUIRED)
+endif (WIN32)
 
 pkg_check_modules(GTKMM REQUIRED gtkmm-3.0)
 # Setup CMake to use GTK+, tell the compiler where to look for headers
 # and to the linker where to look for libraries
 include_directories(${OPENGL_INCLUDE_DIRS})
+include_directories(${GLEW_INCLUDE_DIRS})
 include_directories(${GTKMM_INCLUDE_DIRS})
 include_directories(${CMAKE_SOURCE_DIR}/src)
 link_directories(${GTKMM_LIBRARY_DIRS})
@@ -28,6 +32,9 @@ add_executable(mtrack
 
 # Link the target to the GTK+ libraries
 target_link_libraries(mtrack ${OPENGL_LIBRARIES})
+if (WIN32)
+    target_link_libraries(mtrack GLEW::GLEW)
+endif(WIN32)
 target_link_libraries(mtrack ${GTKMM_LIBRARIES})
 
 # Only include VideoIO and core at the moment

@@ -2,6 +2,10 @@
 #include <iostream>
 #include <string>
 
+#if defined(_WIN32)
+#include <GL/glew.h>
+#endif
+
 #define GL_GLEXT_PROTOTYPES
 #include <GL/gl.h>
 #include <GL/glext.h>
@@ -178,9 +182,9 @@ void ContextManager::gl_init() {
 	  {
 		this->throw_if_error();
 
-    // During init, enable debug output
-    glEnable              ( GL_DEBUG_OUTPUT );
-    glDebugMessageCallback( MessageCallback, 0 );
+        // During init, enable debug output
+        glEnable              ( GL_DEBUG_OUTPUT );
+        glDebugMessageCallback( MessageCallback, 0 );
 
 		// TODO: Initialize shaders, etc
 		init_shaders();
