@@ -12,6 +12,24 @@ std::string ProjectItem::getName() {
     return m_name;
 }
 
+bool VideoItem::advance_frame(ContextManager *context) {
+	cv::Mat newImageFrame;
+	if (!video->read(newImageFrame)) return false;
+
+	if (newImageFrame.empty()) return false;
+
+	cv::flip(newImageFrame, newImageFrame, 0);
+
+	context->make_current();
+	glBindTexture(GL_TEXTURE_2D, texture_id);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, newImageFrame.cols, newImageFrame.rows, 0, GL_BGR, GL_UNSIGNED_BYTE, newImageFrame.data);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	context->render_media(this, 0);
+
+	std::cout << "Advanced frame" << std::endl;
+}
+
 void VideoItem::load_media(std::string file_name, ContextManager *context) {
 
     // Load a video, uses C-style conventions
@@ -46,7 +64,7 @@ void VideoItem::load_media(std::string file_name, ContextManager *context) {
     glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S , GL_REPEAT );
     glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
     
-    // Note that OpenCV uses BGR internally, so we use this in our call to glTexImage2D
+    // Note that OpenCV uses BGR internally, so we use this in our call to glTexImage2D. This also allocates memory for downloading later textures
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, imageFrame.cols, imageFrame.rows, 0, GL_BGR, GL_UNSIGNED_BYTE, imageFrame.data);
     
     // Unbind buffer to reset state

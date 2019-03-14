@@ -15,6 +15,9 @@ MainWindow::MainWindow(BaseObjectType* window, const Glib::RefPtr<Gtk::Builder> 
   m_builder->get_widget_derived("display_area", m_contextManager, m_project.get());
   m_builder->get_widget("mediaIconView", m_mediaItems);
 
+  // Playback widget
+  m_builder->get_widget("nextFrameBtn", m_nextFrameBtn);
+
   // Set up models
   m_mediaListStore = Gtk::ListStore::create(m_mediaModel);
   m_mediaItems->set_model(m_mediaListStore);
@@ -28,7 +31,15 @@ MainWindow::MainWindow(BaseObjectType* window, const Glib::RefPtr<Gtk::Builder> 
   m_importMediaBtn->signal_activate().connect(sigc::mem_fun(*this, &MainWindow::on_import_media));
   m_projectPropertiesBtn->signal_activate().connect(sigc::mem_fun(*this, &MainWindow::on_project_properties));
   m_aboutBtn->signal_activate().connect(sigc::mem_fun(*this, &MainWindow::on_about));
+
+  m_nextFrameBtn->signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::on_next_frame));
   
+}
+
+// Playback widget
+void MainWindow::on_next_frame() {
+	// TODO: Replace with timeline get current element
+	m_project->getLoadedMedia()->advance_frame(m_contextManager);
 }
 
 void MainWindow::on_about() {

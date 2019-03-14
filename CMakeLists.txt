@@ -38,5 +38,9 @@ target_link_libraries(mtrack opencv_core opencv_videoio)
 
 # Copy the resources to a resource folder in the build directory
 add_custom_command(TARGET mtrack PRE_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E remove_directory
+                       $<TARGET_FILE_DIR:mtrack>/res)
+
+add_custom_command(TARGET mtrack PRE_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
                        ${CMAKE_SOURCE_DIR}/res $<TARGET_FILE_DIR:mtrack>/res)

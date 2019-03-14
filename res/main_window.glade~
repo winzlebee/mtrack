@@ -43,7 +43,9 @@
       </object>
     </child>
   </object>
+  <object class="GtkAccelGroup" id="editAccel"/>
   <object class="GtkListStore" id="mediastore"/>
+  <object class="GtkAccelGroup" id="playAccel"/>
   <object class="GtkAdjustment" id="projectFPSAdjustment">
     <property name="upper">240</property>
     <property name="value">25</property>
@@ -405,12 +407,31 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkImageMenuItem">
-                        <property name="label">gtk-cut</property>
+                      <object class="GtkImageMenuItem" id="m_playBtn">
+                        <property name="label">gtk-media-play</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                        <property name="accel_group">playAccel</property>
+                        <property name="always_show_image">True</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem" id="cutBtn">
+                        <property name="label">gtk-cut</property>
+                        <property name="name">cutBtn</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
+                        <property name="accel_group">editAccel</property>
                       </object>
                     </child>
                     <child>
@@ -571,14 +592,115 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkGLArea" id="display_area">
+                  <object class="GtkBox">
                     <property name="visible">True</property>
-                    <property name="app_paintable">True</property>
                     <property name="can_focus">False</property>
-                    <property name="margin_left">239</property>
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="GtkGLArea" id="display_area">
+                        <property name="width_request">400</property>
+                        <property name="visible">True</property>
+                        <property name="app_paintable">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkToolbar">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="halign">center</property>
+                        <child>
+                          <object class="GtkToolButton" id="firstFrameBtn">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">First Frame</property>
+                            <property name="stock_id">gtk-goto-first</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="homogeneous">True</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkToolButton" id="prevFrameBtn">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">Back One Frame</property>
+                            <property name="use_underline">True</property>
+                            <property name="stock_id">gtk-go-back</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="homogeneous">True</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkToolButton" id="playBtn">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">Play</property>
+                            <property name="use_underline">True</property>
+                            <property name="stock_id">gtk-media-play</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="homogeneous">True</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkToolButton" id="nextFrameBtn">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">Next Frame</property>
+                            <property name="use_underline">True</property>
+                            <property name="stock_id">gtk-go-forward</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="homogeneous">True</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkToolButton" id="lastFrameBtn">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">Last Frame</property>
+                            <property name="use_underline">True</property>
+                            <property name="stock_id">gtk-goto-last</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="homogeneous">True</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkToolButton" id="stopBtn">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">Stop</property>
+                            <property name="use_underline">True</property>
+                            <property name="stock_id">gtk-media-stop</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="homogeneous">True</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
                   </object>
                   <packing>
-                    <property name="resize">True</property>
+                    <property name="resize">False</property>
                     <property name="shrink">True</property>
                   </packing>
                 </child>
