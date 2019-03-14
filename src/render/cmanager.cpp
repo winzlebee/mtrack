@@ -3,7 +3,10 @@
 #include <string>
 
 #if defined(_WIN32)
-#include <GL/glew.h>
+    #define USEGLEW true
+    #include <GL/glew.h>
+#else
+    #define USEGLEW false
 #endif
 
 #define GL_GLEXT_PROTOTYPES
@@ -45,7 +48,7 @@ ContextManager::ContextManager(BaseObjectType *glArea, Glib::RefPtr<Gtk::Builder
     generate_coords();
 
     // Setup the basic signals for a context manager's management
-    this->signal_realize().connect(sigc::mem_fun(*this, &ContextManager::gl_init));
+    //this->signal_realize().connect(sigc::mem_fun(*this, &ContextManager::gl_init));
     this->signal_render().connect(sigc::mem_fun(*this, &ContextManager::gl_render));
     this->signal_unrealize().connect(sigc::mem_fun(*this, &ContextManager::gl_destroy));
 }
@@ -179,24 +182,29 @@ void ContextManager::init_shaders() {
 void ContextManager::gl_init() {
 	std::cout << "OpenGL window is being initialized..." << std::endl;
 	this->make_current();
-	  try
-	  {
-		this->throw_if_error();
+    
+    // Don't forget to initialize GLEW on windows.
+    if (USEGLEW) glewInit();
+    
+      try
+      {
+        this->throw_if_error();
 
         // During init, enable debug output
         /*glEnable              ( GL_DEBUG_OUTPUT );
         glDebugMessageCallback( MessageCallback, 0 );*/
 
-		// TODO: Initialize shaders, etc
-		init_shaders();
-		init_buffers();
+        // TODO: Initialize shaders, etc
+        init_shaders();
+        init_buffers();
         m_initialized = true;
-	  }
-	  catch(const Gdk::GLError& gle)
-	  {
-		std::cerr << "An error occurzed making the context current during realize:" << std::endl;
-		std::cerr << gle.domain() << "-" << gle.code() << "-" << gle.what() << std::endl;
-	}
+        std::cout << "Context initialized." << std::endl;
+      }
+      catch(const Gdk::GLError& gle)
+      {
+        std::cerr << "An error occurzed making the context current during realize:" << std::endl;
+        std::cerr << gle.domain() << "-" << gle.code() << "-" << gle.what() << std::endl;
+      }
 }
 
 void ContextManager::draw_video() {
@@ -216,7 +224,7 @@ void ContextManager::draw_video() {
 
 bool ContextManager::gl_render(const Glib::RefPtr<Gdk::GLContext>& /* context */) {
     //gla->make_current();
-    if (!m_initialized) return false;
+    if (!m_initialized) gl_init();
 	try {
 	
 		this->throw_if_error();
