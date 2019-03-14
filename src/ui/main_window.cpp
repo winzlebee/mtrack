@@ -35,7 +35,9 @@ void MainWindow::on_about() {
   Gtk::Dialog *aboutDialog;
 
   m_builder->get_widget("aboutDialog", aboutDialog);
-  aboutDialog->run();
+  int response = aboutDialog->run();
+
+  if (response != GTK_RESPONSE_NONE) aboutDialog->hide();
 }
 
 void MainWindow::on_project_properties() {

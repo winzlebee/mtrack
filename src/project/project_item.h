@@ -21,9 +21,7 @@ class ProjectItem {
 class VideoItem : public ProjectItem {
     public:
         VideoItem(std::string name) : ProjectItem(name) {};
-        double getFps();
-        double getLengthFrames();
-        double getLengthSeconds();
+        
         bool isLoaded();
         const unsigned int getTexId();    
         void load_media(std::string file_name, ContextManager *context);
