@@ -61,7 +61,7 @@ MessageCallback( GLenum source,
 
 ContextManager::~ContextManager() {}
 
-bool ContextManager::render_media(ProjectItem* item, int frame) {
+bool ContextManager::render_media(ProjectItem* item) {
   // Responsible for rendering the particular ProjectItem at the frame specified
   this->make_current();
   GLuint textureUnit = 0;

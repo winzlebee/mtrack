@@ -25,9 +25,7 @@ bool VideoItem::advance_frame(ContextManager *context) {
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, newImageFrame.cols, newImageFrame.rows, 0, GL_BGR, GL_UNSIGNED_BYTE, newImageFrame.data);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	context->render_media(this, 0);
-
-	std::cout << "Advanced frame" << std::endl;
+	context->render_media(this);
 }
 
 void VideoItem::load_media(std::string file_name, ContextManager *context) {

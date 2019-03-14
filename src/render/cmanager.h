@@ -14,7 +14,7 @@ class ContextManager : public Gtk::GLArea {
 
         // Force a redisplay when something about the context display changes
         void redisplay();
-        bool render_media(ProjectItem *item, int frame);
+        bool render_media(ProjectItem *item);
     private:
         
         // Flags

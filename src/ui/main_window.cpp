@@ -112,7 +112,7 @@ void MainWindow::on_import_media() {
       Gtk::TreeModel::Row newRow = *modelit;
       newRow[m_mediaModel.m_col_name] = item->getName();
 
-      m_contextManager->render_media(item.get(), 1);
+      m_contextManager->render_media(item.get());
       m_project->importMedia(std::move(item));                 
     } else {
       Gtk::MessageDialog unableToOpenMsg(*this, "Invalid media file");
