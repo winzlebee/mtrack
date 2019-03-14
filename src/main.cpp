@@ -1,10 +1,6 @@
 #include <gtkmm.h>
 #include <iostream>
 
-#define GL_GLEXT_PROTOTYPES
-#include <GL/gl.h>
-#include <GL/glext.h>
-
 #include "ui/main_window.h"
 
 int main(int argc, char *argv[])

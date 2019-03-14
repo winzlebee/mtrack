@@ -2,16 +2,8 @@
 #include <iostream>
 #include <string>
 
-#if defined(_WIN32)
-    #define USEGLEW true
-    #include <GL/glew.h>
-#else
-    #define USEGLEW false
-#endif
-
-#define GL_GLEXT_PROTOTYPES
+#include <GL/glew.h>
 #include <GL/gl.h>
-#include <GL/glext.h>
 
 #include "cmanager.h"
 #include "../project/project.h"
@@ -184,8 +176,8 @@ void ContextManager::gl_init() {
 	this->make_current();
     
     // Don't forget to initialize GLEW on windows.
-    if (USEGLEW) glewInit();
-    
+    glewInit();
+
       try
       {
         this->throw_if_error();

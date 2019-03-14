@@ -14,25 +14,44 @@ Mtrack is a really simple Open Source NLE with video compositor elements, like A
 ### Linux ###
 The build process on linux is quite simple (Debian-based distros)
 1. Install the dependencies
-`sudo apt install build-essential cmake libopencv-dev libgl1-mesa-dev libgtkmm-3.0-dev`
+
+`sudo apt install build-essential cmake libopencv-dev libgl1-mesa-dev libgtkmm-3.0-dev libglew2.0`
 2. Clone the repository and enter the root directory
+
 `git clone <uri>`
+
 `cd mtrack`
 3. Make a directory called build, enter it then run cmake in the root directory.
+
 `mkdir build && cd build`
-`cmake .`
+
+`cmake ../`
 4. Build mtrack and run it
+
 `make && ./mtrack`
     
 ### Windows ###
 How to build on windows using Visual Studio and msys2
-1. Install [msys2](http://www.msys2.org/)
+1. Install CMake and add to PATH
+2. Install [msys2](http://www.msys2.org/)
     - Run the msys2 bash
     - Install the 64-bit version of mingw64
+    
     `pacman -S mingw-w64-x86_64-gcc`
     - Install required dependencies
+    
     `pacman -S mingw-w64-x86_64-gtkmm3`
+    
     `pacman -S pkg-config`
+    
     `pacman -S mingw-w64-x86_64-opencv`
-2. Open the CMakeLists.txt file in Visual Studio, then hit the build button.
-3. Optionally, make
+    
+    `pacman -S mingw-w64-x86_64-glew`
+3. Open the CMakeLists.txt file in Visual Studio, then configure to use CMake and MinGW as a compiler.
+4. Alternatively, use CMake and the Mingw64 shell to build
+
+`mkdir build && cd build`
+
+`cmake ../ -G 'MinGW Makefiles'`
+
+`mingw32-make && ./mtrack`
