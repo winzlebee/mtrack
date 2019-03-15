@@ -1,5 +1,6 @@
 
 #include <iostream>
+#include <cmath>
 
 #include "playback_manager.h"
 #include "playback_source.h"
@@ -12,7 +13,13 @@ PlaybackManager::PlaybackManager(PlaybackSource *source) {
 
 void PlaybackManager::setSource(PlaybackSource *src) {
 	m_source = src;
-	int timeBetweenFrames = (1000.0 / m_source->getFrameRate());
+	int timeBetweenFrames = round(1000.0 / m_source->getFrameRate());
+
+	std::cout << "New PlaybackSource Loaded." << std::endl;
+	std::cout << "Frame Rate: " << m_source->getFrameRate() << std::endl;
+	std::cout << "Time per frame: " << timeBetweenFrames << std::endl;
+	std::cout << "Realised frame rate: " << 1000.0/timeBetweenFrames << std::endl;
+
 	m_update_connection = Glib::signal_timeout().connect(sigc::mem_fun(*this, &PlaybackManager::update), timeBetweenFrames);
 
 	m_signal_source_changed.emit(true);
@@ -26,6 +33,10 @@ void PlaybackManager::clearSource() {
 	m_source = nullptr;
 	this->playing = false;
 	m_signal_source_changed.emit(false);
+}
+
+bool PlaybackManager::isPlaying() {
+	return this->playing;
 }
 
 void PlaybackManager::play() {

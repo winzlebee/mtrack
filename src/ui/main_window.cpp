@@ -20,6 +20,9 @@ MainWindow::MainWindow(BaseObjectType* window, const Glib::RefPtr<Gtk::Builder> 
 
   // Playback widget
   m_builder->get_widget("nextFrameBtn", m_nextFrameBtn);
+  m_builder->get_widget("prevFrameBtn", m_prevFrameBtn);
+  m_builder->get_widget("lastFrameBtn", m_lastFrameBtn);
+  m_builder->get_widget("firstFrameBtn", m_firstFrameBtn);
   m_builder->get_widget("playBtn", m_playBtn);
   m_builder->get_widget("stopBtn", m_stopBtn);
   m_builder->get_widget("playbackWidget", m_playbackWidget);
@@ -39,6 +42,9 @@ MainWindow::MainWindow(BaseObjectType* window, const Glib::RefPtr<Gtk::Builder> 
   m_aboutBtn->signal_activate().connect(sigc::mem_fun(*this, &MainWindow::on_about));
 
   m_nextFrameBtn->signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::on_next_frame));
+  m_prevFrameBtn->signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::on_prev_frame));
+  m_firstFrameBtn->signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::on_first_frame));
+  m_lastFrameBtn->signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::on_last_frame));
   m_playBtn->signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::on_play));
   m_stopBtn->signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::on_stop));
   
@@ -49,8 +55,27 @@ void MainWindow::on_next_frame() {
 	m_playbackManager->next();
 }
 
+void MainWindow::on_prev_frame() {
+	m_playbackManager->prev();
+}
+
+void MainWindow::on_first_frame() {
+	m_playbackManager->first();
+}
+
+void MainWindow::on_last_frame() {
+	m_playbackManager->last();
+}
+
 void MainWindow::on_play() {
-	m_playbackManager->play();
+	if (!m_playbackManager->isPlaying()) {
+		m_playbackManager->play();
+		m_playBtn->set_stock_id(Gtk::Stock::MEDIA_PAUSE);
+	}
+	else {
+		m_playbackManager->pause();
+		m_playBtn->set_stock_id(Gtk::Stock::MEDIA_PLAY);
+	}
 }
 
 void MainWindow::on_stop() {

@@ -23,6 +23,9 @@ class MainWindow : public Gtk::ApplicationWindow {
 
 		// Playback signal handlers
 		void on_next_frame();
+		void on_prev_frame();
+		void on_first_frame();
+		void on_last_frame();
 		void on_play();
 		void on_stop();
 		void on_playback_source_change(bool loaded);
@@ -39,6 +42,9 @@ class MainWindow : public Gtk::ApplicationWindow {
 
 		// Toolbar elements
 		Gtk::ToolButton *m_nextFrameBtn;
+		Gtk::ToolButton *m_prevFrameBtn;
+		Gtk::ToolButton *m_firstFrameBtn;
+		Gtk::ToolButton *m_lastFrameBtn;
 		Gtk::ToolButton *m_playBtn;
 		Gtk::ToolButton *m_stopBtn;
 		Gtk::Widget *m_playbackWidget;

@@ -10,6 +10,9 @@ class PlaybackManager {
 public:
 	PlaybackManager();
 	PlaybackManager(PlaybackSource *source);
+
+	bool isPlaying();
+
 	void play();
 	void pause();
 	void stop();
