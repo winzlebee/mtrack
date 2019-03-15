@@ -610,8 +610,9 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkToolbar">
+                      <object class="GtkToolbar" id="playPauseWidget">
                         <property name="visible">True</property>
+                        <property name="sensitive">False</property>
                         <property name="can_focus">False</property>
                         <property name="halign">center</property>
                         <child>
@@ -700,7 +701,7 @@
                     </child>
                   </object>
                   <packing>
-                    <property name="resize">False</property>
+                    <property name="resize">True</property>
                     <property name="shrink">True</property>
                   </packing>
                 </child>

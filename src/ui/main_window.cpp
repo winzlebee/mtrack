@@ -9,6 +9,8 @@ MainWindow::MainWindow(BaseObjectType* window, const Glib::RefPtr<Gtk::Builder> 
   m_project = std::make_unique<Project>();
   m_playbackManager = std::make_unique<PlaybackManager>();
 
+  m_playbackManager->signal_source_changed().connect(sigc::mem_fun(*this, &MainWindow::on_playback_source_change));
+
   // Set callback handlers
   m_builder->get_widget("importMediaBtn", m_importMediaBtn);
   m_builder->get_widget("projectPropertiesBtn", m_projectPropertiesBtn);
@@ -20,6 +22,7 @@ MainWindow::MainWindow(BaseObjectType* window, const Glib::RefPtr<Gtk::Builder> 
   m_builder->get_widget("nextFrameBtn", m_nextFrameBtn);
   m_builder->get_widget("playBtn", m_playBtn);
   m_builder->get_widget("stopBtn", m_stopBtn);
+  m_builder->get_widget("playbackWidget", m_playbackWidget);
 
   // Set up models
   m_mediaListStore = Gtk::ListStore::create(m_mediaModel);
@@ -52,6 +55,10 @@ void MainWindow::on_play() {
 
 void MainWindow::on_stop() {
 	m_playbackManager->stop();
+}
+
+void MainWindow::on_playback_source_change(bool loaded) {
+	m_playbackWidget->set_sensitive(loaded);
 }
 
 void MainWindow::on_about() {
@@ -125,6 +132,7 @@ void MainWindow::on_import_media() {
 
       m_contextManager->render_media(item.get());
 
+	  m_playbackManager->clearSource();
 	  m_playbackSource = std::make_unique<MediaPlaybackSource>(item.get(), m_contextManager);
 	  m_playbackManager->setSource(m_playbackSource.get());
 

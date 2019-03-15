@@ -610,8 +610,9 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkToolbar">
+                      <object class="GtkToolbar" id="playbackWidget">
                         <property name="visible">True</property>
+                        <property name="sensitive">False</property>
                         <property name="can_focus">False</property>
                         <property name="halign">center</property>
                         <child>

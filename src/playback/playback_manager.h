@@ -21,6 +21,10 @@ public:
 	void gotoTime(int msec);
 	void setLoop(bool);
 	void setSource(PlaybackSource *src);
+	void clearSource();
+	sigc::signal<void, bool> signal_source_changed();
+protected:
+	sigc::signal<void, bool> m_signal_source_changed;
 private:
 	bool update();
 	PlaybackSource *m_source;

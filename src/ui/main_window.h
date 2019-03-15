@@ -25,6 +25,7 @@ class MainWindow : public Gtk::ApplicationWindow {
 		void on_next_frame();
 		void on_play();
 		void on_stop();
+		void on_playback_source_change(bool loaded);
         
         Glib::RefPtr<Gtk::Builder> m_builder;
 
@@ -40,6 +41,7 @@ class MainWindow : public Gtk::ApplicationWindow {
 		Gtk::ToolButton *m_nextFrameBtn;
 		Gtk::ToolButton *m_playBtn;
 		Gtk::ToolButton *m_stopBtn;
+		Gtk::Widget *m_playbackWidget;
 
         // Memory for these is handled by the builder class
         Gtk::MenuItem *m_importMediaBtn;

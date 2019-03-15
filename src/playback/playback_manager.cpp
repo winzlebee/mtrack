@@ -14,6 +14,18 @@ void PlaybackManager::setSource(PlaybackSource *src) {
 	m_source = src;
 	int timeBetweenFrames = (1000.0 / m_source->getFrameRate());
 	m_update_connection = Glib::signal_timeout().connect(sigc::mem_fun(*this, &PlaybackManager::update), timeBetweenFrames);
+
+	m_signal_source_changed.emit(true);
+}
+
+sigc::signal<void, bool> PlaybackManager::signal_source_changed() {
+	return m_signal_source_changed;
+}
+
+void PlaybackManager::clearSource() {
+	m_source = nullptr;
+	this->playing = false;
+	m_signal_source_changed.emit(false);
 }
 
 void PlaybackManager::play() {
