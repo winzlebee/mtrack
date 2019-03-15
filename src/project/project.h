@@ -24,7 +24,7 @@ class Project {
         ProjectSettings& getSettings() { return settings; }
         bool importMedia(std::unique_ptr<ProjectItem> media);
         bool hasMedia();
-        ProjectItem* getLoadedMedia();
+        ProjectItem* getSelectedMedia();
     private:
         ProjectSettings settings;
         MediaArray projectMedia;

@@ -5,6 +5,8 @@
 #include <memory>
 
 #include "../render/cmanager.h"
+#include "../playback/playback_manager.h"
+#include "../playback/playback_source.h"
 #include "../models/projectitem_model.h"
 
 class Project;
@@ -21,6 +23,8 @@ class MainWindow : public Gtk::ApplicationWindow {
 
 		// Playback signal handlers
 		void on_next_frame();
+		void on_play();
+		void on_stop();
         
         Glib::RefPtr<Gtk::Builder> m_builder;
 
@@ -29,9 +33,13 @@ class MainWindow : public Gtk::ApplicationWindow {
         // ContextManager handles the link between the UI and drawing to the screen
         // ContextManager class will be destructed automatically when the UI is destroyed
         ContextManager *m_contextManager;
+		std::unique_ptr<PlaybackManager> m_playbackManager;
+		std::unique_ptr<PlaybackSource> m_playbackSource;
 
 		// Toolbar elements
 		Gtk::ToolButton *m_nextFrameBtn;
+		Gtk::ToolButton *m_playBtn;
+		Gtk::ToolButton *m_stopBtn;
 
         // Memory for these is handled by the builder class
         Gtk::MenuItem *m_importMediaBtn;
@@ -42,7 +50,7 @@ class MainWindow : public Gtk::ApplicationWindow {
 
         // Model that the media item browser uses
         ProjectItemModel m_mediaModel;
-        Glib::RefPtr<Gtk::ListStore> m_mediaListStore; 
+        Glib::RefPtr<Gtk::ListStore> m_mediaListStore;
 };
 
 #endif

@@ -12,7 +12,29 @@ std::string ProjectItem::getName() {
     return m_name;
 }
 
-bool VideoItem::advance_frame(ContextManager *context) {
+int VideoItem::get_num_frames() {
+	return video->get(cv::CAP_PROP_FRAME_COUNT);
+}
+
+double VideoItem::get_frame_rate() {
+	return video->get(cv::CAP_PROP_FPS);
+}
+
+double VideoItem::get_current_time_ms() {
+	return video->get(cv::CAP_PROP_POS_MSEC);
+}
+
+int VideoItem::get_current_frame() {
+	return video->get(cv::CAP_PROP_POS_FRAMES) - 1;
+}
+
+bool VideoItem::set_next_frame(int frame) {
+	if (frame > get_num_frames() || frame < 0) return false;
+	video->set(cv::CAP_PROP_POS_FRAMES, frame);
+	return true;
+}
+
+bool VideoItem::load_next_frame(ContextManager *context) {
 	cv::Mat newImageFrame;
 	if (!video->read(newImageFrame)) return false;
 
@@ -35,9 +57,7 @@ void VideoItem::load_media(std::string file_name, ContextManager *context) {
     if (!video->isOpened()) {
         return;
     }
-    
-    double fRate = video->get(cv::CAP_PROP_FPS);
-    
+
     // Get the first image of the sequence and store it in OpenGL Memory
     cv::Mat imageFrame;
     (*video) >> imageFrame;

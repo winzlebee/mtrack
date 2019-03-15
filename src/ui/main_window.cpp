@@ -17,6 +17,8 @@ MainWindow::MainWindow(BaseObjectType* window, const Glib::RefPtr<Gtk::Builder> 
 
   // Playback widget
   m_builder->get_widget("nextFrameBtn", m_nextFrameBtn);
+  m_builder->get_widget("playBtn", m_playBtn);
+  m_builder->get_widget("stopBtn", m_stopBtn);
 
   // Set up models
   m_mediaListStore = Gtk::ListStore::create(m_mediaModel);
@@ -33,13 +35,22 @@ MainWindow::MainWindow(BaseObjectType* window, const Glib::RefPtr<Gtk::Builder> 
   m_aboutBtn->signal_activate().connect(sigc::mem_fun(*this, &MainWindow::on_about));
 
   m_nextFrameBtn->signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::on_next_frame));
+  m_playBtn->signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::on_play));
+  m_stopBtn->signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::on_stop));
   
 }
 
 // Playback widget
 void MainWindow::on_next_frame() {
-	// TODO: Replace with timeline get current element
-	m_project->getLoadedMedia()->advance_frame(m_contextManager);
+	m_playbackManager->next();
+}
+
+void MainWindow::on_play() {
+	m_playbackManager->play();
+}
+
+void MainWindow::on_stop() {
+	m_playbackManager->stop();
 }
 
 void MainWindow::on_about() {
@@ -101,7 +112,6 @@ void MainWindow::on_import_media() {
   if (result == Gtk::RESPONSE_OK) {
     // Create a new ProjectItem and load the media assosciated with it
     std::unique_ptr<ProjectItem> item = std::make_unique<VideoItem>(dialog.get_file()->get_basename());
-    std::cout << "Loading file: " << dialog.get_file()->get_basename() << std::endl;
 
     // Load the texture assosciated with the media file into the context manager
     item->load_media(dialog.get_filename(), m_contextManager);
@@ -113,7 +123,11 @@ void MainWindow::on_import_media() {
       newRow[m_mediaModel.m_col_name] = item->getName();
 
       m_contextManager->render_media(item.get());
-      m_project->importMedia(std::move(item));                 
+
+	  m_playbackSource = std::make_unique<MediaPlaybackSource>(item.get(), m_contextManager);
+	  m_playbackManager = std::make_unique<PlaybackManager>(m_playbackSource.get());
+
+      m_project->importMedia(std::move(item));
     } else {
       Gtk::MessageDialog unableToOpenMsg(*this, "Invalid media file");
       unableToOpenMsg.set_secondary_text(dialog.get_file()->get_basename() + " is not a valid media file.");

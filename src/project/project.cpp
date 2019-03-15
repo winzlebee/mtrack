@@ -8,7 +8,7 @@ bool Project::importMedia(std::unique_ptr<ProjectItem> media) {
     return true;
 }
 
-ProjectItem* Project::getLoadedMedia() {
+ProjectItem* Project::getSelectedMedia() {
     return projectMedia.front().get();
 }
 
