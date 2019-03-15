@@ -29,6 +29,10 @@ sigc::signal<void, bool> PlaybackManager::signal_source_changed() {
 	return m_signal_source_changed;
 }
 
+sigc::signal<void, bool> PlaybackManager::signal_playback() {
+	return m_signal_playback;
+}
+
 void PlaybackManager::clearSource() {
 	m_source = nullptr;
 	this->playing = false;
@@ -41,35 +45,43 @@ bool PlaybackManager::isPlaying() {
 
 void PlaybackManager::play() {
 	this->playing = true;
+	m_signal_playback.emit(true);
 }
 
 void PlaybackManager::pause() {
 	this->playing = false;
+	m_signal_playback.emit(false);
 }
 
 void PlaybackManager::stop() {
 	m_source->gotoFrame(0);
 	this->playing = false;
+	m_signal_playback.emit(false);
 }
 
 void PlaybackManager::next() {
 	m_source->advanceFrame();
 	this->playing = false;
+	m_signal_playback.emit(false);
+	std::cout << m_source->getCurrentFrame() << std::endl;
 }
 
 void PlaybackManager::prev() {
 	m_source->retreatFrame();
 	this->playing = false;
+	m_signal_playback.emit(false);
 }
 
 void PlaybackManager::first() {
 	m_source->gotoFrame(0);
 	this->playing = false;
+	m_signal_playback.emit(false);
 }
 
 void PlaybackManager::last() {
-	m_source->gotoFrame(m_source->getLengthFrames());
+	m_source->gotoFrame(m_source->getLengthFrames()-5);
 	this->playing = false;
+	m_signal_playback.emit(false);
 }
 
 void PlaybackManager::gotoFrame(int num) {
@@ -87,9 +99,10 @@ void PlaybackManager::setLoop(bool setLoop) {
 bool PlaybackManager::update() {
 	if (this->playing) {
 		if (!m_source->advanceFrame()) {
-			//m_source->gotoFrame(0);
+			gotoFrame(0);
 			if (!this->loop) {
-				//this->playing = false;
+				m_signal_playback.emit(false);
+				this->playing = false;
 			}
 		}
 	}

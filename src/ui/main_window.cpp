@@ -10,6 +10,7 @@ MainWindow::MainWindow(BaseObjectType* window, const Glib::RefPtr<Gtk::Builder> 
   m_playbackManager = std::make_unique<PlaybackManager>();
 
   m_playbackManager->signal_source_changed().connect(sigc::mem_fun(*this, &MainWindow::on_playback_source_change));
+  m_playbackManager->signal_playback().connect(sigc::mem_fun(*this, &MainWindow::on_playback_status_changed));
 
   // Set callback handlers
   m_builder->get_widget("importMediaBtn", m_importMediaBtn);
@@ -70,16 +71,22 @@ void MainWindow::on_last_frame() {
 void MainWindow::on_play() {
 	if (!m_playbackManager->isPlaying()) {
 		m_playbackManager->play();
-		m_playBtn->set_stock_id(Gtk::Stock::MEDIA_PAUSE);
 	}
 	else {
 		m_playbackManager->pause();
-		m_playBtn->set_stock_id(Gtk::Stock::MEDIA_PLAY);
 	}
 }
 
 void MainWindow::on_stop() {
 	m_playbackManager->stop();
+}
+
+void MainWindow::on_playback_status_changed(bool playing) {
+  if (!playing) {
+    m_playBtn->set_stock_id(Gtk::Stock::MEDIA_PLAY);
+  } else {
+    m_playBtn->set_stock_id(Gtk::Stock::MEDIA_PAUSE);
+  }
 }
 
 void MainWindow::on_playback_source_change(bool loaded) {

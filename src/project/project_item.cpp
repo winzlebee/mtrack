@@ -48,6 +48,7 @@ bool VideoItem::load_next_frame(ContextManager *context) {
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	context->render_media(this);
+    return true;
 }
 
 void VideoItem::load_media(std::string file_name, ContextManager *context) {

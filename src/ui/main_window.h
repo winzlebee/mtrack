@@ -29,6 +29,7 @@ class MainWindow : public Gtk::ApplicationWindow {
 		void on_play();
 		void on_stop();
 		void on_playback_source_change(bool loaded);
+        void on_playback_status_changed(bool playing);
         
         Glib::RefPtr<Gtk::Builder> m_builder;
 

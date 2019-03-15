@@ -26,8 +26,10 @@ public:
 	void setSource(PlaybackSource *src);
 	void clearSource();
 	sigc::signal<void, bool> signal_source_changed();
+	sigc::signal<void, bool> signal_playback();
 protected:
 	sigc::signal<void, bool> m_signal_source_changed;
+	sigc::signal<void, bool> m_signal_playback;
 private:
 	bool update();
 	PlaybackSource *m_source;
