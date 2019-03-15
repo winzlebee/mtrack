@@ -7,6 +7,7 @@ MainWindow::MainWindow(BaseObjectType* window, const Glib::RefPtr<Gtk::Builder> 
 
   // We've started the main window - create some new project properties
   m_project = std::make_unique<Project>();
+  m_playbackManager = std::make_unique<PlaybackManager>();
 
   // Set callback handlers
   m_builder->get_widget("importMediaBtn", m_importMediaBtn);
@@ -125,7 +126,7 @@ void MainWindow::on_import_media() {
       m_contextManager->render_media(item.get());
 
 	  m_playbackSource = std::make_unique<MediaPlaybackSource>(item.get(), m_contextManager);
-	  m_playbackManager = std::make_unique<PlaybackManager>(m_playbackSource.get());
+	  m_playbackManager->setSource(m_playbackSource.get());
 
       m_project->importMedia(std::move(item));
     } else {

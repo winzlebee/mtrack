@@ -8,6 +8,7 @@ class PlaybackSource;
 
 class PlaybackManager {
 public:
+	PlaybackManager();
 	PlaybackManager(PlaybackSource *source);
 	void play();
 	void pause();
@@ -19,6 +20,7 @@ public:
 	void gotoFrame(int num);
 	void gotoTime(int msec);
 	void setLoop(bool);
+	void setSource(PlaybackSource *src);
 private:
 	bool update();
 	PlaybackSource *m_source;

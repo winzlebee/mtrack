@@ -4,17 +4,19 @@
 #include "playback_manager.h"
 #include "playback_source.h"
 
-PlaybackManager::PlaybackManager(PlaybackSource *source) : m_source(source) {
+PlaybackManager::PlaybackManager() {};
 
-	// Depending on our project framerate, we set an interval timer to progress to the next frame (but only if we're playing)
-	int timeBetweenFrames = (1000.0 / source->getFrameRate());
-	std::cout << timeBetweenFrames << std::endl;
-	m_update_connection = Glib::signal_timeout().connect(sigc::mem_fun(*this, &PlaybackManager::update), timeBetweenFrames);
-
+PlaybackManager::PlaybackManager(PlaybackSource *source) {
+	setSource(source);
 };
 
+void PlaybackManager::setSource(PlaybackSource *src) {
+	m_source = src;
+	int timeBetweenFrames = (1000.0 / m_source->getFrameRate());
+	m_update_connection = Glib::signal_timeout().connect(sigc::mem_fun(*this, &PlaybackManager::update), timeBetweenFrames);
+}
+
 void PlaybackManager::play() {
-	std::cout << "play()" << std::endl;
 	this->playing = true;
 }
 
@@ -61,12 +63,12 @@ void PlaybackManager::setLoop(bool setLoop) {
 
 bool PlaybackManager::update() {
 	if (this->playing) {
-		std::cout << "playing..." << std::endl;
 		if (!m_source->advanceFrame()) {
-			m_source->gotoFrame(0);
+			//m_source->gotoFrame(0);
 			if (!this->loop) {
-				this->playing = false;
+				//this->playing = false;
 			}
 		}
 	}
+	return true;
 }
