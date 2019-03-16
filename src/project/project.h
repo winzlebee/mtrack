@@ -22,10 +22,14 @@ class Project {
         Project(ProjectSettings sett) : settings(sett) {}
         
         ProjectSettings& getSettings() { return settings; }
-        bool importMedia(std::unique_ptr<ProjectItem> media);
+
+        // Import media into the project. \returns Index of added item.
+        int importMedia(std::unique_ptr<ProjectItem> media);
         bool hasMedia();
         ProjectItem* getSelectedMedia();
+        ProjectItem* getMediaById(int id);
     private:
         ProjectSettings settings;
         MediaArray projectMedia;
+        
 };

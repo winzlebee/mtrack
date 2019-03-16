@@ -2,14 +2,18 @@
 
 #include "project.h"
 
-bool Project::importMedia(std::unique_ptr<ProjectItem> media) {
+int Project::importMedia(std::unique_ptr<ProjectItem> media) {
     // Add the media to the project
     projectMedia.push_back(std::move(media));
-    return true;
+    return projectMedia.size() - 1;
 }
 
 ProjectItem* Project::getSelectedMedia() {
     return projectMedia.front().get();
+}
+
+ProjectItem* Project::getMediaById(int id) {
+    return projectMedia.at(id).get();
 }
 
 bool Project::hasMedia() {

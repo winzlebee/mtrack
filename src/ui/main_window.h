@@ -18,6 +18,7 @@ class MainWindow : public Gtk::ApplicationWindow {
     protected:
         // Signal Handlers for the main window menu
         void on_import_media();
+        void on_media_icon_select(const Gtk::TreeModel::Path& path);
         void on_project_properties();
         void on_about();
 

@@ -31,8 +31,10 @@ MainWindow::MainWindow(BaseObjectType* window, const Glib::RefPtr<Gtk::Builder> 
   // Set up models
   m_mediaListStore = Gtk::ListStore::create(m_mediaModel);
   m_mediaItems->set_model(m_mediaListStore);
-  m_mediaItems->set_text_column(0);
-  m_mediaItems->set_pixbuf_column(1);
+  m_mediaItems->set_text_column(1);
+  m_mediaItems->set_pixbuf_column(2);
+
+  m_mediaItems->signal_item_activated().connect(sigc::mem_fun(*this, &MainWindow::on_media_icon_select));
 
   Gtk::MenuItem *m_quitBtn;
   m_builder->get_widget("quitBtn", m_quitBtn);
@@ -88,6 +90,19 @@ void MainWindow::on_playback_status_changed(bool playing) {
   } else {
     m_playBtn->set_stock_id(Gtk::Stock::MEDIA_PAUSE);
   }
+}
+
+void MainWindow::on_media_icon_select(const Gtk::TreeModel::Path& path) {
+  // Get the project ID of the media that was selected
+  Gtk::TreeModel::iterator iter = m_mediaItems->get_model()->get_iter(path);
+  Gtk::TreeModel::Row selectedRow = *iter;
+  int itemId = selectedRow[m_mediaModel.m_col_id];
+
+  m_contextManager->render_media(m_project->getMediaById(itemId));
+
+  m_playbackManager->clearSource();
+  m_playbackSource = std::make_unique<MediaPlaybackSource>(m_project->getMediaById(itemId), m_contextManager);
+  m_playbackManager->setSource(m_playbackSource.get());
 }
 
 void MainWindow::on_playback_source_change(bool loaded) {
@@ -170,7 +185,8 @@ void MainWindow::on_import_media() {
       m_playbackSource = std::make_unique<MediaPlaybackSource>(item.get(), m_contextManager);
       m_playbackManager->setSource(m_playbackSource.get());
 
-      m_project->importMedia(std::move(item));
+      int mediaIndex = m_project->importMedia(std::move(item));
+      newRow[m_mediaModel.m_col_id] = mediaIndex;
     } else {
       Gtk::MessageDialog unableToOpenMsg(*this, "Invalid media file");
       unableToOpenMsg.set_secondary_text(dialog.get_file()->get_basename() + " is not a valid media file.");
