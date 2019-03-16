@@ -32,6 +32,7 @@ MainWindow::MainWindow(BaseObjectType* window, const Glib::RefPtr<Gtk::Builder> 
   m_mediaListStore = Gtk::ListStore::create(m_mediaModel);
   m_mediaItems->set_model(m_mediaListStore);
   m_mediaItems->set_text_column(0);
+  m_mediaItems->set_pixbuf_column(1);
 
   Gtk::MenuItem *m_quitBtn;
   m_builder->get_widget("quitBtn", m_quitBtn);
@@ -161,12 +162,13 @@ void MainWindow::on_import_media() {
       Gtk::TreeModel::iterator modelit = m_mediaListStore->append();
       Gtk::TreeModel::Row newRow = *modelit;
       newRow[m_mediaModel.m_col_name] = item->getName();
+      newRow[m_mediaModel.m_col_icon] = item->get_pixbuf();
 
       m_contextManager->render_media(item.get());
 
-	  m_playbackManager->clearSource();
-	  m_playbackSource = std::make_unique<MediaPlaybackSource>(item.get(), m_contextManager);
-	  m_playbackManager->setSource(m_playbackSource.get());
+      m_playbackManager->clearSource();
+      m_playbackSource = std::make_unique<MediaPlaybackSource>(item.get(), m_contextManager);
+      m_playbackManager->setSource(m_playbackSource.get());
 
       m_project->importMedia(std::move(item));
     } else {

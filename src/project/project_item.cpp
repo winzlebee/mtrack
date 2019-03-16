@@ -1,6 +1,7 @@
 
 #include <GL/glew.h>
 #include <GL/gl.h>
+#include <gtkmm.h>
 
 #include "project_item.h"
 
@@ -32,6 +33,10 @@ bool VideoItem::set_next_frame(int frame) {
 	if (frame > get_num_frames() || frame < 0) return false;
 	video->set(cv::CAP_PROP_POS_FRAMES, frame);
 	return true;
+}
+
+Glib::RefPtr<Gdk::Pixbuf> VideoItem::get_pixbuf() {
+    return this->m_pixelBuffer;
 }
 
 bool VideoItem::load_next_frame(ContextManager *context) {
@@ -66,6 +71,16 @@ void VideoItem::load_media(std::string file_name, ContextManager *context) {
 
     // Make sure we're using the correct drawing context before allocating textures
     context->make_current();
+
+    // Load the first frame into the pixbuf
+    cv::Mat pixbufImageFrame;
+    cv::cvtColor(imageFrame, pixbufImageFrame, cv::COLOR_BGR2RGB);
+    auto imgSize = pixbufImageFrame.size();
+    m_pixelBuffer = Gdk::Pixbuf::create_from_data(pixbufImageFrame.data, Gdk::Colorspace::COLORSPACE_RGB,
+                                                  FALSE, 8, imgSize.width, imgSize.height,
+                                                  pixbufImageFrame.step);
+
+    m_pixelBuffer = m_pixelBuffer->scale_simple(64, 64, Gdk::InterpType::INTERP_BILINEAR);
     
     // Flip the image, as OpenGL coordinates start at the bottom
     cv::flip(imageFrame, imageFrame, 0);

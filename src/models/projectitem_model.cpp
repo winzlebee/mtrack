@@ -2,4 +2,5 @@
 
 ProjectItemModel::ProjectItemModel() {
     add(m_col_name);
+    add(m_col_icon);
 }

@@ -37,7 +37,7 @@ target_link_libraries(mtrack GLEW::GLEW)
 target_link_libraries(mtrack ${GTKMM_LIBRARIES})
 
 # Only include VideoIO and core at the moment
-target_link_libraries(mtrack opencv_core opencv_videoio)
+target_link_libraries(mtrack opencv_core opencv_videoio opencv_imgproc)
 
 # Copy the resources to a resource folder in the build directory
 add_custom_command(TARGET mtrack PRE_BUILD

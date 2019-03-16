@@ -63,7 +63,6 @@ void PlaybackManager::next() {
 	m_source->advanceFrame();
 	this->playing = false;
 	m_signal_playback.emit(false);
-	std::cout << m_source->getCurrentFrame() << std::endl;
 }
 
 void PlaybackManager::prev() {

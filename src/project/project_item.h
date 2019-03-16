@@ -1,5 +1,6 @@
 #include <memory>
 #include <string>
+#include <gtkmm.h>
 #include <opencv2/opencv.hpp>
 
 #ifndef project_item_h
@@ -18,6 +19,7 @@ class ProjectItem {
 		virtual double get_frame_rate() = 0;
 		virtual double get_current_time_ms() = 0;
 		virtual int get_current_frame() = 0;
+		virtual Glib::RefPtr<Gdk::Pixbuf> get_pixbuf() = 0;
 
 		// Manipulators
 		virtual bool set_next_frame(int frame) = 0;
@@ -39,6 +41,7 @@ class VideoItem : public ProjectItem {
 		double get_frame_rate();
 		double get_current_time_ms();
 		int get_current_frame();
+		Glib::RefPtr<Gdk::Pixbuf> get_pixbuf();
 
 		// Set the frame to be loaded next time load_next_frame is called. Should be immediately preceded by load_next_frame.
 		bool set_next_frame(int frame);
@@ -51,6 +54,7 @@ class VideoItem : public ProjectItem {
 
     private:
         std::unique_ptr<cv::VideoCapture> video;
+		Glib::RefPtr<Gdk::Pixbuf> m_pixelBuffer;
         bool loaded = false;
         unsigned int texture_id = 0;
 };
