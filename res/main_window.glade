@@ -522,6 +522,7 @@
                 <property name="wide_handle">True</property>
                 <child>
                   <object class="GtkNotebook">
+                    <property name="width_request">100</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <child>
@@ -535,6 +536,9 @@
                         <property name="reorderable">True</property>
                         <property name="item_padding">2</property>
                       </object>
+                      <packing>
+                        <property name="tab_fill">False</property>
+                      </packing>
                     </child>
                     <child type="tab">
                       <object class="GtkLabel">
@@ -590,7 +594,7 @@
                     </child>
                   </object>
                   <packing>
-                    <property name="resize">True</property>
+                    <property name="resize">False</property>
                     <property name="shrink">False</property>
                   </packing>
                 </child>
@@ -601,7 +605,6 @@
                     <property name="orientation">vertical</property>
                     <child>
                       <object class="GtkGLArea" id="display_area">
-                        <property name="width_request">400</property>
                         <property name="visible">True</property>
                         <property name="app_paintable">True</property>
                         <property name="can_focus">False</property>
@@ -705,7 +708,7 @@
                   </object>
                   <packing>
                     <property name="resize">True</property>
-                    <property name="shrink">True</property>
+                    <property name="shrink">False</property>
                   </packing>
                 </child>
               </object>

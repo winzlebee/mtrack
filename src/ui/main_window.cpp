@@ -163,6 +163,8 @@ void MainWindow::on_import_media() {
   dialog.add_button("_Cancel", Gtk::RESPONSE_CANCEL);
   dialog.add_button("_Import", Gtk::RESPONSE_OK);
 
+  //On windows, the thread isn't stopped, so we make sure it does.
+  if (m_playbackManager->hasSource()) m_playbackManager->stop(); 
   int result = dialog.run();
   
   if (result == Gtk::RESPONSE_OK) {

@@ -12,6 +12,7 @@ public:
 	PlaybackManager(PlaybackSource *source);
 
 	bool isPlaying();
+	bool hasSource();
 
 	void play();
 	void pause();
@@ -38,6 +39,7 @@ private:
 	bool playing = false;
 	int timerId = 0;
 	bool loop = false;
+	bool source_loaded = false;
 };
 
 #endif

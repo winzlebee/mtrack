@@ -25,6 +25,9 @@ void PlaybackManager::setSource(PlaybackSource *src) {
 	m_update_connection = Glib::signal_timeout().connect(update_slot, timeBetweenFrames);
 
 	m_signal_source_changed.emit(true);
+	m_signal_playback.emit(false);
+
+	source_loaded = true;
 }
 
 sigc::signal<void, bool> PlaybackManager::signal_source_changed() {
@@ -38,11 +41,17 @@ sigc::signal<void, bool> PlaybackManager::signal_playback() {
 void PlaybackManager::clearSource() {
 	m_source = nullptr;
 	this->playing = false;
+
+	source_loaded = false;
 	m_signal_source_changed.emit(false);
 }
 
 bool PlaybackManager::isPlaying() {
 	return this->playing;
+}
+
+bool PlaybackManager::hasSource() {
+	return this->source_loaded;
 }
 
 void PlaybackManager::play() {

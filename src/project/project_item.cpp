@@ -48,6 +48,10 @@ bool VideoItem::load_next_frame(ContextManager *context) {
 	cv::flip(newImageFrame, newImageFrame, 0);
 
 	context->make_current();
+
+	glPixelStorei(GL_UNPACK_ALIGNMENT, (newImageFrame.step & 3) ? 1 : 4);
+	glPixelStorei(GL_UNPACK_ROW_LENGTH, newImageFrame.step / newImageFrame.elemSize());
+
 	glBindTexture(GL_TEXTURE_2D, texture_id);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, newImageFrame.cols, newImageFrame.rows, 0, GL_BGR, GL_UNSIGNED_BYTE, newImageFrame.data);
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -80,7 +84,8 @@ void VideoItem::load_media(std::string file_name, ContextManager *context) {
                                                   FALSE, 8, imgSize.width, imgSize.height,
                                                   pixbufImageFrame.step);
 
-    m_pixelBuffer = m_pixelBuffer->scale_simple(64, 64, Gdk::InterpType::INTERP_BILINEAR);
+	int tileSize = 64;
+    m_pixelBuffer = m_pixelBuffer->scale_simple(tileSize, ((double) m_pixelBuffer->get_height()/m_pixelBuffer->get_width())*tileSize, Gdk::InterpType::INTERP_BILINEAR);
     
     // Flip the image, as OpenGL coordinates start at the bottom
     cv::flip(imageFrame, imageFrame, 0);
