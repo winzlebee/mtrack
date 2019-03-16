@@ -528,9 +528,12 @@
                       <object class="GtkIconView" id="mediaIconView">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="margin">6</property>
+                        <property name="margin">4</property>
                         <property name="columns">2</property>
+                        <property name="row_spacing">4</property>
+                        <property name="column_spacing">4</property>
                         <property name="reorderable">True</property>
+                        <property name="item_padding">2</property>
                       </object>
                     </child>
                     <child type="tab">

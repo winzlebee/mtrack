@@ -20,7 +20,9 @@ void PlaybackManager::setSource(PlaybackSource *src) {
 	std::cout << "Time per frame: " << timeBetweenFrames << std::endl;
 	std::cout << "Realised frame rate: " << 1000.0/timeBetweenFrames << std::endl;
 
-	m_update_connection = Glib::signal_timeout().connect(sigc::mem_fun(*this, &PlaybackManager::update), timeBetweenFrames);
+	timerId++;
+	sigc::slot<bool> update_slot = sigc::bind(sigc::mem_fun(*this, &PlaybackManager::update), timerId);
+	m_update_connection = Glib::signal_timeout().connect(update_slot, timeBetweenFrames);
 
 	m_signal_source_changed.emit(true);
 }
@@ -95,7 +97,11 @@ void PlaybackManager::setLoop(bool setLoop) {
 	this->loop = setLoop;
 }
 
-bool PlaybackManager::update() {
+bool PlaybackManager::update(int id) {
+	if (id < this->timerId) {
+		// Rogue timer from previous playback instance
+		return false;
+	}
 	if (this->playing) {
 		if (!m_source->advanceFrame()) {
 			gotoFrame(0);

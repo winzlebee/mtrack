@@ -31,11 +31,12 @@ protected:
 	sigc::signal<void, bool> m_signal_source_changed;
 	sigc::signal<void, bool> m_signal_playback;
 private:
-	bool update();
+	bool update(int id);
 	PlaybackSource *m_source;
 
 	sigc::connection m_update_connection;
 	bool playing = false;
+	int timerId = 0;
 	bool loop = false;
 };
 
