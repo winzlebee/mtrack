@@ -19,7 +19,7 @@ void PlaybackManager::setSource(PlaybackSource *src) {
 	std::cout << "Frame Rate: " << m_source->getFrameRate() << std::endl;
 	std::cout << "Time per frame: " << timeBetweenFrames << std::endl;
 	std::cout << "Realised frame rate: " << 1000.0/timeBetweenFrames << std::endl;
-
+	
 	timerId++;
 	sigc::slot<bool> update_slot = sigc::bind(sigc::mem_fun(*this, &PlaybackManager::update), timerId);
 	m_update_connection = Glib::signal_timeout().connect(update_slot, timeBetweenFrames);
