@@ -39,11 +39,20 @@ bool TimelineWidget::on_draw(const Cairo::RefPtr<Cairo::Context> &cr) {
     cr->stroke();
 
     // Draw a line at the current frame position on the timeline.
+    int markerPosition = getXFromFrame(m_currentFrame);
     cr->set_line_width(2.0);
     cr->set_source_rgb(1.0, 0.2, 0.0);
-    cr->move_to(getXFromFrame(m_currentFrame), start_y);
-    cr->line_to(getXFromFrame(m_currentFrame), start_y + height);
+    cr->move_to(markerPosition, start_y);
+    cr->line_to(markerPosition, start_y + height);
     cr->stroke();
+
+    // Draw an arrow for the line that sits above the timeline
+    int arrow_size = 20;
+    cr->set_source_rgb(0.0, 0.5, 0.5);
+    cr->move_to(markerPosition-(arrow_size/2), start_y);
+    cr->line_to(markerPosition+(arrow_size/2), start_y);
+    cr->line_to(markerPosition, start_y + arrow_size);
+    cr->fill();
 
     cr->restore();
     return true;
@@ -55,7 +64,6 @@ bool TimelineWidget::onClick(GdkEventButton *event) {
 	{
         // Set the current position of the play marker
         m_currentFrame = getFrameFromX(event->x);
-        std::cout << m_currentFrame << std::endl;
         queue_draw();
 		return true;
     }
@@ -64,7 +72,7 @@ bool TimelineWidget::onClick(GdkEventButton *event) {
 
 void TimelineWidget::onAllocate(Gtk::Allocation &alloc) {
     // All things that need dynamic sizing go here
-    
+
 }
 
 int TimelineWidget::getFrameFromX(int xpos) {
