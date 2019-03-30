@@ -28,6 +28,9 @@ MainWindow::MainWindow(BaseObjectType* window, const Glib::RefPtr<Gtk::Builder> 
   m_builder->get_widget("stopBtn", m_stopBtn);
   m_builder->get_widget("playbackWidget", m_playbackWidget);
 
+  // Timeline widget
+  m_builder->get_widget_derived("timelineDrawingArea", m_timeline, m_project.get());
+
   // Set up models
   m_mediaListStore = Gtk::ListStore::create(m_mediaModel);
   m_mediaItems->set_model(m_mediaListStore);

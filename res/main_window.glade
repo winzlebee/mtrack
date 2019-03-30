@@ -305,7 +305,7 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="orientation">vertical</property>
-            <property name="position">400</property>
+            <property name="position">350</property>
             <property name="wide_handle">True</property>
             <child>
               <object class="GtkPaned">
@@ -511,7 +511,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkDrawingArea">
+              <object class="GtkDrawingArea" id="timelineDrawingArea">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
               </object>

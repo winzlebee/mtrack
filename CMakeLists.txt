@@ -24,6 +24,7 @@ add_executable(mtrack
     src/main.cpp
     src/render/cmanager.cpp
     src/ui/main_window.cpp
+    src/ui/timeline_widget.cpp
     src/project/project.cpp
     src/project/project_item.cpp
     src/models/projectitem_model.cpp
