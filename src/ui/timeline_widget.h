@@ -21,8 +21,15 @@ class TimelineWidget : public Gtk::DrawingArea {
         bool on_draw(const Cairo::RefPtr<Cairo::Context> &cr) override;
         
         Project *m_project;
+    private:
+        bool onClick(GdkEventButton *event);
+        void onAllocate(Gtk::Allocation &alloc);
 
-        int m_scale;
+        int getFrameFromX(int xpos);
+        int getXFromFrame(int frame);
+
+        int m_separatorPosition;
+        int m_currentFrame;
 };  
 
 

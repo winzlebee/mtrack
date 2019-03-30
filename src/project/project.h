@@ -13,6 +13,7 @@ struct ProjectSettings {
     double hResolution = 1280.0;
     double vResolution = 720.0;
     double fRate = 25.0;
+    int length = 250;
     Gdk::RGBA color;
 };
 
