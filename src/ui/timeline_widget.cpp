@@ -63,8 +63,8 @@ bool TimelineWidget::onClick(GdkEventButton *event) {
 }
 
 void TimelineWidget::onAllocate(Gtk::Allocation &alloc) {
-    // TODO: Remove from static allocation and allow dynamic resizing
-    m_separatorPosition = alloc.get_width()/4;
+    // All things that need dynamic sizing go here
+    
 }
 
 int TimelineWidget::getFrameFromX(int xpos) {
