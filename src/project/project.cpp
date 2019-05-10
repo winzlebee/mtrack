@@ -8,8 +8,15 @@ int Project::importMedia(std::unique_ptr<ProjectItem> media) {
     return projectMedia.size() - 1;
 }
 
+void Project::setSelectedMedia(int id) {
+    selectedMedia = id;
+}
+
 ProjectItem* Project::getSelectedMedia() {
-    return projectMedia.front().get();
+    if (projectMedia.size() > 0) {
+        return getMediaById(selectedMedia);
+    }
+    return nullptr;
 }
 
 ProjectItem* Project::getMediaById(int id) {

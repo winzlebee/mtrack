@@ -28,8 +28,10 @@ class Project {
         int importMedia(std::unique_ptr<ProjectItem> media);
         bool hasMedia();
         ProjectItem* getSelectedMedia();
+        void setSelectedMedia(int id);
         ProjectItem* getMediaById(int id);
     private:
+        int selectedMedia = 0;
         ProjectSettings settings;
         MediaArray projectMedia;
         

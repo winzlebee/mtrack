@@ -38,6 +38,10 @@ MainWindow::MainWindow(BaseObjectType* window, const Glib::RefPtr<Gtk::Builder> 
   m_mediaItems->set_pixbuf_column(2);
 
   m_mediaItems->signal_item_activated().connect(sigc::mem_fun(*this, &MainWindow::on_media_icon_select));
+  m_mediaItems->signal_drag_data_get().connect(sigc::mem_fun(*this, &MainWindow::on_media_drag_drop));
+
+  // Set the media items list as a drag source
+  this->setup_drag_drop();
 
   Gtk::MenuItem *m_quitBtn;
   m_builder->get_widget("quitBtn", m_quitBtn);
@@ -55,6 +59,28 @@ MainWindow::MainWindow(BaseObjectType* window, const Glib::RefPtr<Gtk::Builder> 
   m_playBtn->signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::on_play));
   m_stopBtn->signal_clicked().connect(sigc::mem_fun(*this, &MainWindow::on_stop));
   
+}
+
+void MainWindow::setup_drag_drop() {
+  // Construct an array of targets for the particular drag targets that are supported
+  std::vector<Gtk::TargetEntry> dragTargets;
+  dragTargets.push_back(Gtk::TargetEntry("PROJECT_ITEM"));
+
+  //m_mediaItems->drag_source_set(dragTargets);
+  m_mediaItems->enable_model_drag_source(dragTargets);
+  m_timeline->drag_dest_set(dragTargets);
+}
+
+void MainWindow::on_media_drag_drop(const Glib::RefPtr<Gdk::DragContext>& context, Gtk::SelectionData& selection_data, guint info, guint time) {
+  // Pass a pointer
+  Gtk::TreePath dragLoc;
+  m_mediaItems->get_drag_dest_item(dragLoc);
+  
+  int mediaIndex = get_media_from_path(dragLoc);
+  m_timeline->setCurrentDragMedia(mediaIndex);
+
+  // Send drag data, for the benefit of other programs accepting drags
+  selection_data.set(selection_data.get_target(), 8, (const guchar*) m_project->getMediaById(mediaIndex)->getName().c_str(), m_project->getMediaById(mediaIndex)->getName().size());
 }
 
 // Playback widget
@@ -95,17 +121,23 @@ void MainWindow::on_playback_status_changed(bool playing) {
   }
 }
 
-void MainWindow::on_media_icon_select(const Gtk::TreeModel::Path& path) {
-  // Get the project ID of the media that was selected
+int MainWindow::get_media_from_path(const Gtk::TreeModel::Path& path) {
   Gtk::TreeModel::iterator iter = m_mediaItems->get_model()->get_iter(path);
   Gtk::TreeModel::Row selectedRow = *iter;
-  int itemId = selectedRow[m_mediaModel.m_col_id];
+  return selectedRow[m_mediaModel.m_col_id];
+}
+
+void MainWindow::on_media_icon_select(const Gtk::TreeModel::Path& path) {
+  // Get the project ID of the media that was selected
+  int itemId = get_media_from_path(path);
 
   m_contextManager->render_media(m_project->getMediaById(itemId));
 
   m_playbackManager->clearSource();
   m_playbackSource = std::make_unique<MediaPlaybackSource>(m_project->getMediaById(itemId), m_contextManager);
   m_playbackManager->setSource(m_playbackSource.get());
+
+  m_project->setSelectedMedia(itemId);
 }
 
 void MainWindow::on_playback_source_change(bool loaded) {

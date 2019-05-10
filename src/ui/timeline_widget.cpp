@@ -2,6 +2,7 @@
 #include "../project/project.h"
 
 #include <algorithm>
+#include <vector>
 #include <iostream>
 
 TimelineWidget::TimelineWidget(BaseObjectType *drawingArea, Glib::RefPtr<Gtk::Builder> &gladeRef, Project *project) : 
@@ -13,6 +14,8 @@ TimelineWidget::TimelineWidget(BaseObjectType *drawingArea, Glib::RefPtr<Gtk::Bu
     m_currentFrame = 0;
     this->signal_button_press_event().connect(sigc::mem_fun(*this, &TimelineWidget::onClick));
     this->signal_size_allocate().connect(sigc::mem_fun(*this, &TimelineWidget::onAllocate));
+    this->signal_drag_data_received().connect(sigc::mem_fun(*this, &TimelineWidget::onDragRecieved));
+    this->signal_drag_motion().connect(sigc::mem_fun(*this, &TimelineWidget::onDragMotion));
 
     m_separatorPosition = get_allocated_width() / 4;
 }
@@ -54,6 +57,17 @@ bool TimelineWidget::on_draw(const Cairo::RefPtr<Cairo::Context> &cr) {
     cr->line_to(markerPosition, start_y + arrow_size);
     cr->fill();
 
+    // Draw a clip that is currently being added to the timeline
+    if (m_currentMediaDrag > 0) {
+        cr->set_source_rgb(0.0, 0.0, 0.0);
+        cr->move_to(m_dragLoc.x, m_dragLoc.y);
+        // TODO: Replace 48 with length in frames, calculated. Replace 12 with desired zoom height
+        cr->line_to(m_dragLoc.x + 48, m_dragLoc.y);
+        cr->line_to(m_dragLoc.x + 48, m_dragLoc.y-12);
+        cr->line_to(m_dragLoc.x, m_dragLoc.y-12);
+        cr->close_path();
+    }
+
     cr->restore();
     return true;
 }
@@ -70,9 +84,44 @@ bool TimelineWidget::onClick(GdkEventButton *event) {
     return false;
 }
 
+void TimelineWidget::onDragRecieved(const Glib::RefPtr<Gdk::DragContext> &context, int x, int y,
+                                    const Gtk::SelectionData &selection_data, guint info, guint time)
+{
+    if (selection_data.get_length() <= 0) {
+        context->drag_finish(false, false, time);
+        return;
+    }
+
+    if (selection_data.get_target() == "PROJECT_ITEM") {
+        assert(m_currentMediaDrag >= 0);
+
+        // Cast the data to the underlying ProjectItem
+        ProjectItem *draggedItem = m_project->getMediaById(m_currentMediaDrag);
+        std::cout << "Dragged Item:" << draggedItem->getName() << std::endl;
+
+        m_currentMediaDrag = -1;
+    }
+
+    context->drag_finish(true, false, time);
+}
+
+bool TimelineWidget::onDragMotion(const Glib::RefPtr<Gdk::DragContext> &context, int x, int y, guint time) {
+    // TODO: Place the marker on the timeline dependently
+    this->drag_highlight();
+    m_dragLoc.x = x;
+    m_dragLoc.y = y;
+
+    queue_draw();
+
+    return true;
+}
+
+void TimelineWidget::setCurrentDragMedia(int media) {
+    m_currentMediaDrag = media;
+}
+
 void TimelineWidget::onAllocate(Gtk::Allocation &alloc) {
     // All things that need dynamic sizing go here
-
 }
 
 int TimelineWidget::getFrameFromX(int xpos) {

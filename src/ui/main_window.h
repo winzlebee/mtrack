@@ -16,6 +16,10 @@ class MainWindow : public Gtk::ApplicationWindow {
     public:
         MainWindow(BaseObjectType* window, const Glib::RefPtr<Gtk::Builder> &gladeRef);
         virtual ~MainWindow();
+    private:
+        void setup_drag_drop();
+        int get_media_from_path(const Gtk::TreeModel::Path& path);
+        void on_media_drag_drop(const Glib::RefPtr<Gdk::DragContext>& context, Gtk::SelectionData& selection_data, guint info, guint time);
     protected:
         // Signal Handlers for the main window menu
         void on_import_media();
