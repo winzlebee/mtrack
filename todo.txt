@@ -1,4 +1,5 @@
 TODO:
+- Timeline Widget
 - Dialog to change perspective
 - Obj import
 - Video import & trackbar

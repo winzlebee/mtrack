@@ -8,6 +8,7 @@
 #include "../playback/playback_manager.h"
 #include "../playback/playback_source.h"
 #include "../models/projectitem_model.h"
+#include "timeline_widget.h"
 
 class Project;
 
@@ -39,6 +40,7 @@ class MainWindow : public Gtk::ApplicationWindow {
         // ContextManager handles the link between the UI and drawing to the screen
         // ContextManager class will be destructed automatically when the UI is destroyed
         ContextManager *m_contextManager;
+        TimelineWidget *m_timeline;
 		std::unique_ptr<PlaybackManager> m_playbackManager;
 		std::unique_ptr<PlaybackSource> m_playbackSource;
 
