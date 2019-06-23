@@ -14,7 +14,7 @@ TimelineWidget::TimelineWidget(BaseObjectType *drawingArea, Glib::RefPtr<Gtk::Bu
     m_currentFrame = 0;
     this->signal_button_press_event().connect(sigc::mem_fun(*this, &TimelineWidget::onClick));
     this->signal_size_allocate().connect(sigc::mem_fun(*this, &TimelineWidget::onAllocate));
-    this->signal_drag_data_received().connect(sigc::mem_fun(*this, &TimelineWidget::onDragRecieved));
+    this->signal_drag_data_received().connect(sigc::mem_fun(*this, &TimelineWidget::onDragReceived));
     this->signal_drag_motion().connect(sigc::mem_fun(*this, &TimelineWidget::onDragMotion));
 
     m_separatorPosition = get_allocated_width() / 4;
@@ -84,7 +84,7 @@ bool TimelineWidget::onClick(GdkEventButton *event) {
     return false;
 }
 
-void TimelineWidget::onDragRecieved(const Glib::RefPtr<Gdk::DragContext> &context, int x, int y,
+void TimelineWidget::onDragReceived(const Glib::RefPtr<Gdk::DragContext> &context, int x, int y,
                                     const Gtk::SelectionData &selection_data, guint info, guint time)
 {
     if (selection_data.get_length() <= 0) {

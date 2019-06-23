@@ -73,8 +73,7 @@ void MainWindow::setup_drag_drop() {
 
 void MainWindow::on_media_drag_drop(const Glib::RefPtr<Gdk::DragContext>& context, Gtk::SelectionData& selection_data, guint info, guint time) {
   // Pass a pointer
-  Gtk::TreePath dragLoc;
-  m_mediaItems->get_drag_dest_item(dragLoc);
+  Gtk::TreePath dragLoc = m_mediaItems->get_selected_items().front();
   
   int mediaIndex = get_media_from_path(dragLoc);
   m_timeline->setCurrentDragMedia(mediaIndex);

@@ -34,7 +34,7 @@ class TimelineWidget : public Gtk::DrawingArea {
 
         bool onClick(GdkEventButton *event);
         void onAllocate(Gtk::Allocation &alloc);
-        void onDragRecieved(const Glib::RefPtr<Gdk::DragContext> &context, int x, int y,
+        void onDragReceived(const Glib::RefPtr<Gdk::DragContext> &context, int x, int y,
                             const Gtk::SelectionData &selection_data, guint info, guint time);
         bool onDragMotion(const Glib::RefPtr<Gdk::DragContext> &context, int x, int y, guint time); 	
 
