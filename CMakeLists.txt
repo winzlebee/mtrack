@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 2.8)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 project(mtrack)
 
+find_package(PkgConfig REQUIRED)
+
 # Use the package PkgConfig to detect GTK+ headers/library files
 # Also import OpenCV to use for vision
 find_package(OpenGL REQUIRED)

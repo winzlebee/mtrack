@@ -5,4 +5,4 @@
 class ImportClipCommand : public UndoCommand
 {
 
-}
+};
