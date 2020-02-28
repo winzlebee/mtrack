@@ -13,6 +13,10 @@ std::string ProjectItem::getName() {
     return m_name;
 }
 
+VideoItem::~VideoItem() {
+
+}
+
 int VideoItem::get_num_frames() {
 	return video->get(cv::CAP_PROP_FRAME_COUNT);
 }

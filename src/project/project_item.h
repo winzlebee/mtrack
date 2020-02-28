@@ -1,7 +1,6 @@
 #include <memory>
 #include <string>
 #include <gtkmm.h>
-#include <opencv2/opencv.hpp>
 
 #ifndef project_item_h
 #define project_item_h
@@ -11,6 +10,7 @@
 class ProjectItem {
     public:
         ProjectItem(std::string name);
+		virtual ~ProjectItem() = 0;
 
 		// Getters
 		virtual bool isLoaded() = 0;
@@ -33,6 +33,7 @@ class ProjectItem {
 class VideoItem : public ProjectItem {
     public:
         VideoItem(std::string name) : ProjectItem(name) {};
+		~VideoItem() override;
         
 		// Video utility functions for use with other contexts
 		bool isLoaded();

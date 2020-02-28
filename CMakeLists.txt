@@ -1,6 +1,7 @@
 # Set the minimum version of cmake required to build this project	
 cmake_minimum_required(VERSION 2.8)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/res/cmake)
 project(mtrack)
 
 find_package(PkgConfig REQUIRED)
@@ -10,6 +11,8 @@ find_package(PkgConfig REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(OpenCV REQUIRED)
 find_package(GLEW 2.0 REQUIRED)
+find_package(avutil REQUIRED)
+find_package(avcodec REQUIRED)
 
 pkg_check_modules(GTKMM REQUIRED gtkmm-3.0)
 # Setup CMake to use GTK+, tell the compiler where to look for headers
@@ -18,7 +21,12 @@ include_directories(${OPENGL_INCLUDE_DIRS})
 include_directories(${GLEW_INCLUDE_DIRS})
 include_directories(${GTKMM_INCLUDE_DIRS})
 include_directories(${CMAKE_SOURCE_DIR}/src)
+include_directories(${AVUTIL_INCLUDE_DIR})
+include_directories(${AVCODEC_INCLUDE_DIR})
+
 link_directories(${GTKMM_LIBRARY_DIRS})
+link_directories(${AVUTIL_LIBRARY})
+link_directories(${AVCODEC_LIBRARY})
 
 # Add the executables
 add_executable(mtrack 
