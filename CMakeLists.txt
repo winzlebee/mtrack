@@ -5,7 +5,6 @@ project(mtrack)
 
 # Use the package PkgConfig to detect GTK+ headers/library files
 # Also import OpenCV to use for vision
-find_package(PkgConfig REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(OpenCV REQUIRED)
 find_package(GLEW 2.0 REQUIRED)
@@ -22,6 +21,8 @@ link_directories(${GTKMM_LIBRARY_DIRS})
 # Add the executables
 add_executable(mtrack 
     src/main.cpp
+    src/commands/undo_command.cpp
+    src/commands/import_clip_command.cpp
     src/render/cmanager.cpp
     src/ui/main_window.cpp
     src/ui/timeline_widget.cpp
