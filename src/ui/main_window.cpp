@@ -206,7 +206,8 @@ void MainWindow::on_import_media() {
     std::unique_ptr<ProjectItem> item = std::make_unique<VideoItem>(dialog.get_file()->get_basename());
 
     // Load the texture assosciated with the media file into the context manager
-    item->load_media(dialog.get_filename(), m_contextManager);
+    std::string loadError;
+    item->load_media(dialog.get_filename(), m_contextManager, loadError);
 
     // Render the first frame of the item using the contextmanager. TODO: Create custom playback widget and set there
     if (item->isLoaded()) {
@@ -224,8 +225,8 @@ void MainWindow::on_import_media() {
       int mediaIndex = m_project->importMedia(std::move(item));
       newRow[m_mediaModel.m_col_id] = mediaIndex;
     } else {
-      Gtk::MessageDialog unableToOpenMsg(*this, "Invalid media file");
-      unableToOpenMsg.set_secondary_text(dialog.get_file()->get_basename() + " is not a valid media file.");
+      Gtk::MessageDialog unableToOpenMsg(*this, "Error loading media file");
+      unableToOpenMsg.set_secondary_text(loadError);
       unableToOpenMsg.run();
     }
   }

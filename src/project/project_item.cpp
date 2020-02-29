@@ -115,6 +115,7 @@ bool VideoItem::load_media(std::string file_name, ContextManager *context, std::
     glBindTexture( GL_TEXTURE_2D, 0 );
     
     this->loaded = true;
+    return true;
 }
 
 const unsigned int VideoItem::getTexId() {

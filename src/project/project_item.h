@@ -26,7 +26,7 @@ class ProjectItem {
 		// Manipulators
 		virtual bool set_next_frame(int frame) = 0;
 		virtual bool load_next_frame(ContextManager *context) = 0;
-        virtual void load_media(std::string file_name, ContextManager *context) {};
+        virtual bool load_media(std::string file_name, ContextManager *context, std::string &error) {};
         std::string getName();
     private:
         std::string m_name;
@@ -53,7 +53,7 @@ class VideoItem : public ProjectItem {
 		bool load_next_frame(ContextManager *context);
 
 		// Load the texture corresponding to the media into the specified context
-		bool load_media(std::string file_name, ContextManager *context, std::string &error);
+		bool load_media(std::string file_name, ContextManager *context, std::string &error) override;
 
     private:
 		// Internal clip management
