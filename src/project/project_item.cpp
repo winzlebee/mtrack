@@ -12,6 +12,8 @@ extern "C" {
 #include "project_item.h"
 #include "ffmpeg_video_clip.h"
 
+#include <iostream>
+
 ProjectItem::ProjectItem(std::string name) {
     this->m_name = name;
 }
@@ -57,11 +59,7 @@ Glib::RefPtr<Gdk::Pixbuf> VideoItem::get_pixbuf() {
 bool VideoItem::load_next_frame(ContextManager *context) {
 	m_clip->readNextFrame();
 
-
 	context->make_current();
-
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glPixelStorei(GL_UNPACK_ROW_LENGTH, m_clip->getFrame()->linesize[0]);
 
 	glBindTexture(GL_TEXTURE_2D, texture_id);
 	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_clip->getWidth(), m_clip->getHeight(), GL_RGB, GL_UNSIGNED_BYTE, m_clip->getFrame()->data[0]);
@@ -96,8 +94,9 @@ bool VideoItem::load_media(std::string file_name, ContextManager *context, std::
     m_pixelBuffer = m_pixelBuffer->scale_simple(tileSize, ((double) m_pixelBuffer->get_height()/m_pixelBuffer->get_width())*tileSize, Gdk::InterpType::INTERP_BILINEAR);
     
     // Set the pixel store state so it's compatable with OpenCV's image storing method
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-    glPixelStorei(GL_UNPACK_ROW_LENGTH, clipFrame->linesize[0]);
+    // glPixelStorei(GL_UNPACK_ROW_LENGTH, clipFrame->linesize[0]);
+
+    std::cout << clipFrame->linesize[0] << std::endl;
     
     // Store the VideoItem texture ID
     glGenTextures( 1, &texture_id);
@@ -109,7 +108,7 @@ bool VideoItem::load_media(std::string file_name, ContextManager *context, std::
     glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
     
     // Note that OpenCV uses BGR internally, so we use this in our call to glTexImage2D. This also allocates memory for downloading later textures
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_clip->getWidth(), m_clip->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, clipFrame->data[0]);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_clip->getWidth(), m_clip->getHeight(), clipFrame->linesize[0], GL_RGB, GL_UNSIGNED_BYTE, clipFrame->data[0]);
     
     // Unbind buffer to reset state
     glBindTexture( GL_TEXTURE_2D, 0 );

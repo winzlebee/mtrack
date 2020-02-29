@@ -86,10 +86,30 @@ bool FFmpegVideoClip::readNextFrame()
     struct SwsContext *sws_ctx = NULL;
     bool frameFinished;
     AVPacket packet;
+
+    AVPixelFormat pixFormat;
+    switch (pCodecCtx->pix_fmt) {
+    case AV_PIX_FMT_YUVJ420P :
+        pixFormat = AV_PIX_FMT_YUV420P;
+        break;
+    case AV_PIX_FMT_YUVJ422P  :
+        pixFormat = AV_PIX_FMT_YUV422P;
+        break;
+    case AV_PIX_FMT_YUVJ444P   :
+        pixFormat = AV_PIX_FMT_YUV444P;
+        break;
+    case AV_PIX_FMT_YUVJ440P :
+        pixFormat = AV_PIX_FMT_YUV440P;
+        break;
+    default:
+        pixFormat = pCodecCtx->pix_fmt;
+        break;
+    }
+
     // initialize SWS context for software scaling
     sws_ctx = sws_getContext(pCodecCtx->width,
         pCodecCtx->height,
-        pCodecCtx->pix_fmt,
+        pixFormat,
         pCodecCtx->width,
         pCodecCtx->height,
         AV_PIX_FMT_RGB24,
@@ -107,7 +127,7 @@ bool FFmpegVideoClip::readNextFrame()
                 // Convert the image from its native format to RGB
                 sws_scale(sws_ctx, (uint8_t const * const *)pFrame->data,
                 pFrame->linesize, 0, pCodecCtx->height,
-                pFrameRGB->data, pFrameRGB->linesize);
+                pFrameRGB->data, pFrameRGB->linesize);  
 
                 frameNumber++;
             }
@@ -116,12 +136,15 @@ bool FFmpegVideoClip::readNextFrame()
         // Free the packet that was allocated by av_read_frame
         av_free_packet(&packet); 
 
-        return true;
     }
 
+    sws_freeContext(sws_ctx);
 
-    seekTo(0);
-    return false;
+    if (!frameFinished) {
+        seekTo(0);
+    }
+
+    return frameFinished;
 }
 
 FFmpegVideoClip::FFmpegVideoClip(const std::string &filename) {
