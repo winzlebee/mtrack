@@ -190,6 +190,7 @@ void ContextManager::gl_init() {
         init_shaders();
         init_buffers();
         m_initialized = true;
+        on_resize(this->get_width(), this->get_height());
         std::cout << "Context initialized." << std::endl;
       }
       catch(const Gdk::GLError& gle)

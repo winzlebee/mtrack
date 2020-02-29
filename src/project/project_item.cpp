@@ -93,11 +93,6 @@ bool VideoItem::load_media(std::string file_name, ContextManager *context, std::
 	int tileSize = 64;
     m_pixelBuffer = m_pixelBuffer->scale_simple(tileSize, ((double) m_pixelBuffer->get_height()/m_pixelBuffer->get_width())*tileSize, Gdk::InterpType::INTERP_BILINEAR);
     
-    // Set the pixel store state so it's compatable with OpenCV's image storing method
-    // glPixelStorei(GL_UNPACK_ROW_LENGTH, clipFrame->linesize[0]);
-
-    std::cout << clipFrame->linesize[0] << std::endl;
-    
     // Store the VideoItem texture ID
     glGenTextures( 1, &texture_id);
     glBindTexture( GL_TEXTURE_2D, texture_id );
@@ -108,7 +103,7 @@ bool VideoItem::load_media(std::string file_name, ContextManager *context, std::
     glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
     
     // Note that OpenCV uses BGR internally, so we use this in our call to glTexImage2D. This also allocates memory for downloading later textures
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_clip->getWidth(), m_clip->getHeight(), clipFrame->linesize[0], GL_RGB, GL_UNSIGNED_BYTE, clipFrame->data[0]);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_clip->getWidth(), m_clip->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, clipFrame->data[0]);
     
     // Unbind buffer to reset state
     glBindTexture( GL_TEXTURE_2D, 0 );
