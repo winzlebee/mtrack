@@ -7,10 +7,12 @@
 
 #include "../render/cmanager.h"
 
+class FFmpegVideoClip;
+
 class ProjectItem {
     public:
         ProjectItem(std::string name);
-		virtual ~ProjectItem() = 0;
+		virtual ~ProjectItem();
 
 		// Getters
 		virtual bool isLoaded() = 0;
@@ -32,7 +34,7 @@ class ProjectItem {
 
 class VideoItem : public ProjectItem {
     public:
-        VideoItem(std::string name) : ProjectItem(name) {};
+        VideoItem(std::string name);
 		~VideoItem() override;
         
 		// Video utility functions for use with other contexts
@@ -51,10 +53,12 @@ class VideoItem : public ProjectItem {
 		bool load_next_frame(ContextManager *context);
 
 		// Load the texture corresponding to the media into the specified context
-		void load_media(std::string file_name, ContextManager *context);
+		bool load_media(std::string file_name, ContextManager *context, std::string &error);
 
     private:
-        std::unique_ptr<cv::VideoCapture> video;
+		// Internal clip management
+		std::unique_ptr<FFmpegVideoClip> m_clip;
+
 		Glib::RefPtr<Gdk::Pixbuf> m_pixelBuffer;
         bool loaded = false;
         unsigned int texture_id = 0;

@@ -93,8 +93,6 @@ void TimelineWidget::onDragReceived(const Glib::RefPtr<Gdk::DragContext> &contex
     }
 
     if (selection_data.get_target() == "PROJECT_ITEM") {
-        assert(m_currentMediaDrag >= 0);
-
         // Cast the data to the underlying ProjectItem
         ProjectItem *draggedItem = m_project->getMediaById(m_currentMediaDrag);
         std::cout << "Dragged Item:" << draggedItem->getName() << std::endl;
