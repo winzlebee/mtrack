@@ -15,7 +15,7 @@ extern "C" {
 
 bool FFmpegVideoClip::isLoaded() const
 {
-    return !m_error.empty();
+    return m_error.empty();
 }
 
 double FFmpegVideoClip::getFrameRate() const
@@ -161,10 +161,11 @@ FFmpegVideoClip::FFmpegVideoClip(const std::string &filename) {
     }
 
     // Get a pointer to the codec context for the video stream
-    pCodecCtx = pFormatCtx->streams[videoStreamId]->codec;
+    pCodecCtxOrig = pFormatCtx->streams[videoStreamId]->codec;
 
     // Find the decoder for the video stream
-    pCodec=avcodec_find_decoder(pCodecCtx->codec_id);
+    pCodec=avcodec_find_decoder(pCodecCtxOrig->codec_id);
+
     if(!pCodec) {
         m_error = "Unsupported codec!";
         return; // Codec not found
@@ -200,6 +201,7 @@ FFmpegVideoClip::FFmpegVideoClip(const std::string &filename) {
 
     av_image_fill_arrays(pFrameRGB->data, pFrameRGB->linesize, buffer,
                          AV_PIX_FMT_RGB24, pCodecCtx->width, pCodecCtx->height, 1); 
+
 
 }
 
