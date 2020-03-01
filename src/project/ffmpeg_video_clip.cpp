@@ -23,18 +23,20 @@ double FFmpegVideoClip::getFrameRate() const
     return av_q2d(pFormatCtx->streams[videoStreamId]->avg_frame_rate);
 }
 
-const uint64_t &FFmpegVideoClip::getFrameCount() const
+int64_t FFmpegVideoClip::getFrameCount() const
 {
-    return pFormatCtx->streams[videoStreamId]->nb_frames;
+    uint64_t nbf = pFormatCtx->streams[videoStreamId]->nb_frames;
+
+    if (nbf == 0) {
+        nbf = (int64_t) floor(getDuration() * getFrameRate() + 0.5);
+    }
+
+    return nbf;
 }
 
 double FFmpegVideoClip::getCurrentTime() const
 {
-    double totalTime = 
-        av_q2d(pFormatCtx->streams[videoStreamId]->time_base) *
-        double(pFormatCtx->streams[videoStreamId]->duration) * 1000.0;
-
-    return (static_cast<double>(getCurrentFrame()) / static_cast<double>(getFrameCount())) * totalTime;
+    return dtsToSec(currentTime) * 1000.0;
 }
 
 uint64_t FFmpegVideoClip::getCurrentFrame() const
@@ -65,10 +67,90 @@ int decode(AVCodecContext *avctx, AVFrame *frame, bool &gotFrame, AVPacket *pkt)
     return 0;
 }
 
-void FFmpegVideoClip::seekTo(int frame)
+double FFmpegVideoClip::dtsToSec(int64_t dts) const
 {
-    av_seek_frame(pFormatCtx, videoStreamId, frame, AVSEEK_FLAG_FRAME);
-    frameNumber = frame;
+
+    double seconds = 
+        av_q2d(pFormatCtx->streams[videoStreamId]->time_base) * (double) (dts - pFormatCtx->streams[videoStreamId]->start_time);
+
+    return seconds;
+}
+
+double FFmpegVideoClip::getDuration() const
+{
+    double seconds = (double) pFormatCtx->duration / (double) AV_TIME_BASE;
+
+    if (seconds < 1e-3)
+    {
+        seconds = (double)pFormatCtx->streams[videoStreamId]->duration * av_q2d(pFormatCtx->streams[videoStreamId]->time_base);
+    }
+
+    return seconds;
+
+}
+
+int64_t FFmpegVideoClip::dtsToFrameNumber(int64_t dts) const
+{
+    double sec = dtsToSec(dts);
+    return (int64_t)(getFrameRate() * sec + 0.5);   
+}
+
+void FFmpegVideoClip::seekTo(int64_t frame)
+{
+    frame = std::min(frame, getFrameCount());
+    int delta = 16;
+
+    // Grab the first frame if we haven't already
+    if( firstFrame < 0 && getFrameCount() > 1 ) {
+        readNextFrame();
+    }
+
+    int64_t _frame_number = frame;
+
+    for(;;)
+    {
+        int64_t _frame_number_temp = std::max(_frame_number-delta, (int64_t)0);
+        double sec = (double)_frame_number_temp / getFrameRate();
+        int64_t time_stamp = pFormatCtx->streams[videoStreamId]->start_time;
+        double  time_base  = av_q2d(pFormatCtx->streams[videoStreamId]->time_base);
+        time_stamp += (int64_t)(sec / time_base + 0.5);
+        if (getFrameCount() > 1) av_seek_frame(pFormatCtx, videoStreamId, time_stamp, AVSEEK_FLAG_BACKWARD);
+        avcodec_flush_buffers(pFormatCtx->streams[videoStreamId]->codec);
+        if( _frame_number > 0 )
+        {
+            readNextFrame();
+
+            if( _frame_number > 1 )
+            {
+                frameNumber = dtsToFrameNumber(currentTime) - firstFrame;
+
+                if( frameNumber < 0 || frameNumber > _frame_number-1 )
+                {
+                    if( _frame_number_temp == 0 || delta >= INT_MAX/4 )
+                        break;
+                    delta = delta < 16 ? delta*2 : delta*3/2;
+                    continue;
+                }
+                while( frameNumber < _frame_number-1 )
+                {
+                    if(!readNextFrame())
+                        break;
+                }
+                frameNumber++;
+                break;
+            }
+            else
+            {
+                frameNumber = 1;
+                break;
+            }
+        }
+        else
+        {
+            frameNumber = 0;
+            break;
+        }
+    }
 }
 
 int FFmpegVideoClip::getWidth() const
@@ -83,9 +165,26 @@ int FFmpegVideoClip::getHeight() const
 
 bool FFmpegVideoClip::readNextFrame()
 {
+
+    if (!pFormatCtx) {
+        return false;
+    }
+
+    if( pFormatCtx->streams[videoStreamId]->nb_frames > 0 &&
+        frameNumber > pFormatCtx->streams[videoStreamId]->nb_frames ) {
+        return false;
+    }
+
+    currentTime = AV_NOPTS_VALUE;
+
     struct SwsContext *sws_ctx = NULL;
     bool frameFinished;
+    bool valid = false;
     AVPacket packet;
+
+    // Error handling. Sometimes loading the image does not work first go
+    const int max_attempts = 1 << 9;
+    int num_errors = 0;
 
     AVPixelFormat pixFormat;
     switch (pCodecCtx->pix_fmt) {
@@ -115,36 +214,56 @@ bool FFmpegVideoClip::readNextFrame()
         AV_PIX_FMT_RGB24,
         SWS_BICUBIC, NULL, NULL, NULL);
 
-    if (av_read_frame(pFormatCtx, &packet) >=0 ) {
+    while (!valid) {
+        if (av_read_frame(pFormatCtx, &packet) >=0 ) {
 
-        // Is this a packet from the video stream?
-        if(packet.stream_index == videoStreamId) {
-            // Decode video frame
-            decode(pCodecCtx, pFrame, frameFinished, &packet);
+            // Is this a packet from the video stream?
+            if(packet.stream_index != videoStreamId) {
+                num_errors++;
+            } else {
+                // Decode video frame
+                decode(pCodecCtx, pFrame, frameFinished, &packet);
+                
+                // Did we get a video frame?
+                if(frameFinished) {
+                    // Convert the image from its native format to RGB
+                    sws_scale(sws_ctx, (uint8_t const * const *)pFrame->data,
+                    pFrame->linesize, 0, pCodecCtx->height,
+                    pFrameRGB->data, pFrameRGB->linesize);  
+
+                    currentTime = pFrame->pkt_dts;
+
+                    valid = true;
+                } else {
+                    num_errors++;
+                }
+            }
             
-            // Did we get a video frame?
-            if(frameFinished) {
-                // Convert the image from its native format to RGB
-                sws_scale(sws_ctx, (uint8_t const * const *)pFrame->data,
-                pFrame->linesize, 0, pCodecCtx->height,
-                pFrameRGB->data, pFrameRGB->linesize);  
+                
+            // Free the packet that was allocated by av_read_frame
+            av_free_packet(&packet); 
 
-                frameNumber++;
+            if (num_errors > max_attempts) {
+                break;
             }
         }
-            
-        // Free the packet that was allocated by av_read_frame
-        av_free_packet(&packet); 
-
     }
 
     sws_freeContext(sws_ctx);
 
-    if (!frameFinished) {
-        seekTo(0);
+    if (valid) {
+        frameNumber++;
     }
 
-    return frameFinished;
+    if (frameFinished && firstFrame < 0) {
+        firstFrame = dtsToFrameNumber(currentTime);
+    }
+
+    if (!frameFinished && currentTime > pFormatCtx->streams[videoStreamId]->start_time) {
+        seekTo(firstFrame);
+    }
+
+    return valid;
 }
 
 FFmpegVideoClip::FFmpegVideoClip(const std::string &filename) {

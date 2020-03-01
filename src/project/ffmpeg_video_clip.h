@@ -15,15 +15,18 @@ public:
 	~FFmpegVideoClip();
 
     bool isLoaded() const;
-    void seekTo(int frame);
+    void seekTo(int64_t frame);
     bool readNextFrame();
 
     AVFrame *getFrame() const { return pFrameRGB; }
-    const uint64_t &getFrameCount() const;
+    int64_t getFrameCount() const;
     double getFrameRate() const;
 
-    // Current time in milliseconds
+    // Current time in seconds
     double getCurrentTime() const;
+
+    // Duration of the clip in seconds
+    double getDuration() const;
 
     uint64_t getCurrentFrame() const;
 
@@ -36,6 +39,9 @@ public:
     const std::string &getError() { return m_error; }
 
 private:
+    double dtsToSec(int64_t dts) const;
+    int64_t dtsToFrameNumber(int64_t dts) const;
+
 	AVFormatContext *pFormatCtx = nullptr;
 
 	AVCodecContext *pCodecCtxOrig = nullptr;
@@ -49,7 +55,11 @@ private:
     int videoStreamId = -1;
     int audioStreamId = -1;
 
-    int frameNumber = 0;
+    int64_t firstFrame = -1;
+    int64_t frameNumber = 0;
+
+    // Current time in the video stream, in the video timebase units
+    int64_t currentTime;
 
     // Persistent frame storage
     uint8_t *buffer; // The buffer storing signed bytes representing image values

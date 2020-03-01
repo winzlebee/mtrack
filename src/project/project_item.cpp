@@ -47,7 +47,6 @@ int VideoItem::get_current_frame() {
 }
 
 bool VideoItem::set_next_frame(int frame) {
-	if (frame > get_num_frames() || frame < 0) return false;
 	m_clip->seekTo(frame);
 	return true;
 }

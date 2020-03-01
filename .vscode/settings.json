@@ -58,6 +58,7 @@
         "random": "cpp",
         "set": "cpp",
         "string": "cpp",
-        "bit": "cpp"
+        "bit": "cpp",
+        "hash_map": "cpp"
     }
 }
