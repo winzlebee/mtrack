@@ -115,7 +115,7 @@ void FFmpegVideoClip::seekTo(int64_t frame)
         double  time_base  = av_q2d(pFormatCtx->streams[videoStreamId]->time_base);
         time_stamp += (int64_t)(sec / time_base + 0.5);
         if (getFrameCount() > 1) av_seek_frame(pFormatCtx, videoStreamId, time_stamp, AVSEEK_FLAG_BACKWARD);
-        avcodec_flush_buffers(pFormatCtx->streams[videoStreamId]->codec);
+        avcodec_flush_buffers(pCodecCtx);
         if( _frame_number > 0 )
         {
             readNextFrame();
