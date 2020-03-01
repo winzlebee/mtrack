@@ -98,6 +98,9 @@ int64_t FFmpegVideoClip::dtsToFrameNumber(int64_t dts) const
 void FFmpegVideoClip::seekTo(int64_t frame)
 {
     frame = std::min(frame, getFrameCount());
+
+    // Controls how far back we seek in the video in order to reconstruct a frame.
+    // if we don't add this, compressed formats can exhibit artifacts. Increase for higher B-frame intervals.
     int delta = 16;
 
     // Grab the first frame if we haven't already
@@ -107,32 +110,47 @@ void FFmpegVideoClip::seekTo(int64_t frame)
 
     int64_t _frame_number = frame;
 
-    for(;;)
+    while (true)
     {
+        // Get a time sixteen frames in the past, or at the start of the stream, as compared to our desired frame
         int64_t _frame_number_temp = std::max(_frame_number-delta, (int64_t)0);
         double sec = (double)_frame_number_temp / getFrameRate();
         int64_t time_stamp = pFormatCtx->streams[videoStreamId]->start_time;
         double  time_base  = av_q2d(pFormatCtx->streams[videoStreamId]->time_base);
         time_stamp += (int64_t)(sec / time_base + 0.5);
+
+        // Seek to the requested frame, minus 16 frames. Then we can keep reading frames in to get to the correct frame
         if (getFrameCount() > 1) av_seek_frame(pFormatCtx, videoStreamId, time_stamp, AVSEEK_FLAG_BACKWARD);
         avcodec_flush_buffers(pCodecCtx);
+
+        // If we're not at the start of the video
         if( _frame_number > 0 )
         {
+            // Read the next frame, which will increment the current frame counter
             readNextFrame();
 
+            // If we've gone further than just stayed at frame 1
             if( _frame_number > 1 )
             {
+                // Get the frame at the current time
                 frameNumber = dtsToFrameNumber(currentTime) - firstFrame;
 
+                // If the current frame is invalid or higher than our target frame
                 if( frameNumber < 0 || frameNumber > _frame_number-1 )
                 {
+                    // If we've reached the start of the video, or the delta to search is at its maximum, cancel
                     if( _frame_number_temp == 0 || delta >= INT_MAX/4 )
                         break;
-                    delta = delta < 16 ? delta*2 : delta*3/2;
+
+                    // Otherwise, make our delta (time in frames to go back) higher by 150%, and again retrieve the frame at this location
+                    delta = delta*3/2;
                     continue;
                 }
+
+                // If our current frame number is lower than our target, keep reading frames until we get to our frame.
                 while( frameNumber < _frame_number-1 )
                 {
+                    // When we can't read another frame, break the loop regardless. Otherwhise it will terminate when we reach the target frame.
                     if(!readNextFrame())
                         break;
                 }
@@ -141,12 +159,14 @@ void FFmpegVideoClip::seekTo(int64_t frame)
             }
             else
             {
+                // Stay at frame one if it's the only frame (eg. Images)
                 frameNumber = 1;
                 break;
             }
         }
         else
         {
+            // Stay at frame zero if we only have frame zero.
             frameNumber = 0;
             break;
         }
