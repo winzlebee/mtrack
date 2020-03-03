@@ -23,7 +23,7 @@ bool MediaPlaybackSource::advanceFrame() {
 }
 
 bool MediaPlaybackSource::retreatFrame() {
-	bool next = m_media->set_next_frame(getCurrentFrame() - 1);
+	bool next = m_media->set_next_frame(getCurrentFrame() - 2);
 	return next && m_media->load_next_frame(m_context);
 }
 

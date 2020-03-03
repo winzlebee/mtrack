@@ -110,6 +110,7 @@ void FFmpegVideoClip::seekTo(int64_t frame)
 
     int64_t _frame_number = frame;
 
+    // std::cout << "Seeking..." << std::endl;
     while (true)
     {
         // Get a time sixteen frames in the past, or at the start of the stream, as compared to our desired frame
@@ -118,6 +119,9 @@ void FFmpegVideoClip::seekTo(int64_t frame)
         int64_t time_stamp = pFormatCtx->streams[videoStreamId]->start_time;
         double  time_base  = av_q2d(pFormatCtx->streams[videoStreamId]->time_base);
         time_stamp += (int64_t)(sec / time_base + 0.5);
+
+        // std::printf("Target Frame: %i\nCurrent frame: %i\n timestamp: %.2f", frame, _frame_number_temp, (double) time_stamp*time_base);
+        // std::cout << std::endl;
 
         // Seek to the requested frame, minus 16 frames. Then we can keep reading frames in to get to the correct frame
         if (getFrameCount() > 1) av_seek_frame(pFormatCtx, videoStreamId, time_stamp, AVSEEK_FLAG_BACKWARD);
@@ -263,9 +267,12 @@ bool FFmpegVideoClip::readNextFrame()
             // Free the packet that was allocated by av_read_frame
             av_free_packet(&packet); 
 
-            if (num_errors > max_attempts) {
-                break;
-            }
+        } else {
+            num_errors++;
+        }
+
+        if (num_errors > max_attempts) {
+            break;
         }
     }
 
@@ -277,10 +284,6 @@ bool FFmpegVideoClip::readNextFrame()
 
     if (frameFinished && firstFrame < 0) {
         firstFrame = dtsToFrameNumber(currentTime);
-    }
-
-    if (!frameFinished && currentTime > pFormatCtx->streams[videoStreamId]->start_time) {
-        seekTo(firstFrame);
     }
 
     return valid;

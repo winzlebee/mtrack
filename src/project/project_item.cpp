@@ -56,7 +56,9 @@ Glib::RefPtr<Gdk::Pixbuf> VideoItem::get_pixbuf() {
 }
 
 bool VideoItem::load_next_frame(ContextManager *context) {
-	m_clip->readNextFrame();
+	if (!m_clip->readNextFrame()) {
+        return false;
+    }
 
 	context->make_current();
 
