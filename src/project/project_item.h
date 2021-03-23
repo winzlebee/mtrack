@@ -5,7 +5,7 @@
 #ifndef project_item_h
 #define project_item_h
 
-#include "../render/cmanager.h"
+#include "../render/context_manager.h"
 
 class FFmpegVideoClip;
 

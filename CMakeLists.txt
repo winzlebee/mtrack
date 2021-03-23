@@ -34,7 +34,7 @@ add_executable(mtrack
     src/main.cpp
     src/commands/undo_command.cpp
     src/commands/import_clip_command.cpp
-    src/render/cmanager.cpp
+    src/render/context_manager.cpp
     src/ui/main_window.cpp
     src/ui/timeline_widget.cpp
     src/project/project.cpp
@@ -52,7 +52,7 @@ target_link_libraries(mtrack ${GTKMM_LIBRARIES})
 target_link_libraries(mtrack ${AVUTIL_LIBRARY} ${AVFORMAT_LIBRARY} ${AVCODEC_LIBRARY} ${SWSCALE_LIBRARY})
 
 # Only include VideoIO and core at the moment
-# target_link_libraries(mtrack opencv_core opencv_videoio opencv_imgproc)
+# target_link_libraries(mtrack 1_core opencv_videoio opencv_imgproc)
 
 # Copy the resources to a resource folder in the build directory
 add_custom_command(TARGET mtrack PRE_BUILD

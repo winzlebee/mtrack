@@ -5,7 +5,7 @@
 #include <GL/glew.h>
 #include <GL/gl.h>
 
-#include "cmanager.h"
+#include "context_manager.h"
 #include "../project/project.h"
 #include "../project/project_item.h"
 

@@ -15,7 +15,9 @@ Mtrack is a really simple Open Source NLE with video compositor elements, like A
 The build process on linux is quite simple (Debian-based distros)
 1. Install the dependencies
 
-`sudo apt install build-essential cmake libopencv-dev libgl1-mesa-dev libgtkmm-3.0-dev libglew2.0`
+`sudo apt install build-essential cmake libgl1-mesa-dev libgtkmm-3.0-dev libglew2.0`
+`sudo apt install libswscale-dev libavformat-dev libavcodec-dev`
+
 2. Clone the repository and enter the root directory
 
 `git clone <uri>`

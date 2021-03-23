@@ -6,6 +6,8 @@
 
 typedef std::vector<std::unique_ptr<ProjectItem>> MediaArray;
 
+class UndoStack;
+
 struct ProjectSettings {
     ProjectSettings() {
         color.set_rgba(0.0, 0.0, 0.0, 1.0);
@@ -21,6 +23,7 @@ class Project {
     public:
         Project() {};
         Project(ProjectSettings sett) : settings(sett) {}
+        ~Project() {}
         
         ProjectSettings& getSettings() { return settings; }
 

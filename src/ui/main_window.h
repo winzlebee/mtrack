@@ -4,7 +4,7 @@
 #include <gtkmm.h>
 #include <memory>
 
-#include "../render/cmanager.h"
+#include "../render/context_manager.h"
 #include "../playback/playback_manager.h"
 #include "../playback/playback_source.h"
 #include "../models/projectitem_model.h"
