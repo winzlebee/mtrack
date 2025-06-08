@@ -25,7 +25,7 @@ double FFmpegVideoClip::getFrameRate() const
 
 int64_t FFmpegVideoClip::getFrameCount() const
 {
-    uint64_t nbf = pFormatCtx->streams[videoStreamId]->nb_frames;
+    std::size_t nbf = pFormatCtx->streams[videoStreamId]->nb_frames;
 
     if (nbf == 0) {
         nbf = (int64_t) floor(getDuration() * getFrameRate() + 0.5);
@@ -39,7 +39,7 @@ double FFmpegVideoClip::getCurrentTime() const
     return dtsToSec(currentTime) * 1000.0;
 }
 
-uint64_t FFmpegVideoClip::getCurrentFrame() const
+std::size_t FFmpegVideoClip::getCurrentFrame() const
 {
     return frameNumber;
 }
@@ -70,7 +70,7 @@ int decode(AVCodecContext *avctx, AVFrame *frame, bool &gotFrame, AVPacket *pkt)
 double FFmpegVideoClip::dtsToSec(int64_t dts) const
 {
 
-    double seconds = 
+    double seconds =
         av_q2d(pFormatCtx->streams[videoStreamId]->time_base) * (double) (dts - pFormatCtx->streams[videoStreamId]->start_time);
 
     return seconds;
@@ -92,7 +92,7 @@ double FFmpegVideoClip::getDuration() const
 int64_t FFmpegVideoClip::dtsToFrameNumber(int64_t dts) const
 {
     double sec = dtsToSec(dts);
-    return (int64_t)(getFrameRate() * sec + 0.5);   
+    return (int64_t)(getFrameRate() * sec + 0.5);
 }
 
 void FFmpegVideoClip::seekTo(int64_t frame)
@@ -247,13 +247,13 @@ bool FFmpegVideoClip::readNextFrame()
             } else {
                 // Decode video frame
                 decode(pCodecCtx, pFrame, frameFinished, &packet);
-                
+
                 // Did we get a video frame?
                 if(frameFinished) {
                     // Convert the image from its native format to RGB
                     sws_scale(sws_ctx, (uint8_t const * const *)pFrame->data,
                     pFrame->linesize, 0, pCodecCtx->height,
-                    pFrameRGB->data, pFrameRGB->linesize);  
+                    pFrameRGB->data, pFrameRGB->linesize);
 
                     currentTime = pFrame->pkt_dts;
 
@@ -262,10 +262,10 @@ bool FFmpegVideoClip::readNextFrame()
                     num_errors++;
                 }
             }
-            
-                
+
+
             // Free the packet that was allocated by av_read_frame
-            av_free_packet(&packet); 
+            av_free_packet(&packet);
 
         } else {
             num_errors++;
@@ -344,7 +344,7 @@ FFmpegVideoClip::FFmpegVideoClip(const std::string &filename) {
     // Open codec
     if(avcodec_open2(pCodecCtx, pCodec, NULL) < 0) {
         m_error = "Failed to open the codec";
-        return; 
+        return;
     }
 
     pFrame = av_frame_alloc();
@@ -365,7 +365,7 @@ FFmpegVideoClip::FFmpegVideoClip(const std::string &filename) {
     buffer = (uint8_t *) av_malloc_array(bufferSize, sizeof(uint8_t));
 
     av_image_fill_arrays(pFrameRGB->data, pFrameRGB->linesize, buffer,
-                         AV_PIX_FMT_RGB24, pCodecCtx->width, pCodecCtx->height, 1); 
+                         AV_PIX_FMT_RGB24, pCodecCtx->width, pCodecCtx->height, 1);
 
 
 }
