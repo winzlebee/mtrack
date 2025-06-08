@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <cstdint>
 
 struct AVFormatContext;
 struct AVCodec;
@@ -28,7 +29,7 @@ public:
     // Duration of the clip in seconds
     double getDuration() const;
 
-    uint64_t getCurrentFrame() const;
+    std::size_t getCurrentFrame() const;
 
     // The size of the image buffer, in unsigned bytes
     int getBufferSize() const { return bufferSize; }
@@ -47,7 +48,7 @@ private:
 	AVCodecContext *pCodecCtxOrig = nullptr;
 	AVCodecContext *pCodecCtx = nullptr;
 
-	AVCodec *pCodec = nullptr;
+	const AVCodec *pCodec = nullptr;
 
 	AVFrame *pFrame = nullptr;
 	AVFrame *pFrameRGB = nullptr;

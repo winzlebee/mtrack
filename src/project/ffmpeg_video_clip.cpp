@@ -265,7 +265,7 @@ bool FFmpegVideoClip::readNextFrame()
 
 
             // Free the packet that was allocated by av_read_frame
-            av_free_packet(&packet);
+            av_packet_unref(&packet);
 
         } else {
             num_errors++;
@@ -325,19 +325,19 @@ FFmpegVideoClip::FFmpegVideoClip(const std::string &filename) {
         return;
     }
 
-    // Get a pointer to the codec context for the video stream
-    pCodecCtxOrig = pFormatCtx->streams[videoStreamId]->codec;
+    // Get codec parameters from stream
+    AVCodecParameters *pCodecPar = pFormatCtx->streams[videoStreamId]->codecpar;
 
     // Find the decoder for the video stream
-    pCodec=avcodec_find_decoder(pCodecCtxOrig->codec_id);
+    pCodec = avcodec_find_decoder(pCodecPar->codec_id);
 
     if(!pCodec) {
         m_error = "Unsupported codec!";
-        return; // Codec not found
+        return;
     }
-    // Copy context
+    // Allocate codec context and fill from parameters
     pCodecCtx = avcodec_alloc_context3(pCodec);
-    if(avcodec_copy_context(pCodecCtx, pCodecCtxOrig) != 0) {
+    if(avcodec_parameters_to_context(pCodecCtx, pCodecPar) != 0) {
         m_error = "Could not copy codec context.";
         return;
     }
@@ -382,7 +382,6 @@ FFmpegVideoClip::~FFmpegVideoClip() {
 
     // Close the codecs
     avcodec_close(pCodecCtx);
-    avcodec_close(pCodecCtxOrig);
 
     // Close the video file
     avformat_close_input(&pFormatCtx);

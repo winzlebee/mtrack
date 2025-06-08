@@ -1,5 +1,5 @@
-# Set the minimum version of cmake required to build this project	
-cmake_minimum_required(VERSION 2.8)
+# Set the minimum version of cmake required to build this project
+cmake_minimum_required(VERSION 3.18)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/res/cmake)
 project(mtrack)
@@ -30,7 +30,7 @@ include_directories(${SWSCALE_INCLUDE_DIR})
 link_directories(${GTKMM_LIBRARY_DIRS})
 
 # Add the executables
-add_executable(mtrack 
+add_executable(mtrack
     src/main.cpp
     src/commands/undo_command.cpp
     src/commands/import_clip_command.cpp

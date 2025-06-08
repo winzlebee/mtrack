@@ -9,8 +9,8 @@ extern "C" {
 
 int main(int argc, char *argv[])
 {
-    auto app = Gtk::Application::create(argc, argv, "com.wizzledonker.mtrack");
-	  
+	auto app = Gtk::Application::create(argc, argv, "com.wizzledonker.mtrack");
+
 	// Load the main GLADE ui
 	auto builder = Gtk::Builder::create();
 
@@ -26,13 +26,11 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	// Initialize ffmpeg
-	av_register_all();
-    MainWindow* window;
-    
+	MainWindow* window;
+
 	builder->get_widget_derived("main_window", window);
 
 	int result = app->run(*window);
-	
+
 	return result;
 }
